@@ -1,0 +1,30 @@
+aid: inngest
+name: Inngest
+segments:
+  - Workflows
+description: >-
+  Inngest is a developer workflow platform for building event-driven, background job, and step-function workflows with retries and observability.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Workflows
+created: '2026-03-03'
+modified: '2026-03-03'
+url: https://raw.githubusercontent.com/api-evangelist/inngest/refs/heads/main/apis.yml
+specificationVersion: '0.19'
+apis:
+  - aid: inngest:inngest
+    name: Inngest
+    description: >-
+      Inngest is a developer workflow platform for building event-driven, background job, and step-function workflows with retries and observability.
+    humanURL: https://example.com
+    tags:
+      - Workflows
+    properties:
+      - type: Documentation
+        url: https://example.com
+maintainers:
+  - FN: Kin Lane
+    email: info@apievangelist.com
