@@ -9,16 +9,16 @@ position: Consumer
 access: 3rd-Party
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
-  - Workflows
-  - Event-Driven
-  - Durable Execution
+  - AI Agents
   - Background Jobs
   - Cron Jobs
-  - Serverless
-  - AI Agents
+  - Durable Execution
+  - Event-Driven
   - Orchestration
   - Queues
+  - Serverless
   - Step Functions
+  - Workflows
 created: '2026-03-03'
 modified: '2026-03-16'
 url: https://raw.githubusercontent.com/api-evangelist/inngest/refs/heads/main/apis.yml
@@ -31,11 +31,11 @@ apis:
     humanURL: https://www.inngest.com/docs/reference/rest-api
     baseURL: https://api.inngest.com
     tags:
-      - Workflows
       - Events
       - Functions
-      - Runs
       - REST API
+      - Runs
+      - Workflows
     properties:
       - type: Documentation
         url: https://www.inngest.com/docs
