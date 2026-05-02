@@ -1,0 +1,342 @@
+openapi: 3.0.3
+info:
+  title: Inngest REST API
+  description: >-
+    The Inngest REST API provides programmatic access to manage and interact
+    with Inngest resources including events, functions, and runs. It enables
+    developers to send events to trigger functions, fetch run status and output,
+    and inspect function activity for event-driven, background, and durable
+    workflows.
+  version: '1.0'
+  contact:
+    name: Inngest
+    url: https://www.inngest.com
+servers:
+  - url: https://api.inngest.com
+    description: Production REST API
+  - url: https://inn.gs
+    description: Event ingestion endpoint
+  - url: http://localhost:8288
+    description: Local Inngest Dev Server
+tags:
+  - name: Events
+    description: Send and inspect events that trigger Inngest functions.
+  - name: Runs
+    description: Fetch the status and output of function runs.
+  - name: Functions
+    description: List and inspect deployed Inngest functions.
+paths:
+  /e/{eventKey}:
+    post:
+      tags:
+        - Events
+      summary: Send event(s) to Inngest
+      description: >-
+        Sends one or more events to Inngest using your event key. A single
+        request may include either an event object or an array of event objects
+        (up to 512 KB total payload).
+      operationId: sendEvents
+      parameters:
+        - name: eventKey
+          in: path
+          required: true
+          description: Your environment-specific Inngest event key.
+          schema:
+            type: string
+        - name: x-inngest-env
+          in: header
+          required: false
+          description: Branch environment to target.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Event'
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/Event'
+      responses:
+        '200':
+          description: Events accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResponse'
+        '400':
+          description: Invalid request payload.
+        '401':
+          description: Invalid event key.
+  /v1/events:
+    get:
+      tags:
+        - Events
+      summary: List recent events
+      description: Returns recent events received by Inngest in the current environment.
+      operationId: listEvents
+      parameters:
+        - name: name
+          in: query
+          required: false
+          description: Filter events by event name.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: A page of events.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+      security:
+        - bearerAuth: []
+  /v1/events/{eventId}:
+    get:
+      tags:
+        - Events
+      summary: Get an event by ID
+      operationId: getEvent
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Event details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '404':
+          description: Event not found.
+      security:
+        - bearerAuth: []
+  /v1/events/{eventId}/runs:
+    get:
+      tags:
+        - Events
+      summary: List runs triggered by an event
+      operationId: listEventRuns
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Runs associated with the event.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Run'
+      security:
+        - bearerAuth: []
+  /v1/runs/{runId}:
+    get:
+      tags:
+        - Runs
+      summary: Get function run status
+      operationId: getRun
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Run details including status, output, and step history.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Run'
+        '404':
+          description: Run not found.
+      security:
+        - bearerAuth: []
+  /v1/runs/{runId}/jobs:
+    get:
+      tags:
+        - Runs
+      summary: List the jobs (steps) for a run
+      operationId: listRunJobs
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Step-level job records for the run.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Job'
+      security:
+        - bearerAuth: []
+  /v1/runs/{runId}/cancel:
+    post:
+      tags:
+        - Runs
+      summary: Cancel a function run
+      operationId: cancelRun
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cancellation accepted.
+        '404':
+          description: Run not found.
+      security:
+        - bearerAuth: []
+  /v1/functions:
+    get:
+      tags:
+        - Functions
+      summary: List functions
+      operationId: listFunctions
+      responses:
+        '200':
+          description: Deployed functions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Function'
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: signing-key
+  schemas:
+    Event:
+      type: object
+      required:
+        - name
+        - data
+      properties:
+        id:
+          type: string
+          description: Optional deduplication ID.
+        name:
+          type: string
+          description: Event name (e.g. app/user.created).
+        data:
+          type: object
+          additionalProperties: true
+          description: Arbitrary JSON payload.
+        user:
+          type: object
+          additionalProperties: true
+        ts:
+          type: integer
+          format: int64
+          description: Unix timestamp in milliseconds.
+        v:
+          type: string
+          description: Optional event version.
+    EventResponse:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+        status:
+          type: integer
+    Run:
+      type: object
+      properties:
+        run_id:
+          type: string
+        function_id:
+          type: string
+        status:
+          type: string
+          enum:
+            - Running
+            - Completed
+            - Failed
+            - Cancelled
+        event_id:
+          type: string
+        output:
+          type: object
+          additionalProperties: true
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+        output:
+          type: object
+          additionalProperties: true
+    Function:
+      type: object
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+        triggers:
+          type: array
+          items:
+            type: object
+            additionalProperties: true

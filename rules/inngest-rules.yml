@@ -1,0 +1,60 @@
+aid: inngest:rules
+name: Inngest Usage Rules
+description: >-
+  Operational rules and guardrails for working with the Inngest platform and
+  its REST API. These rules cover authentication, event ingestion limits,
+  function design, retry behavior, and observability expectations for
+  durable, event-driven workflows.
+modified: '2026-04-28'
+rules:
+  - id: auth-signing-key
+    category: Authentication
+    statement: >-
+      Use a signing key bearer token for all authenticated REST API calls and
+      keep keys distinct per environment (production vs branch).
+  - id: event-key-scoping
+    category: Authentication
+    statement: >-
+      Send events using the environment-specific event key on the /e/{eventKey}
+      endpoint and never embed event keys in untrusted client code.
+  - id: payload-size-limit
+    category: Ingestion
+    statement: >-
+      Keep each event ingestion request under 512 KB total payload size; batch
+      between 10 and 1000 typically sized events per call.
+  - id: deterministic-step-ids
+    category: Functions
+    statement: >-
+      Give every step within an Inngest function a stable, deterministic ID so
+      that retries and resumes correctly map to prior state.
+  - id: idempotent-event-handlers
+    category: Functions
+    statement: >-
+      Treat event handlers as idempotent; use event id deduplication and step
+      memoization rather than relying on at-most-once delivery.
+  - id: retries-and-backoff
+    category: Reliability
+    statement: >-
+      Allow Inngest to manage retries and exponential backoff; do not implement
+      custom retry loops inside a single step.
+  - id: timeouts-and-streaming
+    category: Reliability
+    statement: >-
+      For long-running serverless deploys, enable streaming on supported
+      runtimes (Vercel, Remix edge) so that platform timeouts do not truncate
+      function execution.
+  - id: branch-environments
+    category: Environments
+    statement: >-
+      Use branch environments and the x-inngest-env header to isolate testing
+      traffic from production runs.
+  - id: pii-in-events
+    category: Data Handling
+    statement: >-
+      Avoid sending raw PII or secrets in event payloads; reference records by
+      ID and fetch sensitive data inside steps using scoped credentials.
+  - id: observability
+    category: Observability
+    statement: >-
+      Use the REST API to fetch run status and step jobs for incident triage
+      rather than re-running functions to reproduce state.

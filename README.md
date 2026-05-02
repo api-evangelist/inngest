@@ -16,7 +16,7 @@ Inngest is a developer workflow platform for building event-driven, background j
 ## Timestamps
 
 - **Created:** 2026-03-03 
-- **Modified:** 2026-03-16 
+- **Modified:** 2026-04-28 
 
 ## APIs
 
@@ -24,6 +24,8 @@ Inngest is a developer workflow platform for building event-driven, background j
 The Inngest REST API provides programmatic access to manage and interact with Inngest resources including events, functions, and runs. It enables developers to send events, fetch run status and output, and manage webhooks.
 
 **Human URL:** [https://www.inngest.com/docs/reference/rest-api](https://www.inngest.com/docs/reference/rest-api)
+
+**Base URL:** https://api.inngest.com
 
 
 #### Tags:
@@ -34,6 +36,8 @@ The Inngest REST API provides programmatic access to manage and interact with In
 
 - [Documentation](https://www.inngest.com/docs)
 - [OpenAPI](https://api-docs.inngest.com/docs/inngest-api)
+- [OpenAPI](openapi/inngest-openapi.yml)
+- [Rules](rules/inngest-rules.yml)
 - [GettingStarted](https://www.inngest.com/docs/getting-started/nextjs-quick-start)
 
 ## Common Properties

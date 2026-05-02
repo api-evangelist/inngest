@@ -20,7 +20,7 @@ tags:
   - Step Functions
   - Workflows
 created: '2026-03-03'
-modified: '2026-03-16'
+modified: '2026-04-28'
 url: https://raw.githubusercontent.com/api-evangelist/inngest/refs/heads/main/apis.yml
 specificationVersion: '0.19'
 apis:
@@ -41,6 +41,10 @@ apis:
         url: https://www.inngest.com/docs
       - type: OpenAPI
         url: https://api-docs.inngest.com/docs/inngest-api
+      - type: OpenAPI
+        url: openapi/inngest-openapi.yml
+      - type: Rules
+        url: rules/inngest-rules.yml
       - type: GettingStarted
         url: https://www.inngest.com/docs/getting-started/nextjs-quick-start
 common:
