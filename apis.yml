@@ -56,7 +56,7 @@ common:
     url: https://www.inngest.com/docs/getting-started/nextjs-quick-start
   - type: Blog
     url: https://www.inngest.com/blog
-  - type: Changelog
+  - type: ChangeLog
     url: https://www.inngest.com/changelog
   - type: Pricing
     url: https://www.inngest.com/pricing
@@ -68,9 +68,9 @@ common:
     url: https://app.inngest.com
   - type: Support
     url: https://app.inngest.com/support
-  - type: Status
+  - type: StatusPage
     url: https://status.inngest.com
-  - type: Roadmap
+  - type: RoadMap
     url: https://roadmap.inngest.com/roadmap
   - type: FAQ
     url: https://www.inngest.com/docs/faq
