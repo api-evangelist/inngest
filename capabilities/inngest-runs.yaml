@@ -1,0 +1,161 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Inngest REST API — Runs
+  description: 'Inngest REST API — Runs. 3 operations. Lead operation: Get function run status. Self-contained Naftiko capability
+    covering one Inngest business surface.'
+  tags:
+  - Inngest
+  - Runs
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    INNGEST_API_KEY: INNGEST_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: inngest-runs
+    baseUri: https://api.inngest.com
+    description: Inngest REST API — Runs business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-runs-runId
+      path: /v1/runs/{runId}
+      operations:
+      - name: getrun
+        method: GET
+        description: Get function run status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: runId
+          in: path
+          type: string
+          required: true
+    - name: v1-runs-runId-cancel
+      path: /v1/runs/{runId}/cancel
+      operations:
+      - name: cancelrun
+        method: POST
+        description: Cancel a function run
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: runId
+          in: path
+          type: string
+          required: true
+    - name: v1-runs-runId-jobs
+      path: /v1/runs/{runId}/jobs
+      operations:
+      - name: listrunjobs
+        method: GET
+        description: List the jobs (steps) for a run
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: runId
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.INNGEST_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: inngest-runs-rest
+    port: 8080
+    description: REST adapter for Inngest REST API — Runs. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/runs/{runid}
+      name: v1-runs-runid
+      description: REST surface for v1-runs-runId.
+      operations:
+      - method: GET
+        name: getrun
+        description: Get function run status
+        call: inngest-runs.getrun
+        with:
+          runId: rest.runId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/runs/{runid}/cancel
+      name: v1-runs-runid-cancel
+      description: REST surface for v1-runs-runId-cancel.
+      operations:
+      - method: POST
+        name: cancelrun
+        description: Cancel a function run
+        call: inngest-runs.cancelrun
+        with:
+          runId: rest.runId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/runs/{runid}/jobs
+      name: v1-runs-runid-jobs
+      description: REST surface for v1-runs-runId-jobs.
+      operations:
+      - method: GET
+        name: listrunjobs
+        description: List the jobs (steps) for a run
+        call: inngest-runs.listrunjobs
+        with:
+          runId: rest.runId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: inngest-runs-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Inngest REST API — Runs. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: get-function-run-status
+      description: Get function run status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: inngest-runs.getrun
+      with:
+        runId: tools.runId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cancel-function-run
+      description: Cancel a function run
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: inngest-runs.cancelrun
+      with:
+        runId: tools.runId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-jobs-steps-run
+      description: List the jobs (steps) for a run
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: inngest-runs.listrunjobs
+      with:
+        runId: tools.runId
+      outputParameters:
+      - type: object
+        mapping: $.

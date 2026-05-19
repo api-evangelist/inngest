@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Inngest REST API — Functions
+  description: 'Inngest REST API — Functions. 1 operations. Lead operation: List functions. Self-contained Naftiko capability
+    covering one Inngest business surface.'
+  tags:
+  - Inngest
+  - Functions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    INNGEST_API_KEY: INNGEST_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: inngest-functions
+    baseUri: https://api.inngest.com
+    description: Inngest REST API — Functions business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-functions
+      path: /v1/functions
+      operations:
+      - name: listfunctions
+        method: GET
+        description: List functions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.INNGEST_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: inngest-functions-rest
+    port: 8080
+    description: REST adapter for Inngest REST API — Functions. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/functions
+      name: v1-functions
+      description: REST surface for v1-functions.
+      operations:
+      - method: GET
+        name: listfunctions
+        description: List functions
+        call: inngest-functions.listfunctions
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: inngest-functions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Inngest REST API — Functions. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: list-functions
+      description: List functions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: inngest-functions.listfunctions
+      outputParameters:
+      - type: object
+        mapping: $.
