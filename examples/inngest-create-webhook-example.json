@@ -1,0 +1,23 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.inngest.com/v2/env/webhooks",
+    "headers": {
+      "Authorization": "Bearer signkey-prod-***",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "name": "stripe-payments",
+      "transform": "function transform(evt) { return { name: 'stripe/' + evt.type, data: evt.data.object }; }"
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "wh_01HZXB3WPKQTNS4Q3K8R2HZE9C",
+      "name": "stripe-payments",
+      "url": "https://inn.gs/h/wh_01HZXB3WPKQTNS4Q3K8R2HZE9C",
+      "transform": "function transform(evt) { return { name: 'stripe/' + evt.type, data: evt.data.object }; }"
+    }
+  }
+}

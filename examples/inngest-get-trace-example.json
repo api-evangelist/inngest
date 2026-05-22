@@ -1,0 +1,57 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://api.inngest.com/v2/runs/01HZX9XJK1G7Q9YTV6N5Q1H4ME/trace",
+    "headers": {
+      "Authorization": "Bearer signkey-prod-***"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "run_id": "01HZX9XJK1G7Q9YTV6N5Q1H4ME",
+      "root": {
+        "id": "span_root",
+        "name": "send_welcome_email",
+        "op": "RUN",
+        "status": "COMPLETED",
+        "started_at": "2026-01-01T00:00:00Z",
+        "ended_at": "2026-01-01T00:00:02Z",
+        "attempt": 1,
+        "children": [
+          {
+            "id": "span_step_1",
+            "name": "load-user",
+            "op": "RUN_STEP",
+            "status": "COMPLETED",
+            "attempt": 1,
+            "started_at": "2026-01-01T00:00:00.100Z",
+            "ended_at": "2026-01-01T00:00:00.250Z"
+          },
+          {
+            "id": "span_step_2",
+            "name": "summarize-onboarding",
+            "op": "AI",
+            "status": "COMPLETED",
+            "attempt": 1,
+            "started_at": "2026-01-01T00:00:00.260Z",
+            "ended_at": "2026-01-01T00:00:01.500Z",
+            "attributes": {
+              "model": "gpt-4-turbo",
+              "provider": "openai"
+            }
+          },
+          {
+            "id": "span_step_3",
+            "name": "send-email",
+            "op": "FETCH",
+            "status": "COMPLETED",
+            "attempt": 1,
+            "started_at": "2026-01-01T00:00:01.510Z",
+            "ended_at": "2026-01-01T00:00:01.950Z"
+          }
+        ]
+      }
+    }
+  }
+}

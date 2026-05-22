@@ -9,9 +9,9 @@ alignedWith:
 provider: Inngest
 providerId: inngest
 publisherName: Inngest
-serviceCategory: API
+serviceCategory: Developer Tools / Workflow Orchestration
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-22'
 tags:
   - AI Agents
   - Background Jobs
@@ -26,20 +26,31 @@ tags:
   - FinOps
   - Cost Management
   - FOCUS
-description: FinOps framework definition for the Inngest API surface. Provides a FOCUS-aligned mapping
-  for cost allocation, usage measurement, and unit-economics reporting across the provider's APIs.
+description: >-
+  FinOps framework definition for the Inngest event-driven durable execution
+  platform. Aligns Inngest's execution-priced business model (Hobby / Pro /
+  Enterprise) to FOCUS-style cost allocation, usage measurement, and unit
+  economics, covering events, runs, steps, traces, and AI step calls.
 principles:
   - name: Visibility
-    description: Make API consumption costs visible to engineering, product, and finance teams in near
-      real-time.
+    description: >-
+      Make execution and step-level usage visible to engineering, product, and
+      finance teams via Insights (Events, Runs, Steps, Trace Spans datasources)
+      and Granular Metrics on Pro.
   - name: Allocation
-    description: Tag every chargeable API call with the consuming team, environment, application, and
-      feature so cost can be allocated.
+    description: >-
+      Tag every billable execution with the consuming team, environment, app,
+      function, and feature so cost can be allocated by branch/environment and
+      tenant.
   - name: Optimization
-    description: Continuously evaluate request patterns, caching, batching, and tier selection to reduce
-      cost per useful unit of work.
+    description: >-
+      Continuously evaluate concurrency, throttling, batching, debounce,
+      singleton, and step memoization to reduce executions per useful unit
+      of work.
   - name: Accountability
-    description: Establish budget owners and chargeback or showback flows for each consuming team.
+    description: >-
+      Establish budget owners and chargeback/showback flows per app and per
+      environment.
 domains:
   - name: Understand Usage and Cost
     capabilities:
@@ -79,42 +90,59 @@ billingModel:
     - Credit
     - Adjustment
   chargeFrequency: Recurring
+  baseFees:
+    - name: Pro Subscription
+      amount: '75.00'
+      currency: USD
+      frequency: Monthly
+  includedAllowances:
+    - name: First 50K Executions
+      description: >-
+        First 50,000 executions per month are included free on every plan.
+      limit: 50000
+      unit: executions
 focusColumns:
   ServiceName: Inngest
-  ServiceCategory: Developer Tools / API
+  ServiceCategory: Developer Tools / Workflow Orchestration
   ProviderName: Inngest
   PublisherName: Inngest
   InvoiceIssuerName: Inngest
   PricingCategory: Usage-Based
-  PricingUnit: request
+  PricingUnit: execution
   BillingCurrency: USD
   ChargeCategory: Usage
 meters:
-  - name: api_requests
-    description: Count of billable API requests
-    unit: request
+  - name: executions
+    description: Billable function executions (each invocation of a function or step counts toward the meter)
+    unit: execution
     aggregation: sum
     dimensions:
-      - api
-      - endpoint
+      - app
+      - function
+      - environment
       - tier
-      - region
       - consumer
-  - name: data_egress
-    description: Bytes returned over the network in API responses
-    unit: GB
+  - name: ai_step_calls
+    description: AI step calls via step.ai.wrap and step.ai.infer
+    unit: call
     aggregation: sum
     dimensions:
-      - api
-      - region
-      - consumer
-  - name: compute_seconds
-    description: Server-side compute consumed by the request, where applicable
-    unit: second
-    aggregation: sum
+      - app
+      - function
+      - model
+      - provider
+  - name: concurrent_steps
+    description: Concurrent steps in flight per account
+    unit: step
+    aggregation: max
     dimensions:
-      - api
-      - endpoint
+      - environment
+      - tier
+  - name: trace_retention_days
+    description: Number of days run traces are retained
+    unit: day
+    aggregation: max
+    dimensions:
       - tier
 apis:
   - name: Inngest REST API
@@ -122,17 +150,23 @@ apis:
     tags:
       - Events
       - Functions
-      - REST API
       - Runs
-      - Workflows
+      - Apps
+      - Environments
+      - Webhooks
+      - Keys
+      - Account
     serviceName: Inngest REST API
     serviceCategory: API
 unitEconomics:
-  - name: Cost per 1K Requests
-    metric: billed_cost / (api_requests / 1000)
+  - name: Cost per 1K Executions
+    metric: billed_cost / (executions / 1000)
     target: TBD
-  - name: Cost per Active Consumer
-    metric: billed_cost / active_consumers
+  - name: Cost per Active App
+    metric: billed_cost / active_apps
+    target: TBD
+  - name: Cost per AI Step Call
+    metric: billed_cost_ai / ai_step_calls
     target: TBD
 maintainers:
   - FN: Kin Lane

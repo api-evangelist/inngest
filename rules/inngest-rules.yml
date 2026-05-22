@@ -1,36 +1,37 @@
 aid: inngest:rules
 name: Inngest Usage Rules
 description: >-
-  Operational rules and guardrails for working with the Inngest platform and
-  its REST API. These rules cover authentication, event ingestion limits,
-  function design, retry behavior, and observability expectations for
-  durable, event-driven workflows.
-modified: '2026-04-28'
+  Operational rules and guardrails for working with the Inngest event-driven
+  durable execution platform and its REST API. Covers authentication,
+  event ingestion limits, function and step design, retries, flow control,
+  AI agent orchestration, environments, and observability expectations.
+modified: '2026-05-22'
 rules:
   - id: auth-signing-key
     category: Authentication
     statement: >-
       Use a signing key bearer token for all authenticated REST API calls and
-      keep keys distinct per environment (production vs branch).
+      keep keys distinct per environment (production vs branch vs custom).
   - id: event-key-scoping
     category: Authentication
     statement: >-
       Send events using the environment-specific event key on the /e/{eventKey}
-      endpoint and never embed event keys in untrusted client code.
+      endpoint (or inn.gs) and never embed event keys in untrusted client code.
   - id: payload-size-limit
     category: Ingestion
     statement: >-
       Keep each event ingestion request under 512 KB total payload size; batch
-      between 10 and 1000 typically sized events per call.
+      between 10 and 1000 typically sized events per call to maximize
+      throughput against the platform's 100K+ executions/second capacity.
   - id: deterministic-step-ids
     category: Functions
     statement: >-
       Give every step within an Inngest function a stable, deterministic ID so
-      that retries and resumes correctly map to prior state.
+      retries, resumes, and checkpointing correctly map to prior memoized state.
   - id: idempotent-event-handlers
     category: Functions
     statement: >-
-      Treat event handlers as idempotent; use event id deduplication and step
+      Treat event handlers as idempotent; use event `id` deduplication and step
       memoization rather than relying on at-most-once delivery.
   - id: retries-and-backoff
     category: Reliability
@@ -41,13 +42,19 @@ rules:
     category: Reliability
     statement: >-
       For long-running serverless deploys, enable streaming on supported
-      runtimes (Vercel, Remix edge) so that platform timeouts do not truncate
-      function execution.
+      runtimes (Vercel, Remix edge) or move to Inngest Connect / Durable
+      Endpoints so platform timeouts do not truncate function execution.
+  - id: connect-for-throughput
+    category: Reliability
+    statement: >-
+      Use Inngest Connect (persistent outbound worker connections) over HTTP
+      serve() handlers when you need lower latency and elastic horizontal
+      scaling for high-volume workers.
   - id: branch-environments
     category: Environments
     statement: >-
-      Use branch environments and the x-inngest-env header to isolate testing
-      traffic from production runs.
+      Use branch and custom environments via the v2 envs API and the
+      x-inngest-env header to isolate testing traffic from production runs.
   - id: pii-in-events
     category: Data Handling
     statement: >-
@@ -56,5 +63,52 @@ rules:
   - id: observability
     category: Observability
     statement: >-
-      Use the REST API to fetch run status and step jobs for incident triage
-      rather than re-running functions to reproduce state.
+      Use the v2 /runs/{runId} and /runs/{runId}/trace endpoints (or Insights
+      SQL queries) for incident triage rather than re-running functions to
+      reproduce state.
+  - id: flow-control
+    category: Flow Control
+    statement: >-
+      Apply concurrency, throttling, batching, debounce, priority, and
+      rate limiting at the function definition level instead of in client code.
+  - id: singleton-functions
+    category: Flow Control
+    statement: >-
+      Use singleton functions for workflows that must run exclusively per
+      key (e.g. per tenant or per resource) to avoid double-processing.
+  - id: ai-step-wrap
+    category: AI Agents
+    statement: >-
+      Wrap third-party AI SDK calls with `step.ai.wrap` (or use `step.ai.infer`)
+      so that model invocations gain durable retries, traces, and observability
+      under the platform's AI orchestration model.
+  - id: agentkit-tools-as-mcp
+    category: AI Agents
+    statement: >-
+      Expose AgentKit tools via MCP where possible so coding agents can connect
+      directly through the Inngest Dev Server MCP and the agent-kit MCP host.
+  - id: realtime-publish-state
+    category: Realtime
+    statement: >-
+      Prefer `step.realtime.publish()` for important state transitions and
+      final results so emitted messages are durable and memoized.
+  - id: signals-vs-events
+    category: Functions
+    statement: >-
+      Use signals (`step.waitForSignal` / `inngest.sendSignal`) for targeted,
+      out-of-band notifications to a specific waiting function and reserve
+      events for fan-out broadcast patterns.
+  - id: dev-server-local-first
+    category: Development
+    statement: >-
+      Use the Inngest Dev Server (`inngest dev` on port 8288) locally so
+      function execution mirrors production without Redis stacks or mocks.
+  - id: self-host-with-helm
+    category: Deployment
+    statement: >-
+      For self-hosted deployments, prefer the official `inngest-helm` chart
+      with PostgreSQL, Redis, and optional KEDA autoscaling over hand-rolled
+      Compose files.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

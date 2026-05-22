@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/inngest/main/json-schema/inngest-function-schema.json",
+  "title": "InngestFunction",
+  "description": "A deployed Inngest function. Defines one or more triggers (event names, crons) and is implemented in user code via the TypeScript, Python, Go, or Kotlin SDK.",
+  "type": "object",
+  "required": ["id", "slug", "name"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Internal identifier of the function."
+    },
+    "slug": {
+      "type": "string",
+      "description": "Stable slug used to address the function in API calls."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name shown in the dashboard."
+    },
+    "triggers": {
+      "type": "array",
+      "description": "List of triggers that invoke the function.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "event": {
+            "type": "string",
+            "description": "Event name that triggers the function."
+          },
+          "cron": {
+            "type": "string",
+            "description": "Cron expression that schedules the function."
+          },
+          "expression": {
+            "type": "string",
+            "description": "Optional CEL expression filtering the trigger."
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}

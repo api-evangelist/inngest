@@ -1,0 +1,84 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Inngest REST API — Apps
+  description: 'Inngest Apps. Sync an app at a given URL so that the platform discovers Inngest functions registered by SDK serve() handlers. Beta in v2.'
+  tags:
+  - Inngest
+  - Apps
+  - Deployment
+  - Platform
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    INNGEST_SIGNING_KEY: INNGEST_SIGNING_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: inngest-apps
+    baseUri: https://api.inngest.com/v2
+    description: Inngest Apps management surface (v2).
+    resources:
+    - name: apps-syncs
+      path: /apps/{appId}/syncs
+      operations:
+      - name: v2SyncApp
+        method: POST
+        description: Sync an Inngest app at the provided URL.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: appId
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.INNGEST_SIGNING_KEY}}'
+  exposes:
+  - type: rest
+    namespace: inngest-apps-rest
+    port: 8080
+    description: REST adapter for Inngest Apps.
+    resources:
+    - path: /v1/apps/{appid}/syncs
+      name: apps-syncs
+      description: Sync an Inngest app.
+      operations:
+      - method: POST
+        name: v2SyncApp
+        description: Sync an app at the provided URL.
+        call: inngest-apps.v2SyncApp
+        with:
+          appId: rest.appId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: inngest-apps-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Inngest Apps.
+    tools:
+    - name: sync-app
+      description: Sync an Inngest app at the provided URL.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: inngest-apps.v2SyncApp
+      with:
+        appId: tools.appId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

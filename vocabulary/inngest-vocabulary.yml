@@ -1,0 +1,145 @@
+vocabulary: Inngest
+version: '2026-05'
+provider: Inngest
+description: >-
+  Domain vocabulary for the Inngest event-driven durable execution platform.
+  Captures core concepts (events, functions, steps, runs, traces), flow control
+  primitives, agent / AI orchestration terms, and platform-level surfaces.
+modified: '2026-05-22'
+terms:
+  - term: Event
+    definition: >-
+      A JSON payload sent to Inngest via `/e/{eventKey}` (or `inn.gs`). Events
+      are name-addressed (`domain/subject.action`) and trigger functions
+      subscribed to that name.
+  - term: Function
+    definition: >-
+      A unit of durable execution registered with Inngest by an SDK serve()
+      handler. Functions are triggered by events, crons, signals, or manual
+      invocation and may contain one or more steps.
+  - term: Step
+    definition: >-
+      A memoized unit of work inside a function. Steps are addressed by a
+      deterministic ID so that retries and resumes correctly map to prior state.
+      Inngest provides `step.run`, `step.sleep`, `step.sleepUntil`,
+      `step.waitForEvent`, `step.invoke`, `step.fetch`, `step.ai.wrap`, and
+      `step.ai.infer`.
+  - term: Run
+    definition: >-
+      A single durable execution of a function for a given trigger. Runs have a
+      lifecycle (QUEUED -> RUNNING -> COMPLETED | FAILED | CANCELLED | PAUSED)
+      and are inspectable via the v1 and v2 REST APIs.
+  - term: Trace
+    definition: >-
+      The OpenTelemetry-style span tree of a run, captured by the v2
+      `/runs/{runId}/trace` endpoint. Each step operation produces a span with
+      attributes such as model, provider, attempt, and timing.
+  - term: App
+    definition: >-
+      A logical grouping of functions deployed at a serve() endpoint. Apps are
+      synced into Inngest via `/v2/apps/{appId}/syncs`.
+  - term: Environment
+    definition: >-
+      An isolation boundary for events, functions, runs, and keys. Inngest
+      supports PRODUCTION, BRANCH, and CUSTOM environment types and targets
+      branch environments with the `x-inngest-env` header.
+  - term: Event Key
+    definition: >-
+      An environment-scoped key used by SDKs to ingest events on `/e/{eventKey}`.
+  - term: Signing Key
+    definition: >-
+      An environment-scoped bearer token used to authenticate management API
+      calls and SDK serve() handler request signatures.
+  - term: Webhook (Inbound)
+    definition: >-
+      A managed HTTP endpoint provided by Inngest that ingests third-party
+      payloads and rewrites them into Inngest events via a JavaScript transform.
+  - term: Concurrency
+    definition: >-
+      Flow control primitive limiting how many runs of a function may execute
+      simultaneously, scoped by key.
+  - term: Throttling
+    definition: >-
+      Flow control primitive that paces execution of a function to a maximum
+      rate per time window.
+  - term: Batching
+    definition: >-
+      Flow control primitive that groups events into batches before invoking a
+      function, reducing per-event overhead.
+  - term: Debounce
+    definition: >-
+      Flow control primitive that collapses events arriving in quick succession
+      into a single function run.
+  - term: Singleton
+    definition: >-
+      A function configuration that enforces exclusive execution; only one run
+      may be active at a time per singleton key.
+  - term: Priority
+    definition: >-
+      Per-run ordering hint that lets the runner schedule higher-priority work
+      first within a tenant's fair-share queue.
+  - term: Cancellation
+    definition: >-
+      Stopping a queued, running, or paused run via `/v1/runs/{runId}/cancel`
+      or a `cancelOn` declarative trigger inside the function definition.
+  - term: Replay
+    definition: >-
+      Re-running historic runs from the Inngest UI or API, useful for incident
+      recovery and reprocessing.
+  - term: Realtime
+    definition: >-
+      Streaming function progress to clients via `realtime.channel`,
+      `step.realtime.publish`, and the `useRealtime` hook. Provides secure,
+      low-latency, at-most-once delivery.
+  - term: Connect
+    definition: >-
+      A persistent outbound worker connection model that replaces HTTP serve()
+      handlers for higher throughput, lower latency, and elastic horizontal
+      scaling.
+  - term: Signals
+    definition: >-
+      Out-of-band notifications that durable functions can wait for. Distinct
+      from events; addressed by signal id.
+  - term: Durable Endpoints
+    definition: >-
+      HTTP endpoints whose handlers run with full durable execution semantics
+      (retries, checkpointing, observability) without a separate queue.
+  - term: Checkpointing
+    definition: >-
+      Inter-step state persistence that yields near-zero latency between steps;
+      shipped December 2025.
+  - term: Insights
+    definition: >-
+      In-app SQL query interface (ClickHouse-backed) over Events, Runs, Steps,
+      and Trace Spans datasources.
+  - term: AgentKit
+    definition: >-
+      TypeScript framework (`@inngest/agent-kit`) for composing AI agents,
+      networks, tools, and routers on top of Inngest's durable execution.
+  - term: Agent (AgentKit)
+    definition: >-
+      A single AI entity with a system prompt, model, and tools.
+  - term: Network (AgentKit)
+    definition: >-
+      A collection of agents coordinated by a router with shared state.
+  - term: Router (AgentKit)
+    definition: >-
+      A decision-making component that routes the next task to the appropriate
+      agent in a network.
+  - term: Tool (AgentKit)
+    definition: >-
+      A function that an agent can invoke, typically against external systems
+      or APIs; tools may also be exposed via MCP.
+  - term: Dev Server
+    definition: >-
+      Local development server (`inngest dev`) on port 8288 (with port 8289
+      reserved for Connect). Provides a UI, event introspection, and function
+      invocation tooling for local-first development.
+  - term: Self-Hosting
+    definition: >-
+      Run Inngest yourself via the `inngest/inngest` Docker image or the
+      official `inngest-helm` chart, backed by PostgreSQL and Redis with
+      optional KEDA autoscaling.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

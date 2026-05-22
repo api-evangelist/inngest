@@ -4,7 +4,7 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Inngest
 providerId: inngest
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-22'
 tags:
   - AI Agents
   - Background Jobs
@@ -19,76 +19,117 @@ tags:
   - Rate Limiting
   - Quotas
   - Throttling
-description: Machine-readable rate limit definitions for the Inngest API surface. Captures per-tier quotas,
-  burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to be replaced
-  with published provider limits.
+  - Concurrency
+description: >-
+  Rate limit definitions for the Inngest API surface. Inngest's primary
+  consumer-facing limits are execution volume and concurrent steps per plan
+  tier, plus a 512 KB event ingestion payload ceiling and platform-level
+  fair-share scheduling. Function-level concurrency, throttling, batching,
+  debounce, and rate limiting are configured per function via the SDK.
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
   retryAfter: Retry-After
-  policy: RateLimit-Policy
 responseCodes:
+  payloadTooLarge: 413
   throttled: 429
   quotaExceeded: 429
   serviceUnavailable: 503
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
+  - tier: platform
+    name: Event Ingestion Payload Limit
+    scope: request
+    metric: payload_bytes
+    limit: 524288
+    timeFrame: request
     applies:
-      - Inngest REST API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Inngest REST API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Inngest REST API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
+      - Inngest Events API
+  - tier: platform
+    name: Platform Capacity Ceiling
+    scope: platform
+    metric: executions_per_second
     limit: 100000
+    timeFrame: second
+    applies:
+      - Inngest REST API
+  - tier: hobby
+    name: Hobby Monthly Executions
+    scope: account
+    metric: executions_per_month
+    limit: 50000
     timeFrame: month
+    applies:
+      - Inngest REST API
+  - tier: hobby
+    name: Hobby Concurrent Steps
+    scope: account
+    metric: concurrent_steps
+    limit: 5
+    timeFrame: instant
+    applies:
+      - Inngest REST API
+  - tier: pro
+    name: Pro Included Executions
+    scope: account
+    metric: executions_per_month
+    limit: 1000000
+    timeFrame: month
+    applies:
+      - Inngest REST API
+  - tier: pro
+    name: Pro Add-On Execution Ceiling
+    scope: account
+    metric: executions_per_month
+    limit: 20000000
+    timeFrame: month
+    applies:
+      - Inngest REST API
+  - tier: pro
+    name: Pro Concurrent Steps Baseline
+    scope: account
+    metric: concurrent_steps
+    limit: 100
+    timeFrame: instant
     applies:
       - Inngest REST API
   - tier: enterprise
-    name: Enterprise Negotiated Limit
+    name: Enterprise Concurrent Steps Ceiling
     scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
+    metric: concurrent_steps
+    limit: 50000
+    timeFrame: instant
     applies:
       - Inngest REST API
+functionLevelControls:
+  - name: concurrency
+    description: Limit how many runs of a function execute simultaneously, keyed by event data.
+  - name: throttle
+    description: Pace a function to a maximum rate per window.
+  - name: rateLimit
+    description: Drop or queue events past a per-function rate limit.
+  - name: batching
+    description: Aggregate events into batches before invoking the function.
+  - name: debounce
+    description: Collapse rapid event bursts into a single run.
+  - name: priority
+    description: Schedule higher-priority runs ahead of lower-priority within fair-share queues.
+  - name: singleton
+    description: Enforce exclusive execution of a function keyed by event data.
 policies:
+  - name: Multitenant Fair Queue
+    description: >-
+      The Inngest runner uses a multitenant-aware, multitier queue designed for
+      fairness so noisy neighbors cannot starve other tenants.
   - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
+    description: >-
+      Clients should implement exponential backoff with jitter, honoring the
+      Retry-After header when present.
   - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
+    description: >-
+      Monthly execution quotas reset at the start of each calendar month
+      in UTC.
   - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+    description: >-
+      Even on uncapped Enterprise contracts, sustained usage that materially
+      impacts shared infrastructure may be subject to fair-use throttling.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

@@ -4,7 +4,7 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Inngest
 providerId: inngest
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-22'
 tags:
   - AI Agents
   - Background Jobs
@@ -16,137 +16,220 @@ tags:
   - Serverless
   - Step Functions
   - Workflows
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
+description: >-
+  Machine-readable plans and pricing for Inngest, aligned to the platform's
+  published Hobby, Pro, and Enterprise tiers. Execution-priced with the first
+  50,000 executions free every month across all plans.
 plans:
-  - id: inngest-free
-    name: Free
+  - id: inngest-hobby
+    name: Hobby
     type: freemium
-    description: Free entry tier for the Inngest API surface. Intended for evaluation, prototyping, and
-      low-volume integrations. Real limits and pricing must be reconciled with the provider's published
-      plan documentation.
+    description: >-
+      Free tier intended for prototyping and low-volume integrations.
+      Includes 50,000 executions per month, 5 concurrent steps, 3 users,
+      24-hour trace retention, and unlimited staging environments.
     entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
+      - label: Included Executions
+        description: Monthly included executions across all functions
+        name: executions
         type: quota
-        metric: requests
-        limit: 1000
+        metric: executions
+        limit: 50000
         timeFrame: month
         geo: global
         domains:
           - https://api.inngest.com
+          - https://inn.gs
         unit: 1
         price: '0.00'
         userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
+      - label: Concurrent Steps
+        description: Maximum concurrent step executions on the Hobby tier
+        name: concurrent_steps
+        type: quota
+        metric: concurrent_steps
+        limit: 5
+        timeFrame: instant
         geo: global
-        domains:
-          - https://api.inngest.com
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+      - label: Trace Retention
+        description: Retention window for run traces
+        name: trace_retention_hours
+        type: quota
+        metric: hours
+        limit: 24
+        timeFrame: rolling
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+      - label: Seats
+        description: Included team seats
+        name: seats
+        type: quota
+        metric: users
+        limit: 3
+        timeFrame: month
+        geo: global
         unit: 1
         price: '0.00'
         userMultiplied: false
     elements:
-      - name: Public Documentation
+      - name: Inngest Cloud
+      - name: Dev Server
+      - name: Unlimited Staging / Branch Environments
+      - name: Basic Observability And Alerting
       - name: Community Support
-      - name: Sandbox Access
       - name: Inngest REST API
   - id: inngest-pro
-    name: Professional
+    name: Pro
     type: paid
-    description: Production tier for Inngest. Provides higher quotas, priority support, and access to
-      the broader API portfolio. Pricing placeholder; align with the provider's pricing page.
+    description: >-
+      Production tier for teams. Starts at $75/month, includes 1,000,000
+      executions (scalable up to ~20M via add-ons), 100+ concurrent steps,
+      15+ users, 7-day trace retention, and granular metrics.
     entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
+      - label: Base Subscription
+        description: Monthly Pro subscription
+        name: subscription
+        type: license
+        metric: month
+        limit: 1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '75.00'
+        userMultiplied: false
+      - label: Included Executions
+        description: Monthly included executions on Pro
+        name: executions
         type: quota
-        metric: requests
-        limit: 100000
+        metric: executions
+        limit: 1000000
         timeFrame: month
         geo: global
         domains:
           - https://api.inngest.com
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://api.inngest.com
+          - https://inn.gs
         unit: 1
         price: '0.00'
         userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
+      - label: Execution Overage (1M–5M)
+        description: Per-execution price after the included pool, in the 1M–5M band
+        name: execution_overage_tier1
         type: metered
-        metric: requests
-        limit: -1
+        metric: executions
+        limit: 5000000
         timeFrame: month
         geo: global
-        domains:
-          - https://api.inngest.com
-        unit: 1000
+        unit: 1
+        price: '0.000050'
+        userMultiplied: false
+      - label: Max Add-On Executions
+        description: Maximum executions reachable via Pro add-ons
+        name: executions_addon_ceiling
+        type: quota
+        metric: executions
+        limit: 20000000
+        timeFrame: month
+        geo: global
+        unit: 1
         price: TBD
         userMultiplied: false
+      - label: Concurrent Steps
+        description: Concurrent step ceiling on Pro
+        name: concurrent_steps
+        type: quota
+        metric: concurrent_steps
+        limit: 100
+        timeFrame: instant
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+      - label: Trace Retention
+        description: Retention window for run traces on Pro
+        name: trace_retention_days
+        type: quota
+        metric: days
+        limit: 7
+        timeFrame: rolling
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+      - label: Seats
+        description: Included team seats on Pro
+        name: seats
+        type: quota
+        metric: users
+        limit: 15
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
     elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
+      - name: All Hobby Features
+      - name: Granular Metrics
+      - name: Higher Concurrency And Throughput
       - name: Webhook Subscriptions
       - name: Inngest REST API
   - id: inngest-enterprise
     name: Enterprise
     type: enterprise
-    description: Custom-negotiated tier for Inngest. Includes dedicated capacity, contractual SLAs, security
-      review, data residency options, and named technical account management.
+    description: >-
+      Custom-negotiated tier for large-scale and regulated workloads. Custom
+      execution volume, concurrent step ceilings from 500 up to 50,000,
+      custom seats, 90-day trace retention, SAML/RBAC, audit trails, and
+      dedicated support.
     entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
+      - label: Executions
+        description: Negotiated monthly execution volume; -1 indicates custom-negotiated
+        name: executions
         type: quota
-        metric: requests
+        metric: executions
         limit: -1
         timeFrame: month
         geo: configurable
         domains:
           - https://api.inngest.com
+          - https://inn.gs
         unit: 1
         price: custom
         userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
+      - label: Concurrent Steps Range
+        description: Negotiated concurrent step ceiling (500 – 50,000)
+        name: concurrent_steps_ceiling
+        type: quota
+        metric: concurrent_steps
+        limit: 50000
+        timeFrame: instant
         geo: configurable
-        domains:
-          - https://api.inngest.com
+        unit: 1
+        price: custom
+        userMultiplied: false
+      - label: Trace Retention
+        description: Retention window for run traces on Enterprise
+        name: trace_retention_days
+        type: quota
+        metric: days
+        limit: 90
+        timeFrame: rolling
+        geo: configurable
         unit: 1
         price: custom
         userMultiplied: false
     elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
+      - name: All Pro Features
+      - name: SAML SSO And RBAC
+      - name: Audit Trails
+      - name: Exportable Observability
+      - name: Dedicated Support
       - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
+      - name: Security And Compliance Review
       - name: Inngest REST API
 maintainers:
   - FN: Kin Lane

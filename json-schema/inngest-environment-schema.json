@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/inngest/main/json-schema/inngest-environment-schema.json",
+  "title": "InngestEnvironment",
+  "description": "An Inngest environment. Production, branch, or custom environments isolate functions, events, runs, and keys.",
+  "type": "object",
+  "required": ["id", "name", "type"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["PRODUCTION", "BRANCH", "CUSTOM"]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

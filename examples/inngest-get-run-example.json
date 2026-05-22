@@ -1,0 +1,25 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://api.inngest.com/v2/runs/01HZX9XJK1G7Q9YTV6N5Q1H4ME",
+    "headers": {
+      "Authorization": "Bearer signkey-prod-***"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "run_id": "01HZX9XJK1G7Q9YTV6N5Q1H4ME",
+      "function_id": "fn_send_welcome_email",
+      "app_id": "app_main",
+      "status": "COMPLETED",
+      "event_id": "evt_01HZX9XJK1G7Q9YTV6N5Q1H4ME",
+      "started_at": "2026-01-01T00:00:00Z",
+      "ended_at": "2026-01-01T00:00:02Z",
+      "output": {
+        "delivered": true,
+        "provider": "resend"
+      }
+    }
+  }
+}

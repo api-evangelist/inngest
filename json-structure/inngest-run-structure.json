@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-structure.org/schemas/1.0/json-structure.json",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/inngest/main/json-structure/inngest-run-structure.json",
+  "title": "Inngest Run Structure",
+  "description": "Canonical structure of an Inngest function run. Mirrors the v2 run summary plus the v1 listing fields.",
+  "type": "object",
+  "fields": [
+    {"name": "run_id", "type": "string", "required": true},
+    {"name": "function_id", "type": "string", "required": true},
+    {"name": "app_id", "type": "string", "required": false},
+    {"name": "status", "type": "string", "required": true, "enum": ["QUEUED", "RUNNING", "COMPLETED", "FAILED", "CANCELLED", "PAUSED"]},
+    {"name": "event_id", "type": "string", "required": false},
+    {"name": "started_at", "type": "string", "format": "date-time", "required": false},
+    {"name": "ended_at", "type": "string", "format": "date-time", "required": false},
+    {"name": "output", "type": "object", "required": false}
+  ]
+}

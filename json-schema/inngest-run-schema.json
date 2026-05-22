@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/inngest/main/json-schema/inngest-run-schema.json",
+  "title": "InngestRun",
+  "description": "A function run on the Inngest platform. Represents one durable execution of a function for a given trigger event, including step-level state and outputs.",
+  "type": "object",
+  "required": ["run_id", "function_id", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "description": "Unique identifier for the function run."
+    },
+    "function_id": {
+      "type": "string",
+      "description": "Identifier of the deployed function being executed."
+    },
+    "app_id": {
+      "type": "string",
+      "description": "Identifier of the Inngest app that owns the function."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["QUEUED", "RUNNING", "COMPLETED", "FAILED", "CANCELLED", "PAUSED"],
+      "description": "Lifecycle status of the run."
+    },
+    "event_id": {
+      "type": "string",
+      "description": "Identifier of the event that triggered the run."
+    },
+    "output": {
+      "type": "object",
+      "description": "Final output emitted by the function on completion.",
+      "additionalProperties": true
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ended_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

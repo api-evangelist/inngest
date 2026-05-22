@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/inngest/main/json-schema/inngest-trace-span-schema.json",
+  "title": "InngestTraceSpan",
+  "description": "A single span in the trace tree of an Inngest function run. Each span corresponds to a step operation (run, sleep, waitForEvent, invoke, ai, fetch) and may have child spans for nested steps and retries.",
+  "type": "object",
+  "required": ["id", "name", "op", "status"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "op": {
+      "type": "string",
+      "enum": ["RUN", "SLEEP", "WAITFOREVENT", "INVOKE", "AI", "AICALL", "FETCH", "RUN_STEP"],
+      "description": "Step operation type for this span."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["RUNNING", "COMPLETED", "FAILED", "CANCELLED"]
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ended_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "attributes": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "children": {
+      "type": "array",
+      "items": {
+        "$ref": "#"
+      }
+    }
+  }
+}

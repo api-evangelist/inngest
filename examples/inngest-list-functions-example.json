@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://api.inngest.com/v1/functions",
+    "headers": {
+      "Authorization": "Bearer signkey-prod-***"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "fn_send_welcome_email",
+          "slug": "send-welcome-email",
+          "name": "Send Welcome Email",
+          "triggers": [
+            {"event": "app/user.signed-up"}
+          ]
+        },
+        {
+          "id": "fn_nightly_report",
+          "slug": "nightly-report",
+          "name": "Nightly Report",
+          "triggers": [
+            {"cron": "0 6 * * *"}
+          ]
+        },
+        {
+          "id": "fn_research_agent",
+          "slug": "research-agent",
+          "name": "Research Agent Workflow",
+          "triggers": [
+            {"event": "agent/research.requested"}
+          ]
+        }
+      ]
+    }
+  }
+}

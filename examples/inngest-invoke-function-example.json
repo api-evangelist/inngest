@@ -1,0 +1,24 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.inngest.com/v2/apps/app_main/functions/fn_research_agent/invoke",
+    "headers": {
+      "Authorization": "Bearer signkey-prod-***",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "data": {
+        "topic": "durable execution",
+        "depth": 3
+      },
+      "async": true
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "run_id": "01HZXAY3QKQTNS4Q3K8R2HZE9C",
+      "status": "QUEUED"
+    }
+  }
+}

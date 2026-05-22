@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/inngest/main/json-schema/inngest-event-schema.json",
+  "title": "InngestEvent",
+  "description": "An event sent to the Inngest platform via the /e/{eventKey} endpoint. Events trigger Inngest functions via name-based subscriptions and are de-duplicated using the optional id field.",
+  "type": "object",
+  "required": ["name", "data"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Optional deduplication ID. If two events share the same id within the deduplication window, only the first triggers function runs."
+    },
+    "name": {
+      "type": "string",
+      "description": "Event name. Convention is `domain/subject.action` (e.g. `app/user.created`).",
+      "pattern": "^[a-zA-Z0-9._/:-]+$"
+    },
+    "data": {
+      "type": "object",
+      "description": "Arbitrary JSON payload carried by the event.",
+      "additionalProperties": true
+    },
+    "user": {
+      "type": "object",
+      "description": "Optional user context attached to the event (e.g. external_id, email).",
+      "additionalProperties": true
+    },
+    "ts": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Unix timestamp in milliseconds at which the event occurred."
+    },
+    "v": {
+      "type": "string",
+      "description": "Optional event schema version."
+    }
+  }
+}

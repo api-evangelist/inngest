@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-structure.org/schemas/1.0/json-structure.json",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/inngest/main/json-structure/inngest-trace-structure.json",
+  "title": "Inngest Trace Span Structure",
+  "description": "Canonical structure of a single span within an Inngest run trace tree.",
+  "type": "object",
+  "fields": [
+    {"name": "id", "type": "string", "required": true},
+    {"name": "name", "type": "string", "required": true},
+    {"name": "op", "type": "string", "required": true, "enum": ["RUN", "SLEEP", "WAITFOREVENT", "INVOKE", "AI", "AICALL", "FETCH", "RUN_STEP"]},
+    {"name": "status", "type": "string", "required": true, "enum": ["RUNNING", "COMPLETED", "FAILED", "CANCELLED"]},
+    {"name": "attempt", "type": "integer", "required": false},
+    {"name": "started_at", "type": "string", "format": "date-time", "required": false},
+    {"name": "ended_at", "type": "string", "format": "date-time", "required": false},
+    {"name": "attributes", "type": "object", "required": false},
+    {"name": "children", "type": "array", "items": {"type": "object", "description": "Nested trace spans"}, "required": false}
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "inngest": "https://www.inngest.com/vocab#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "Event": "inngest:Event",
+    "Function": "inngest:Function",
+    "Run": "inngest:Run",
+    "Job": "inngest:Job",
+    "TraceSpan": "inngest:TraceSpan",
+    "Environment": "inngest:Environment",
+    "App": "inngest:App",
+    "Webhook": "inngest:Webhook",
+    "EventKey": "inngest:EventKey",
+    "SigningKey": "inngest:SigningKey",
+    "Account": "inngest:Account",
+    "Signal": "inngest:Signal",
+    "RealtimeChannel": "inngest:RealtimeChannel",
+
+    "id": "@id",
+    "type": "@type",
+    "name": "schema:name",
+    "description": "schema:description",
+
+    "eventName": {"@id": "inngest:eventName", "@type": "xsd:string"},
+    "data": {"@id": "inngest:data"},
+    "user": {"@id": "inngest:user"},
+    "timestamp": {"@id": "inngest:timestamp", "@type": "xsd:dateTime"},
+    "version": {"@id": "inngest:version"},
+
+    "status": {"@id": "inngest:status"},
+    "startedAt": {"@id": "inngest:startedAt", "@type": "xsd:dateTime"},
+    "endedAt": {"@id": "inngest:endedAt", "@type": "xsd:dateTime"},
+    "attempt": {"@id": "inngest:attempt", "@type": "xsd:integer"},
+    "output": {"@id": "inngest:output"},
+
+    "trigger": {"@id": "inngest:trigger"},
+    "cron": {"@id": "inngest:cron"},
+    "step": {"@id": "inngest:step"},
+    "stepOp": {"@id": "inngest:stepOp"},
+
+    "appId": {"@id": "inngest:appId"},
+    "functionId": {"@id": "inngest:functionId"},
+    "runId": {"@id": "inngest:runId"},
+    "eventId": {"@id": "inngest:eventId"},
+
+    "branch": {"@id": "inngest:branch"},
+    "environmentType": {"@id": "inngest:environmentType"},
+
+    "concurrency": {"@id": "inngest:concurrency", "@type": "xsd:integer"},
+    "throttle": {"@id": "inngest:throttle"},
+    "retries": {"@id": "inngest:retries", "@type": "xsd:integer"},
+    "rateLimit": {"@id": "inngest:rateLimit"},
+    "batching": {"@id": "inngest:batching"},
+    "debounce": {"@id": "inngest:debounce"},
+    "priority": {"@id": "inngest:priority"},
+    "singleton": {"@id": "inngest:singleton"},
+
+    "agent": {"@id": "inngest:agent"},
+    "agentNetwork": {"@id": "inngest:agentNetwork"},
+    "router": {"@id": "inngest:router"},
+    "tool": {"@id": "inngest:tool"}
+  }
+}

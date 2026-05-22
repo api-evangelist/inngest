@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/inngest/main/json-schema/inngest-webhook-schema.json",
+  "title": "InngestWebhook",
+  "description": "An inbound webhook configured in Inngest. Transforms a third-party HTTP payload into an Inngest event via a configurable JavaScript transform.",
+  "type": "object",
+  "required": ["id", "name"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Public webhook URL provided by Inngest."
+    },
+    "transform": {
+      "type": "string",
+      "description": "JavaScript transform that maps the inbound payload to an Inngest event."
+    }
+  }
+}

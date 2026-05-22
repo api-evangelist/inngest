@@ -2,45 +2,74 @@ aid: inngest
 name: Inngest
 segments:
 - Workflows
-description: Inngest is a developer workflow platform for building event-driven, background job, and step-function workflows
-  with retries and observability.
+description: >-
+  Inngest is an event-driven durable execution platform for background jobs,
+  step functions, scheduled workflows, and AI agent orchestration. It exposes
+  a v1 event ingestion and run inspection API, a v2 management API
+  (accounts, environments, apps, webhooks, keys, function invocation, runs,
+  traces), official SDKs for TypeScript, Python, Go, and Kotlin, AgentKit
+  for multi-agent systems, Connect for persistent worker connections,
+  Realtime streaming, Signals, Durable Endpoints, Insights (SQL over events
+  and runs), and a heavily-marketed local Dev Server CLI.
 type: Index
 position: Consumer
 access: 3rd-Party
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
 - AI Agents
+- AgentKit
 - Background Jobs
+- Connect
 - Cron Jobs
+- Dev Server
+- Durable Endpoints
 - Durable Execution
 - Event-Driven
+- Insights
 - Orchestration
 - Queues
+- Realtime
+- Self-Hosting
 - Serverless
+- Signals
 - Step Functions
+- Webhooks
 - Workflows
 created: '2026-03-03'
-modified: '2026-05-19'
+modified: '2026-05-22'
 url: https://raw.githubusercontent.com/api-evangelist/inngest/refs/heads/main/apis.yml
 specificationVersion: '0.19'
 apis:
 - aid: inngest:rest-api
   name: Inngest REST API
-  description: The Inngest REST API provides programmatic access to manage and interact with Inngest resources including events,
-    functions, and runs. It enables developers to send events, fetch run status and output, and manage webhooks.
+  description: >-
+    The Inngest REST API spans two surfaces. v1 covers event ingestion
+    (/e/{eventKey} and inn.gs), event listing, and run inspection (status,
+    jobs, cancel). v2 covers account, environments, apps (sync), function
+    invocation, webhooks, keys (event + signing), canonical run summaries,
+    and OpenTelemetry-style trace trees. Authenticated calls use a
+    signing-key bearer token.
   humanURL: https://www.inngest.com/docs/reference/rest-api
   baseURL: https://api.inngest.com
   tags:
+  - Account
+  - Apps
+  - Environments
   - Events
   - Functions
+  - Keys
   - REST API
   - Runs
+  - Trace
+  - Webhooks
   - Workflows
   properties:
   - type: Documentation
     url: https://www.inngest.com/docs
+  - type: APIReference
+    url: https://api-docs.inngest.com
   - type: OpenAPI
-    url: https://api-docs.inngest.com/docs/inngest-api
+    url: https://api-docs.inngest.com/api-specs/v2.json
   - type: OpenAPI
     url: openapi/inngest-openapi.yml
   - type: Rules
@@ -53,6 +82,60 @@ apis:
     url: capabilities/inngest-functions.yaml
   - type: NaftikoCapability
     url: capabilities/inngest-runs.yaml
+  - type: NaftikoCapability
+    url: capabilities/inngest-environments.yaml
+  - type: NaftikoCapability
+    url: capabilities/inngest-webhooks.yaml
+  - type: NaftikoCapability
+    url: capabilities/inngest-keys.yaml
+  - type: NaftikoCapability
+    url: capabilities/inngest-apps.yaml
+  - type: NaftikoCapability
+    url: capabilities/inngest-account.yaml
+  - type: NaftikoCapability
+    url: capabilities/durable-workflow.yaml
+  - type: JSONSchema
+    url: json-schema/inngest-event-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-run-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-function-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-trace-span-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-environment-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-webhook-schema.json
+  - type: JSONStructure
+    url: json-structure/inngest-event-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-run-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-trace-structure.json
+  - type: JSONLD
+    url: json-ld/inngest-context.jsonld
+  - type: Example
+    url: examples/inngest-send-event-example.json
+  - type: Example
+    url: examples/inngest-get-run-example.json
+  - type: Example
+    url: examples/inngest-get-trace-example.json
+  - type: Example
+    url: examples/inngest-list-functions-example.json
+  - type: Example
+    url: examples/inngest-invoke-function-example.json
+  - type: Example
+    url: examples/inngest-list-environments-example.json
+  - type: Example
+    url: examples/inngest-create-webhook-example.json
+  - type: Vocabulary
+    url: vocabulary/inngest-vocabulary.yml
+  - type: Plans
+    url: plans/inngest-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/inngest-rate-limits.yml
+  - type: FinOps
+    url: finops/inngest-finops.yml
 common:
 - type: LinkedIn
   url: https://www.linkedin.com/company/inngest-inc
@@ -60,6 +143,8 @@ common:
   url: https://www.inngest.com
 - type: Documentation
   url: https://www.inngest.com/docs
+- type: APIReference
+  url: https://api-docs.inngest.com
 - type: GettingStarted
   url: https://www.inngest.com/docs/getting-started/nextjs-quick-start
 - type: Blog
@@ -94,6 +179,8 @@ common:
   url: https://www.inngest.com/contact
 - type: GitHubOrg
   url: https://github.com/inngest
+- type: GitHubRepo
+  url: https://github.com/inngest/inngest
 - type: Discord
   url: https://www.inngest.com/discord
 - type: X
@@ -102,14 +189,58 @@ common:
   url: https://bsky.app/profile/inngest.com
 - type: SelfHosting
   url: https://www.inngest.com/docs/self-hosting
+- type: DockerImage
+  url: https://hub.docker.com/r/inngest/inngest
+- type: HelmChart
+  url: https://github.com/inngest/inngest-helm
+- type: CLI
+  url: https://cli.inngest.com/install.sh
+- type: DevServer
+  url: https://www.inngest.com/docs/dev-server
 - type: SDKs
   url: https://www.inngest.com/docs/sdk/overview
 - type: TypeScriptSDK
-  url: https://www.inngest.com/docs/reference/typescript
+  url: https://github.com/inngest/inngest-js
 - type: PythonSDK
   url: https://github.com/inngest/inngest-py
 - type: GoSDK
   url: https://github.com/inngest/inngestgo
+- type: KotlinSDK
+  url: https://github.com/inngest/inngest-kt
+- type: RustSDK
+  url: https://github.com/inngest/inngest-rs
+- type: BrowserSDK
+  url: https://github.com/inngest/inngest-browser
+- type: DenoSDK
+  url: https://github.com/inngest/inngest-deno
+- type: AgentKit
+  url: https://agentkit.inngest.com
+- type: AgentKitGitHubRepo
+  url: https://github.com/inngest/agent-kit
+- type: WorkflowKit
+  url: https://github.com/inngest/workflow-kit
+- type: EventSchemas
+  url: https://github.com/inngest/event-schemas
+- type: GitHubAction
+  url: https://github.com/inngest/setup-inngest
+- type: GitHubAction
+  url: https://github.com/inngest/action-deploy-functions
+- type: GitHubAction
+  url: https://github.com/inngest/action-test-functions
+- type: Sample
+  url: https://github.com/inngest/inngest-demo
+- type: Sample
+  url: https://github.com/inngest/inngest-demo-app
+- type: Sample
+  url: https://github.com/inngest/multi-tenant-rag-example
+- type: Sample
+  url: https://github.com/inngest/Context-Engineering-with-Inngest
+- type: NetlifyPlugin
+  url: https://github.com/inngest/netlify-plugin-inngest
+- type: AsyncAPIGenerator
+  url: https://github.com/inngest/inngest-asyncapi
+- type: HomebrewTap
+  url: https://github.com/inngest/homebrew-tap
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

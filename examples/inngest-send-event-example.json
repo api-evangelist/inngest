@@ -1,0 +1,30 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://inn.gs/e/{eventKey}",
+    "headers": {
+      "Content-Type": "application/json",
+      "x-inngest-env": "production"
+    },
+    "body": {
+      "name": "app/user.signed-up",
+      "data": {
+        "user_id": "u_123",
+        "plan": "pro",
+        "email": "user@example.com"
+      },
+      "user": {
+        "external_id": "u_123",
+        "email": "user@example.com"
+      },
+      "ts": 1735689600000
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "ids": ["01HZX9XJK1G7Q9YTV6N5Q1H4ME"],
+      "status": 200
+    }
+  }
+}

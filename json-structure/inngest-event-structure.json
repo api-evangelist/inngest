@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-structure.org/schemas/1.0/json-structure.json",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/inngest/main/json-structure/inngest-event-structure.json",
+  "title": "Inngest Event Structure",
+  "description": "Canonical structure of an Inngest event payload. Captures field semantics, formats, and downstream usage in functions and runs.",
+  "type": "object",
+  "fields": [
+    {"name": "id", "type": "string", "required": false, "description": "Optional deduplication ID."},
+    {"name": "name", "type": "string", "required": true, "description": "Event name in `domain/subject.action` format."},
+    {"name": "data", "type": "object", "required": true, "description": "Arbitrary JSON payload."},
+    {"name": "user", "type": "object", "required": false, "description": "Optional user context."},
+    {"name": "ts", "type": "integer", "format": "int64", "required": false, "description": "Unix timestamp in milliseconds."},
+    {"name": "v", "type": "string", "required": false, "description": "Event schema version."}
+  ]
+}

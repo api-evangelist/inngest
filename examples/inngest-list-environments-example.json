@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://api.inngest.com/v2/envs",
+    "headers": {
+      "Authorization": "Bearer signkey-prod-***"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": [
+        {"id": "env_prod", "name": "production", "type": "PRODUCTION", "createdAt": "2025-01-15T12:00:00Z"},
+        {"id": "env_staging", "name": "staging", "type": "CUSTOM", "createdAt": "2025-02-01T08:00:00Z"},
+        {"id": "env_branch_feat_x", "name": "feat-x", "type": "BRANCH", "createdAt": "2026-04-10T17:32:11Z"}
+      ]
+    }
+  }
+}
