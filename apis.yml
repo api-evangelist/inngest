@@ -241,6 +241,8 @@ common:
   url: https://github.com/inngest/inngest-asyncapi
 - type: HomebrewTap
   url: https://github.com/inngest/homebrew-tap
+- type: LLMsTxt
+  url: https://api-docs.inngest.com/llms.txt
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
