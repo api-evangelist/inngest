@@ -1,0 +1,530 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Inngest REST API",
+    "version": "2026-05"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send Events To Inngest",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inngest.com/e/:eventKey",
+            "headers": [
+              {
+                "name": "x-inngest-env",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "eventKey",
+                "value": "",
+                "type": "path",
+                "description": "Your environment-specific Inngest event key."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends one or more events to Inngest using an environment-scoped event key. The request body may be either a single event object or an array of event objects, up to a 512 KB total payload. Aliased at https://inn.gs/e/{eventKey}."
+        },
+        {
+          "info": {
+            "name": "List Recent Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v1/events",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter events by event name."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns recent events received by Inngest in the current environment, optionally filtered by event name."
+        },
+        {
+          "info": {
+            "name": "Get An Event By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v1/events/:eventId",
+            "params": [
+              {
+                "name": "eventId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a single event by its ID, including the payload and ingestion metadata."
+        },
+        {
+          "info": {
+            "name": "List Runs Triggered By An Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v1/events/:eventId/runs",
+            "params": [
+              {
+                "name": "eventId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists the function runs that were triggered by a single ingested event."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Runs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Function Run Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v1/runs/:runId",
+            "params": [
+              {
+                "name": "runId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the canonical status, output, and step history for a function run."
+        },
+        {
+          "info": {
+            "name": "List The Jobs (Steps) For A Run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v1/runs/:runId/jobs",
+            "params": [
+              {
+                "name": "runId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the step-level job records for a function run, including timing, attempts, and outputs."
+        },
+        {
+          "info": {
+            "name": "Cancel A Function Run",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inngest.com/v1/runs/:runId/cancel",
+            "params": [
+              {
+                "name": "runId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancels a function run that is queued, running, or paused."
+        },
+        {
+          "info": {
+            "name": "Get Function Run (v2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v2/runs/:runId",
+            "params": [
+              {
+                "name": "runId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Fetches the canonical run summary. Beta."
+        },
+        {
+          "info": {
+            "name": "Get Function Trace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v2/runs/:runId/trace",
+            "params": [
+              {
+                "name": "runId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Fetches the trace tree for a single function run. Beta."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Functions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Functions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v1/functions",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists all functions deployed to the current Inngest environment."
+        },
+        {
+          "info": {
+            "name": "Invoke Function",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inngest.com/v2/apps/:appId/functions/:functionId/invoke",
+            "params": [
+              {
+                "name": "appId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "functionId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Invokes a deployed Inngest function asynchronously or synchronously."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v2/account",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the account for the authenticated user."
+        },
+        {
+          "info": {
+            "name": "List Partner Accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v2/partner/accounts",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists sub-accounts. Requires partner access."
+        },
+        {
+          "info": {
+            "name": "Create Partner Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inngest.com/v2/partner/accounts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a sub-account. Requires partner access."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Environments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Environments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v2/envs",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List custom and branch environments for the authenticated account."
+        },
+        {
+          "info": {
+            "name": "Create Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inngest.com/v2/envs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new custom or branch environment under the account."
+        },
+        {
+          "info": {
+            "name": "Update Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.inngest.com/v2/envs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Partially updates an environment's mutable fields."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Apps",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Sync App",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inngest.com/v2/apps/:appId/syncs",
+            "params": [
+              {
+                "name": "appId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sync an app at the provided URL. Beta."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v2/env/webhooks",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists all inbound webhooks configured in the current environment."
+        },
+        {
+          "info": {
+            "name": "Create Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inngest.com/v2/env/webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new webhook for receiving events."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Keys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Event Keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v2/keys/events",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists event keys (used for /e/{eventKey} ingestion) for the account."
+        },
+        {
+          "info": {
+            "name": "List Signing Keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v2/keys/signing",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists signing keys (used to authenticate management API calls) for the account."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
