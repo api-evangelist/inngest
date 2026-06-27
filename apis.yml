@@ -91,19 +91,19 @@ apis:
         url: json-structure/inngest-trace-structure.json
       - type: JSONLD
         url: json-ld/inngest-context.jsonld
-      - type: Example
+      - type: Examples
         url: examples/inngest-send-event-example.json
-      - type: Example
+      - type: Examples
         url: examples/inngest-get-run-example.json
-      - type: Example
+      - type: Examples
         url: examples/inngest-get-trace-example.json
-      - type: Example
+      - type: Examples
         url: examples/inngest-list-functions-example.json
-      - type: Example
+      - type: Examples
         url: examples/inngest-invoke-function-example.json
-      - type: Example
+      - type: Examples
         url: examples/inngest-list-environments-example.json
-      - type: Example
+      - type: Examples
         url: examples/inngest-create-webhook-example.json
       - type: Vocabulary
         url: vocabulary/inngest-vocabulary.yml
@@ -132,7 +132,7 @@ common:
     url: https://www.inngest.com/pricing
   - type: About
     url: https://www.inngest.com/about
-  - type: SignUp
+  - type: Signup
     url: https://app.inngest.com/sign-up
   - type: Login
     url: https://app.inngest.com
@@ -218,7 +218,7 @@ common:
     url: https://github.com/inngest/inngest-asyncapi
   - type: HomebrewTap
     url: https://github.com/inngest/homebrew-tap
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://api-docs.inngest.com/llms.txt
 maintainers:
   - FN: Kin Lane
