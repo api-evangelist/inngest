@@ -114,6 +114,14 @@ apis:
       - type: FinOps
         url: finops/inngest-finops.yml
 common:
+  - type: TrustCenter
+    url: security/inngest-trust-center.yml
+  - type: VulnerabilityDisclosure
+    url: security/inngest-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/inngest-domain-security.yml
+  - type: Authentication
+    url: authentication/inngest-authentication.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/inngest-inc
   - type: Portal
