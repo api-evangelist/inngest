@@ -114,6 +114,8 @@ apis:
       - type: FinOps
         url: finops/inngest-finops.yml
 common:
+  - type: AgenticAccess
+    url: agentic-access/inngest-agentic-access.yml
   - type: TrustCenter
     url: security/inngest-trust-center.yml
   - type: VulnerabilityDisclosure
