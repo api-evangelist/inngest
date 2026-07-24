@@ -1,0 +1,109 @@
+openapi: 3.0.3
+info:
+  title: Inngest REST Account API
+  description: 'The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest''s event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.'
+  version: 2026-05
+  contact:
+    name: Inngest
+    url: https://www.inngest.com
+  license:
+    name: Inngest Terms of Service
+    url: https://www.inngest.com/terms
+servers:
+- url: https://api.inngest.com
+  description: Production REST API (root, v1)
+- url: https://api.inngest.com/v2
+  description: Production REST API (v2 management surface)
+- url: https://inn.gs
+  description: Event ingestion endpoint (alias of /e/{eventKey})
+- url: http://localhost:8288
+  description: Local Inngest Dev Server (root, v1)
+- url: http://localhost:8288/api/v2
+  description: Local Inngest Dev Server (v2 management surface)
+tags:
+- name: Account
+  description: Account-level details for the authenticated user.
+paths:
+  /v2/account:
+    get:
+      tags:
+      - Account
+      summary: Get Account
+      description: Returns the account for the authenticated user.
+      operationId: v2FetchAccount
+      responses:
+        '200':
+          description: Account details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V2Account'
+      security:
+      - bearerAuth: []
+  /v2/partner/accounts:
+    get:
+      tags:
+      - Account
+      summary: List Partner Accounts
+      description: Lists sub-accounts. Requires partner access.
+      operationId: v2FetchPartnerAccounts
+      responses:
+        '200':
+          description: Partner sub-accounts.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/V2Account'
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - Account
+      summary: Create Partner Account
+      description: Creates a sub-account. Requires partner access.
+      operationId: v2CreatePartnerAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+      responses:
+        '201':
+          description: Partner account created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V2Account'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    V2Account:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: signing-key
