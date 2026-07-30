@@ -9,9 +9,22 @@ description: >-
   Kotlin, AgentKit for multi-agent systems, Connect for persistent worker connections, Realtime streaming, Signals,
   Durable Endpoints, Insights (SQL over events and runs), and a heavily-marketed local Dev Server CLI.
 type: Index
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/inngest.png
 tags:
   - AI Agents
   - AgentKit
@@ -37,83 +50,489 @@ modified: '2026-05-22'
 url: https://raw.githubusercontent.com/api-evangelist/inngest/refs/heads/main/apis.yml
 specificationVersion: '0.19'
 apis:
-  - aid: inngest:rest-api
-    name: Inngest REST API
-    description: >-
-      The Inngest REST API spans two surfaces. v1 covers event ingestion (/e/{eventKey} and inn.gs), event listing, and
-      run inspection (status, jobs, cancel). v2 covers account, environments, apps (sync), function invocation,
-      webhooks, keys (event + signing), canonical run summaries, and OpenTelemetry-style trace trees. Authenticated
-      calls use a signing-key bearer token.
-    humanURL: https://www.inngest.com/docs/reference/rest-api
-    baseURL: https://api.inngest.com
-    tags:
-      - Account
-      - Apps
-      - Environments
-      - Events
-      - Functions
-      - Keys
-      - REST API
-      - Runs
-      - Trace
-      - Webhooks
-      - Workflows
-    properties:
-      - type: Documentation
-        url: https://www.inngest.com/docs
-      - type: APIReference
-        url: https://api-docs.inngest.com
-      - type: OpenAPI
-        url: https://api-docs.inngest.com/api-specs/v2.json
-      - type: OpenAPI
-        url: openapi/inngest-openapi.yml
-      - type: Rules
-        url: rules/inngest-rules.yml
-      - type: GettingStarted
-        url: https://www.inngest.com/docs/getting-started/nextjs-quick-start
-      - type: JSONSchema
-        url: json-schema/inngest-event-schema.json
-      - type: JSONSchema
-        url: json-schema/inngest-run-schema.json
-      - type: JSONSchema
-        url: json-schema/inngest-function-schema.json
-      - type: JSONSchema
-        url: json-schema/inngest-trace-span-schema.json
-      - type: JSONSchema
-        url: json-schema/inngest-environment-schema.json
-      - type: JSONSchema
-        url: json-schema/inngest-webhook-schema.json
-      - type: JSONStructure
-        url: json-structure/inngest-event-structure.json
-      - type: JSONStructure
-        url: json-structure/inngest-run-structure.json
-      - type: JSONStructure
-        url: json-structure/inngest-trace-structure.json
-      - type: JSONLD
-        url: json-ld/inngest-context.jsonld
-      - type: Examples
-        url: examples/inngest-send-event-example.json
-      - type: Examples
-        url: examples/inngest-get-run-example.json
-      - type: Examples
-        url: examples/inngest-get-trace-example.json
-      - type: Examples
-        url: examples/inngest-list-functions-example.json
-      - type: Examples
-        url: examples/inngest-invoke-function-example.json
-      - type: Examples
-        url: examples/inngest-list-environments-example.json
-      - type: Examples
-        url: examples/inngest-create-webhook-example.json
-      - type: Vocabulary
-        url: vocabulary/inngest-vocabulary.yml
-      - type: Plans
-        url: plans/inngest-plans-pricing.yml
-      - type: RateLimits
-        url: rate-limits/inngest-rate-limits.yml
-      - type: FinOps
-        url: finops/inngest-finops.yml
+- aid: inngest:inngest-account-api
+  name: Inngest Account API
+  description: Account-level details for the authenticated user.
+  humanURL: https://www.inngest.com/docs/reference/rest-api
+  baseURL: https://api.inngest.com
+  tags:
+  - Account
+  properties:
+  - type: OpenAPI
+    url: openapi/inngest-account-api-openapi.yml
+  - type: Documentation
+    url: https://www.inngest.com/docs
+  - type: APIReference
+    url: https://api-docs.inngest.com
+  - type: Rules
+    url: rules/inngest-rules.yml
+  - type: GettingStarted
+    url: https://www.inngest.com/docs/getting-started/nextjs-quick-start
+  - type: JSONSchema
+    url: json-schema/inngest-event-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-run-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-function-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-trace-span-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-environment-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-webhook-schema.json
+  - type: JSONStructure
+    url: json-structure/inngest-event-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-run-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-trace-structure.json
+  - type: JSONLD
+    url: json-ld/inngest-context.jsonld
+  - type: Examples
+    url: examples/inngest-send-event-example.json
+  - type: Examples
+    url: examples/inngest-get-run-example.json
+  - type: Examples
+    url: examples/inngest-get-trace-example.json
+  - type: Examples
+    url: examples/inngest-list-functions-example.json
+  - type: Examples
+    url: examples/inngest-invoke-function-example.json
+  - type: Examples
+    url: examples/inngest-list-environments-example.json
+  - type: Examples
+    url: examples/inngest-create-webhook-example.json
+  - type: Vocabulary
+    url: vocabulary/inngest-vocabulary.yml
+  - type: Plans
+    url: plans/inngest-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/inngest-rate-limits.yml
+  - type: FinOps
+    url: finops/inngest-finops.yml
+- aid: inngest:inngest-apps-api
+  name: Inngest Apps API
+  description: Sync app endpoints exposing Inngest functions.
+  humanURL: https://www.inngest.com/docs/reference/rest-api
+  baseURL: https://api.inngest.com
+  tags:
+  - Apps
+  properties:
+  - type: OpenAPI
+    url: openapi/inngest-apps-api-openapi.yml
+  - type: Documentation
+    url: https://www.inngest.com/docs
+  - type: APIReference
+    url: https://api-docs.inngest.com
+  - type: Rules
+    url: rules/inngest-rules.yml
+  - type: GettingStarted
+    url: https://www.inngest.com/docs/getting-started/nextjs-quick-start
+  - type: JSONSchema
+    url: json-schema/inngest-event-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-run-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-function-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-trace-span-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-environment-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-webhook-schema.json
+  - type: JSONStructure
+    url: json-structure/inngest-event-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-run-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-trace-structure.json
+  - type: JSONLD
+    url: json-ld/inngest-context.jsonld
+  - type: Examples
+    url: examples/inngest-send-event-example.json
+  - type: Examples
+    url: examples/inngest-get-run-example.json
+  - type: Examples
+    url: examples/inngest-get-trace-example.json
+  - type: Examples
+    url: examples/inngest-list-functions-example.json
+  - type: Examples
+    url: examples/inngest-invoke-function-example.json
+  - type: Examples
+    url: examples/inngest-list-environments-example.json
+  - type: Examples
+    url: examples/inngest-create-webhook-example.json
+  - type: Vocabulary
+    url: vocabulary/inngest-vocabulary.yml
+  - type: Plans
+    url: plans/inngest-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/inngest-rate-limits.yml
+  - type: FinOps
+    url: finops/inngest-finops.yml
+- aid: inngest:inngest-environments-api
+  name: Inngest Environments API
+  description: Manage production and branch environments for an account.
+  humanURL: https://www.inngest.com/docs/reference/rest-api
+  baseURL: https://api.inngest.com
+  tags:
+  - Environments
+  properties:
+  - type: OpenAPI
+    url: openapi/inngest-environments-api-openapi.yml
+  - type: Documentation
+    url: https://www.inngest.com/docs
+  - type: APIReference
+    url: https://api-docs.inngest.com
+  - type: Rules
+    url: rules/inngest-rules.yml
+  - type: GettingStarted
+    url: https://www.inngest.com/docs/getting-started/nextjs-quick-start
+  - type: JSONSchema
+    url: json-schema/inngest-event-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-run-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-function-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-trace-span-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-environment-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-webhook-schema.json
+  - type: JSONStructure
+    url: json-structure/inngest-event-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-run-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-trace-structure.json
+  - type: JSONLD
+    url: json-ld/inngest-context.jsonld
+  - type: Examples
+    url: examples/inngest-send-event-example.json
+  - type: Examples
+    url: examples/inngest-get-run-example.json
+  - type: Examples
+    url: examples/inngest-get-trace-example.json
+  - type: Examples
+    url: examples/inngest-list-functions-example.json
+  - type: Examples
+    url: examples/inngest-invoke-function-example.json
+  - type: Examples
+    url: examples/inngest-list-environments-example.json
+  - type: Examples
+    url: examples/inngest-create-webhook-example.json
+  - type: Vocabulary
+    url: vocabulary/inngest-vocabulary.yml
+  - type: Plans
+    url: plans/inngest-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/inngest-rate-limits.yml
+  - type: FinOps
+    url: finops/inngest-finops.yml
+- aid: inngest:inngest-events-api
+  name: Inngest Events API
+  description: Send and inspect events that trigger Inngest functions.
+  humanURL: https://www.inngest.com/docs/reference/rest-api
+  baseURL: https://api.inngest.com
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/inngest-events-api-openapi.yml
+  - type: Documentation
+    url: https://www.inngest.com/docs
+  - type: APIReference
+    url: https://api-docs.inngest.com
+  - type: Rules
+    url: rules/inngest-rules.yml
+  - type: GettingStarted
+    url: https://www.inngest.com/docs/getting-started/nextjs-quick-start
+  - type: JSONSchema
+    url: json-schema/inngest-event-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-run-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-function-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-trace-span-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-environment-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-webhook-schema.json
+  - type: JSONStructure
+    url: json-structure/inngest-event-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-run-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-trace-structure.json
+  - type: JSONLD
+    url: json-ld/inngest-context.jsonld
+  - type: Examples
+    url: examples/inngest-send-event-example.json
+  - type: Examples
+    url: examples/inngest-get-run-example.json
+  - type: Examples
+    url: examples/inngest-get-trace-example.json
+  - type: Examples
+    url: examples/inngest-list-functions-example.json
+  - type: Examples
+    url: examples/inngest-invoke-function-example.json
+  - type: Examples
+    url: examples/inngest-list-environments-example.json
+  - type: Examples
+    url: examples/inngest-create-webhook-example.json
+  - type: Vocabulary
+    url: vocabulary/inngest-vocabulary.yml
+  - type: Plans
+    url: plans/inngest-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/inngest-rate-limits.yml
+  - type: FinOps
+    url: finops/inngest-finops.yml
+- aid: inngest:inngest-functions-api
+  name: Inngest Functions API
+  description: List and invoke deployed Inngest functions.
+  humanURL: https://www.inngest.com/docs/reference/rest-api
+  baseURL: https://api.inngest.com
+  tags:
+  - Functions
+  properties:
+  - type: OpenAPI
+    url: openapi/inngest-functions-api-openapi.yml
+  - type: Documentation
+    url: https://www.inngest.com/docs
+  - type: APIReference
+    url: https://api-docs.inngest.com
+  - type: Rules
+    url: rules/inngest-rules.yml
+  - type: GettingStarted
+    url: https://www.inngest.com/docs/getting-started/nextjs-quick-start
+  - type: JSONSchema
+    url: json-schema/inngest-event-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-run-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-function-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-trace-span-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-environment-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-webhook-schema.json
+  - type: JSONStructure
+    url: json-structure/inngest-event-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-run-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-trace-structure.json
+  - type: JSONLD
+    url: json-ld/inngest-context.jsonld
+  - type: Examples
+    url: examples/inngest-send-event-example.json
+  - type: Examples
+    url: examples/inngest-get-run-example.json
+  - type: Examples
+    url: examples/inngest-get-trace-example.json
+  - type: Examples
+    url: examples/inngest-list-functions-example.json
+  - type: Examples
+    url: examples/inngest-invoke-function-example.json
+  - type: Examples
+    url: examples/inngest-list-environments-example.json
+  - type: Examples
+    url: examples/inngest-create-webhook-example.json
+  - type: Vocabulary
+    url: vocabulary/inngest-vocabulary.yml
+  - type: Plans
+    url: plans/inngest-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/inngest-rate-limits.yml
+  - type: FinOps
+    url: finops/inngest-finops.yml
+- aid: inngest:inngest-keys-api
+  name: Inngest Keys API
+  description: Manage event keys and signing keys per environment.
+  humanURL: https://www.inngest.com/docs/reference/rest-api
+  baseURL: https://api.inngest.com
+  tags:
+  - Keys
+  properties:
+  - type: OpenAPI
+    url: openapi/inngest-keys-api-openapi.yml
+  - type: Documentation
+    url: https://www.inngest.com/docs
+  - type: APIReference
+    url: https://api-docs.inngest.com
+  - type: Rules
+    url: rules/inngest-rules.yml
+  - type: GettingStarted
+    url: https://www.inngest.com/docs/getting-started/nextjs-quick-start
+  - type: JSONSchema
+    url: json-schema/inngest-event-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-run-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-function-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-trace-span-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-environment-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-webhook-schema.json
+  - type: JSONStructure
+    url: json-structure/inngest-event-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-run-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-trace-structure.json
+  - type: JSONLD
+    url: json-ld/inngest-context.jsonld
+  - type: Examples
+    url: examples/inngest-send-event-example.json
+  - type: Examples
+    url: examples/inngest-get-run-example.json
+  - type: Examples
+    url: examples/inngest-get-trace-example.json
+  - type: Examples
+    url: examples/inngest-list-functions-example.json
+  - type: Examples
+    url: examples/inngest-invoke-function-example.json
+  - type: Examples
+    url: examples/inngest-list-environments-example.json
+  - type: Examples
+    url: examples/inngest-create-webhook-example.json
+  - type: Vocabulary
+    url: vocabulary/inngest-vocabulary.yml
+  - type: Plans
+    url: plans/inngest-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/inngest-rate-limits.yml
+  - type: FinOps
+    url: finops/inngest-finops.yml
+- aid: inngest:inngest-runs-api
+  name: Inngest Runs API
+  description: Fetch the status, jobs, and trace trees of function runs.
+  humanURL: https://www.inngest.com/docs/reference/rest-api
+  baseURL: https://api.inngest.com
+  tags:
+  - Runs
+  properties:
+  - type: OpenAPI
+    url: openapi/inngest-runs-api-openapi.yml
+  - type: Documentation
+    url: https://www.inngest.com/docs
+  - type: APIReference
+    url: https://api-docs.inngest.com
+  - type: Rules
+    url: rules/inngest-rules.yml
+  - type: GettingStarted
+    url: https://www.inngest.com/docs/getting-started/nextjs-quick-start
+  - type: JSONSchema
+    url: json-schema/inngest-event-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-run-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-function-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-trace-span-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-environment-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-webhook-schema.json
+  - type: JSONStructure
+    url: json-structure/inngest-event-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-run-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-trace-structure.json
+  - type: JSONLD
+    url: json-ld/inngest-context.jsonld
+  - type: Examples
+    url: examples/inngest-send-event-example.json
+  - type: Examples
+    url: examples/inngest-get-run-example.json
+  - type: Examples
+    url: examples/inngest-get-trace-example.json
+  - type: Examples
+    url: examples/inngest-list-functions-example.json
+  - type: Examples
+    url: examples/inngest-invoke-function-example.json
+  - type: Examples
+    url: examples/inngest-list-environments-example.json
+  - type: Examples
+    url: examples/inngest-create-webhook-example.json
+  - type: Vocabulary
+    url: vocabulary/inngest-vocabulary.yml
+  - type: Plans
+    url: plans/inngest-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/inngest-rate-limits.yml
+  - type: FinOps
+    url: finops/inngest-finops.yml
+- aid: inngest:inngest-webhooks-api
+  name: Inngest Webhooks API
+  description: Manage inbound webhooks that translate third-party payloads into Inngest events.
+  humanURL: https://www.inngest.com/docs/reference/rest-api
+  baseURL: https://api.inngest.com
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/inngest-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://www.inngest.com/docs
+  - type: APIReference
+    url: https://api-docs.inngest.com
+  - type: Rules
+    url: rules/inngest-rules.yml
+  - type: GettingStarted
+    url: https://www.inngest.com/docs/getting-started/nextjs-quick-start
+  - type: JSONSchema
+    url: json-schema/inngest-event-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-run-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-function-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-trace-span-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-environment-schema.json
+  - type: JSONSchema
+    url: json-schema/inngest-webhook-schema.json
+  - type: JSONStructure
+    url: json-structure/inngest-event-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-run-structure.json
+  - type: JSONStructure
+    url: json-structure/inngest-trace-structure.json
+  - type: JSONLD
+    url: json-ld/inngest-context.jsonld
+  - type: Examples
+    url: examples/inngest-send-event-example.json
+  - type: Examples
+    url: examples/inngest-get-run-example.json
+  - type: Examples
+    url: examples/inngest-get-trace-example.json
+  - type: Examples
+    url: examples/inngest-list-functions-example.json
+  - type: Examples
+    url: examples/inngest-invoke-function-example.json
+  - type: Examples
+    url: examples/inngest-list-environments-example.json
+  - type: Examples
+    url: examples/inngest-create-webhook-example.json
+  - type: Vocabulary
+    url: vocabulary/inngest-vocabulary.yml
+  - type: Plans
+    url: plans/inngest-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/inngest-rate-limits.yml
+  - type: FinOps
+    url: finops/inngest-finops.yml
 common:
+  - type: PostmanWorkspace
+    url: https://www.postman.com/kinlaneapi/inngest/overview
   - type: AgenticAccess
     url: agentic-access/inngest-agentic-access.yml
   - type: TrustCenter
