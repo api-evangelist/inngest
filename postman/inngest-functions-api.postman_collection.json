@@ -1,0 +1,320 @@
+{
+  "info": {
+    "_postman_id": "2bd40466-8b93-4465-ae80-96a7db1e781b",
+    "name": "Inngest REST Account Functions API",
+    "description": "The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest's event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.\n\nContact Support:\n Name: Inngest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:58:34.000Z",
+    "updatedAt": "2026-07-28T01:58:34.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-2bd40466-8b93-4465-ae80-96a7db1e781b"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "functions",
+          "item": [
+            {
+              "name": "List Functions",
+              "id": "a961a845-fac6-4db1-ba68-00abe1108ef7",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/functions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "functions"
+                  ]
+                },
+                "description": "Lists all functions deployed to the current Inngest environment."
+              },
+              "response": [
+                {
+                  "id": "7453288f-29b0-4132-8d4e-bfc6a3401185",
+                  "name": "Deployed functions.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/functions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "functions"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"slug\": \"<string>\",\n      \"name\": \"<string>\",\n      \"triggers\": [\n        {\n          \"mollit6\": true\n        },\n        {\n          \"aliquip404\": \"commodo cillum\",\n          \"adipisicing_2\": \"irure ipsum laborum\",\n          \"fugiat9\": -10161653,\n          \"laboris39_\": true\n        }\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"slug\": \"<string>\",\n      \"name\": \"<string>\",\n      \"triggers\": [\n        {\n          \"consectetur5\": 48159521.739525944\n        },\n        {\n          \"dolorea\": \"do\",\n          \"nostrud11c\": \"mollit ea\"\n        }\n      ]\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:58:35.000Z",
+                  "updatedAt": "2026-07-28T01:58:35.000Z",
+                  "uid": "35240-7453288f-29b0-4132-8d4e-bfc6a3401185"
+                }
+              ],
+              "createdAt": "2026-07-28T01:58:35.000Z",
+              "updatedAt": "2026-07-28T01:58:35.000Z",
+              "uid": "35240-a961a845-fac6-4db1-ba68-00abe1108ef7"
+            }
+          ],
+          "id": "bf414c67-2570-460e-8a35-3dfa5a3e62ba",
+          "createdAt": "2026-07-28T01:58:35.000Z",
+          "updatedAt": "2026-07-28T01:58:35.000Z",
+          "uid": "35240-bf414c67-2570-460e-8a35-3dfa5a3e62ba"
+        }
+      ],
+      "id": "55b04335-328c-47f6-a6ac-1e42e3beccf9",
+      "createdAt": "2026-07-28T01:58:35.000Z",
+      "updatedAt": "2026-07-28T01:58:35.000Z",
+      "uid": "35240-55b04335-328c-47f6-a6ac-1e42e3beccf9"
+    },
+    {
+      "name": "v2",
+      "item": [
+        {
+          "name": "apps",
+          "item": [
+            {
+              "name": "{appId}",
+              "item": [
+                {
+                  "name": "functions",
+                  "item": [
+                    {
+                      "name": "{functionId}",
+                      "item": [
+                        {
+                          "name": "invoke",
+                          "item": [
+                            {
+                              "name": "Invoke Function",
+                              "id": "cb54e0c0-1410-4acb-873c-9279aafa5b3f",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "bearer",
+                                  "bearer": [
+                                    {
+                                      "key": "token",
+                                      "value": "{{bearerToken}}",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"data\": {\n    \"quisb92\": 47667184.537920594,\n    \"ad_b0\": \"est E\",\n    \"anim_b4\": true\n  },\n  \"user\": {\n    \"aliquipa\": true,\n    \"nulla_59\": 79257150\n  },\n  \"async\": \"<boolean>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/v2/apps/:appId/functions/:functionId/invoke",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v2",
+                                    "apps",
+                                    ":appId",
+                                    "functions",
+                                    ":functionId",
+                                    "invoke"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "fb298066-dd0e-4410-b130-9bc4b07e1ad5",
+                                      "key": "appId",
+                                      "value": "<string>",
+                                      "description": "(Required) "
+                                    },
+                                    {
+                                      "id": "3dc168d5-92df-414a-bfce-22ad12a59c81",
+                                      "key": "functionId",
+                                      "value": "<string>",
+                                      "description": "(Required) "
+                                    }
+                                  ]
+                                },
+                                "description": "Invokes a deployed Inngest function asynchronously or synchronously."
+                              },
+                              "response": [
+                                {
+                                  "id": "ca66369c-9a77-4ee0-99fd-e5bde3d4bc14",
+                                  "name": "Invocation accepted.",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"data\": {\n    \"quisb92\": 47667184.537920594,\n    \"ad_b0\": \"est E\",\n    \"anim_b4\": true\n  },\n  \"user\": {\n    \"aliquipa\": true,\n    \"nulla_59\": 79257150\n  },\n  \"async\": \"<boolean>\"\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/v2/apps/:appId/functions/:functionId/invoke",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "v2",
+                                        "apps",
+                                        ":appId",
+                                        "functions",
+                                        ":functionId",
+                                        "invoke"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "appId"
+                                        },
+                                        {
+                                          "key": "functionId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"laborum_da\": true\n}",
+                                  "createdAt": "2026-07-28T01:58:35.000Z",
+                                  "updatedAt": "2026-07-28T01:58:35.000Z",
+                                  "uid": "35240-ca66369c-9a77-4ee0-99fd-e5bde3d4bc14"
+                                }
+                              ],
+                              "createdAt": "2026-07-28T01:58:35.000Z",
+                              "updatedAt": "2026-07-28T01:58:35.000Z",
+                              "uid": "35240-cb54e0c0-1410-4acb-873c-9279aafa5b3f"
+                            }
+                          ],
+                          "id": "b6e4b17a-5ad2-4ea3-9182-29f881a3ea1c",
+                          "createdAt": "2026-07-28T01:58:35.000Z",
+                          "updatedAt": "2026-07-28T01:58:35.000Z",
+                          "uid": "35240-b6e4b17a-5ad2-4ea3-9182-29f881a3ea1c"
+                        }
+                      ],
+                      "id": "946110cd-f2d7-4983-9fbf-6d3dd0221e3d",
+                      "createdAt": "2026-07-28T01:58:35.000Z",
+                      "updatedAt": "2026-07-28T01:58:35.000Z",
+                      "uid": "35240-946110cd-f2d7-4983-9fbf-6d3dd0221e3d"
+                    }
+                  ],
+                  "id": "4425fea2-7b67-4c91-9ddf-0d6089ef68d8",
+                  "createdAt": "2026-07-28T01:58:35.000Z",
+                  "updatedAt": "2026-07-28T01:58:35.000Z",
+                  "uid": "35240-4425fea2-7b67-4c91-9ddf-0d6089ef68d8"
+                }
+              ],
+              "id": "041c1902-7ff3-48b4-aebe-1596bf5b88fb",
+              "createdAt": "2026-07-28T01:58:35.000Z",
+              "updatedAt": "2026-07-28T01:58:35.000Z",
+              "uid": "35240-041c1902-7ff3-48b4-aebe-1596bf5b88fb"
+            }
+          ],
+          "id": "20ed3c10-632b-46df-84fb-8fb9617b10a6",
+          "createdAt": "2026-07-28T01:58:35.000Z",
+          "updatedAt": "2026-07-28T01:58:35.000Z",
+          "uid": "35240-20ed3c10-632b-46df-84fb-8fb9617b10a6"
+        }
+      ],
+      "id": "e7e61d63-41a5-445a-995d-e378fadaba8b",
+      "createdAt": "2026-07-28T01:58:35.000Z",
+      "updatedAt": "2026-07-28T01:58:35.000Z",
+      "uid": "35240-e7e61d63-41a5-445a-995d-e378fadaba8b"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.inngest.com"
+    }
+  ]
+}

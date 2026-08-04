@@ -1,0 +1,230 @@
+{
+  "info": {
+    "_postman_id": "c1a276b2-d920-45f2-b3a7-8d4d6764e037",
+    "name": "Inngest REST Account Keys API",
+    "description": "The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest's event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.\n\nContact Support:\n Name: Inngest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:58:35.000Z",
+    "updatedAt": "2026-07-28T01:58:35.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-c1a276b2-d920-45f2-b3a7-8d4d6764e037"
+  },
+  "item": [
+    {
+      "name": "v2",
+      "item": [
+        {
+          "name": "keys",
+          "item": [
+            {
+              "name": "events",
+              "item": [
+                {
+                  "name": "List Event Keys",
+                  "id": "56a44be2-771f-447f-a757-e54cda1b3f1a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/keys/events",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "keys",
+                        "events"
+                      ]
+                    },
+                    "description": "Lists event keys (used for /e/{eventKey} ingestion) for the account."
+                  },
+                  "response": [
+                    {
+                      "id": "0652b06b-d6e2-490f-97c1-371399b917fc",
+                      "name": "Event keys for the account.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v2/keys/events",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v2",
+                            "keys",
+                            "events"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"prefix\": \"<string>\",\n      \"createdAt\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"prefix\": \"<string>\",\n      \"createdAt\": \"<dateTime>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:58:35.000Z",
+                      "updatedAt": "2026-07-28T01:58:35.000Z",
+                      "uid": "35240-0652b06b-d6e2-490f-97c1-371399b917fc"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:58:35.000Z",
+                  "updatedAt": "2026-07-28T01:58:35.000Z",
+                  "uid": "35240-56a44be2-771f-447f-a757-e54cda1b3f1a"
+                }
+              ],
+              "id": "ad9117e8-7e96-4d83-b966-361608669d04",
+              "createdAt": "2026-07-28T01:58:35.000Z",
+              "updatedAt": "2026-07-28T01:58:35.000Z",
+              "uid": "35240-ad9117e8-7e96-4d83-b966-361608669d04"
+            },
+            {
+              "name": "signing",
+              "item": [
+                {
+                  "name": "List Signing Keys",
+                  "id": "8c65cbe0-9e9c-4cad-88e5-2187d3390409",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/keys/signing",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "keys",
+                        "signing"
+                      ]
+                    },
+                    "description": "Lists signing keys (used to authenticate management API calls) for the account."
+                  },
+                  "response": [
+                    {
+                      "id": "9a152251-23cc-4001-b9ab-881bdc0d6c59",
+                      "name": "Signing keys for the account.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v2/keys/signing",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v2",
+                            "keys",
+                            "signing"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"prefix\": \"<string>\",\n      \"createdAt\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"prefix\": \"<string>\",\n      \"createdAt\": \"<dateTime>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:58:35.000Z",
+                      "updatedAt": "2026-07-28T01:58:35.000Z",
+                      "uid": "35240-9a152251-23cc-4001-b9ab-881bdc0d6c59"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:58:35.000Z",
+                  "updatedAt": "2026-07-28T01:58:35.000Z",
+                  "uid": "35240-8c65cbe0-9e9c-4cad-88e5-2187d3390409"
+                }
+              ],
+              "id": "b41ce998-6ea8-4b42-a40a-9c6b32ee2ac8",
+              "createdAt": "2026-07-28T01:58:35.000Z",
+              "updatedAt": "2026-07-28T01:58:35.000Z",
+              "uid": "35240-b41ce998-6ea8-4b42-a40a-9c6b32ee2ac8"
+            }
+          ],
+          "id": "e87a55d5-b017-44f1-b1c5-5975b1fae756",
+          "createdAt": "2026-07-28T01:58:35.000Z",
+          "updatedAt": "2026-07-28T01:58:35.000Z",
+          "uid": "35240-e87a55d5-b017-44f1-b1c5-5975b1fae756"
+        }
+      ],
+      "id": "246dd2e4-e2a9-490b-b907-513f9ac4cfb9",
+      "createdAt": "2026-07-28T01:58:35.000Z",
+      "updatedAt": "2026-07-28T01:58:35.000Z",
+      "uid": "35240-246dd2e4-e2a9-490b-b907-513f9ac4cfb9"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.inngest.com"
+    }
+  ]
+}

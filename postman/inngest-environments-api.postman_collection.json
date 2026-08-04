@@ -1,0 +1,373 @@
+{
+  "info": {
+    "_postman_id": "734b12f7-9393-4fa9-bdf1-735418dae1a4",
+    "name": "Inngest REST Account Environments API",
+    "description": "The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest's event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.\n\nContact Support:\n Name: Inngest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:58:32.000Z",
+    "updatedAt": "2026-07-28T01:58:32.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-734b12f7-9393-4fa9-bdf1-735418dae1a4"
+  },
+  "item": [
+    {
+      "name": "v2",
+      "item": [
+        {
+          "name": "envs",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "Update Environment",
+                  "id": "f44b6ca1-2f3b-4017-84e7-ce437f9bebbe",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"occaecat_287\": 53692778.79048818,\n  \"culpa_0\": 93535208.23050174\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/envs/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "envs",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "d0ac6c74-52b3-48f5-92df-3b86e787f503",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Partially updates an environment's mutable fields."
+                  },
+                  "response": [
+                    {
+                      "id": "9bf93aaf-0403-4844-af31-52973f477b5c",
+                      "name": "Environment updated.",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"occaecat_287\": 53692778.79048818,\n  \"culpa_0\": 93535208.23050174\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v2/envs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v2",
+                            "envs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"type\": \"BRANCH\",\n  \"createdAt\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-07-28T01:58:33.000Z",
+                      "updatedAt": "2026-07-28T01:58:33.000Z",
+                      "uid": "35240-9bf93aaf-0403-4844-af31-52973f477b5c"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:58:33.000Z",
+                  "updatedAt": "2026-07-28T01:58:33.000Z",
+                  "uid": "35240-f44b6ca1-2f3b-4017-84e7-ce437f9bebbe"
+                }
+              ],
+              "id": "d68eb956-f716-4ca2-8ba3-35660dc854bd",
+              "createdAt": "2026-07-28T01:58:33.000Z",
+              "updatedAt": "2026-07-28T01:58:33.000Z",
+              "uid": "35240-d68eb956-f716-4ca2-8ba3-35660dc854bd"
+            },
+            {
+              "name": "List Environments",
+              "id": "095e6c3d-915d-4a55-a8e1-839a7dede400",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v2/envs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v2",
+                    "envs"
+                  ]
+                },
+                "description": "List custom and branch environments for the authenticated account."
+              },
+              "response": [
+                {
+                  "id": "b64d304b-1809-4a9f-bf47-91c267986267",
+                  "name": "A list of environments.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/envs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "envs"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"type\": \"CUSTOM\",\n      \"createdAt\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"type\": \"CUSTOM\",\n      \"createdAt\": \"<dateTime>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:58:33.000Z",
+                  "updatedAt": "2026-07-28T01:58:33.000Z",
+                  "uid": "35240-b64d304b-1809-4a9f-bf47-91c267986267"
+                }
+              ],
+              "createdAt": "2026-07-28T01:58:33.000Z",
+              "updatedAt": "2026-07-28T01:58:33.000Z",
+              "uid": "35240-095e6c3d-915d-4a55-a8e1-839a7dede400"
+            },
+            {
+              "name": "Create Environment",
+              "id": "06faab14-e2d7-46b1-808f-0e3c1112777f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"CUSTOM\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v2/envs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v2",
+                    "envs"
+                  ]
+                },
+                "description": "Creates a new custom or branch environment under the account."
+              },
+              "response": [
+                {
+                  "id": "19377aa6-cb84-4f7f-bc1c-2b852693731a",
+                  "name": "Environment created.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"CUSTOM\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/envs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "envs"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"type\": \"BRANCH\",\n  \"createdAt\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-07-28T01:58:33.000Z",
+                  "updatedAt": "2026-07-28T01:58:33.000Z",
+                  "uid": "35240-19377aa6-cb84-4f7f-bc1c-2b852693731a"
+                }
+              ],
+              "createdAt": "2026-07-28T01:58:33.000Z",
+              "updatedAt": "2026-07-28T01:58:33.000Z",
+              "uid": "35240-06faab14-e2d7-46b1-808f-0e3c1112777f"
+            }
+          ],
+          "id": "1c005369-8e0b-4c1f-9c28-6407bc061f32",
+          "createdAt": "2026-07-28T01:58:33.000Z",
+          "updatedAt": "2026-07-28T01:58:33.000Z",
+          "uid": "35240-1c005369-8e0b-4c1f-9c28-6407bc061f32"
+        }
+      ],
+      "id": "13194ba1-4b84-4bcf-98a5-0ca1ab2034c8",
+      "createdAt": "2026-07-28T01:58:33.000Z",
+      "updatedAt": "2026-07-28T01:58:33.000Z",
+      "uid": "35240-13194ba1-4b84-4bcf-98a5-0ca1ab2034c8"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.inngest.com"
+    }
+  ]
+}

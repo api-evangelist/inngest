@@ -1,0 +1,343 @@
+{
+  "info": {
+    "_postman_id": "83de15cb-8522-43f9-a3d2-29d7d9212fd2",
+    "name": "Inngest REST Account API",
+    "description": "The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest's event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.\n\nContact Support:\n Name: Inngest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:58:30.000Z",
+    "updatedAt": "2026-07-28T01:58:31.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-83de15cb-8522-43f9-a3d2-29d7d9212fd2"
+  },
+  "item": [
+    {
+      "name": "v2",
+      "item": [
+        {
+          "name": "account",
+          "item": [
+            {
+              "name": "Get Account",
+              "id": "ef2691d6-490f-48b9-bd49-eafd10226a1a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v2/account",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v2",
+                    "account"
+                  ]
+                },
+                "description": "Returns the account for the authenticated user."
+              },
+              "response": [
+                {
+                  "id": "aaf9bb9f-8b9e-4cd6-bb3c-d2327aa07024",
+                  "name": "Account details.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/account",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "account"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"email\": \"<string>\",\n  \"createdAt\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-07-28T01:58:31.000Z",
+                  "updatedAt": "2026-07-28T01:58:31.000Z",
+                  "uid": "35240-aaf9bb9f-8b9e-4cd6-bb3c-d2327aa07024"
+                }
+              ],
+              "createdAt": "2026-07-28T01:58:31.000Z",
+              "updatedAt": "2026-07-28T01:58:31.000Z",
+              "uid": "35240-ef2691d6-490f-48b9-bd49-eafd10226a1a"
+            }
+          ],
+          "id": "f8e8468d-d38b-4473-9058-ec14a9c862fc",
+          "createdAt": "2026-07-28T01:58:31.000Z",
+          "updatedAt": "2026-07-28T01:58:31.000Z",
+          "uid": "35240-f8e8468d-d38b-4473-9058-ec14a9c862fc"
+        },
+        {
+          "name": "partner",
+          "item": [
+            {
+              "name": "accounts",
+              "item": [
+                {
+                  "name": "List Partner Accounts",
+                  "id": "ef6001c9-7731-467d-a498-fb9a7dab2115",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/partner/accounts",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "partner",
+                        "accounts"
+                      ]
+                    },
+                    "description": "Lists sub-accounts. Requires partner access."
+                  },
+                  "response": [
+                    {
+                      "id": "fdb31f6b-c3a8-4bf0-b760-4c07d6b95984",
+                      "name": "Partner sub-accounts.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v2/partner/accounts",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v2",
+                            "partner",
+                            "accounts"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"createdAt\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"createdAt\": \"<dateTime>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:58:31.000Z",
+                      "updatedAt": "2026-07-28T01:58:31.000Z",
+                      "uid": "35240-fdb31f6b-c3a8-4bf0-b760-4c07d6b95984"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:58:31.000Z",
+                  "updatedAt": "2026-07-28T01:58:31.000Z",
+                  "uid": "35240-ef6001c9-7731-467d-a498-fb9a7dab2115"
+                },
+                {
+                  "name": "Create Partner Account",
+                  "id": "d355d3d8-d5c3-42c3-9a91-337ccaa5f909",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"email\": \"<email>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/partner/accounts",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "partner",
+                        "accounts"
+                      ]
+                    },
+                    "description": "Creates a sub-account. Requires partner access."
+                  },
+                  "response": [
+                    {
+                      "id": "8f07a403-8d74-4c57-ac22-2af6770602dc",
+                      "name": "Partner account created.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"email\": \"<email>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v2/partner/accounts",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v2",
+                            "partner",
+                            "accounts"
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"email\": \"<string>\",\n  \"createdAt\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-07-28T01:58:31.000Z",
+                      "updatedAt": "2026-07-28T01:58:31.000Z",
+                      "uid": "35240-8f07a403-8d74-4c57-ac22-2af6770602dc"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:58:31.000Z",
+                  "updatedAt": "2026-07-28T01:58:31.000Z",
+                  "uid": "35240-d355d3d8-d5c3-42c3-9a91-337ccaa5f909"
+                }
+              ],
+              "id": "4bce2954-af42-49e0-a2a8-c77315e7f91b",
+              "createdAt": "2026-07-28T01:58:31.000Z",
+              "updatedAt": "2026-07-28T01:58:31.000Z",
+              "uid": "35240-4bce2954-af42-49e0-a2a8-c77315e7f91b"
+            }
+          ],
+          "id": "f0b33963-75de-4356-9672-84577f5471e9",
+          "createdAt": "2026-07-28T01:58:31.000Z",
+          "updatedAt": "2026-07-28T01:58:31.000Z",
+          "uid": "35240-f0b33963-75de-4356-9672-84577f5471e9"
+        }
+      ],
+      "id": "3f1de67c-f045-4faf-967d-45650ffb83cc",
+      "createdAt": "2026-07-28T01:58:31.000Z",
+      "updatedAt": "2026-07-28T01:58:31.000Z",
+      "uid": "35240-3f1de67c-f045-4faf-967d-45650ffb83cc"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.inngest.com"
+    }
+  ]
+}

@@ -1,0 +1,674 @@
+{
+  "info": {
+    "_postman_id": "0626ed47-1df3-40b1-b812-baaa6c89de24",
+    "name": "Inngest REST Account Runs API",
+    "description": "The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest's event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.\n\nContact Support:\n Name: Inngest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:58:36.000Z",
+    "updatedAt": "2026-07-28T01:58:36.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-0626ed47-1df3-40b1-b812-baaa6c89de24"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "runs",
+          "item": [
+            {
+              "name": "{runId}",
+              "item": [
+                {
+                  "name": "jobs",
+                  "item": [
+                    {
+                      "name": "List The Jobs (Steps) For A Run",
+                      "id": "43712a0f-7ad8-4ab6-a581-d75cea17fbd9",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/runs/:runId/jobs",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "runs",
+                            ":runId",
+                            "jobs"
+                          ],
+                          "variable": [
+                            {
+                              "id": "c64fb861-39eb-4c5e-82dd-9b326bc7ca5a",
+                              "key": "runId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Returns the step-level job records for a function run, including timing, attempts, and outputs."
+                      },
+                      "response": [
+                        {
+                          "id": "2c43d94c-2ded-4d51-8fc7-a0c14fdb98dc",
+                          "name": "Step-level job records for the run.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/runs/:runId/jobs",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "runs",
+                                ":runId",
+                                "jobs"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "runId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"status\": \"<string>\",\n      \"started_at\": \"<dateTime>\",\n      \"ended_at\": \"<dateTime>\",\n      \"output\": {\n        \"et199\": -52850317.13318862,\n        \"eiusmodf\": 18760821.090598643\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"status\": \"<string>\",\n      \"started_at\": \"<dateTime>\",\n      \"ended_at\": \"<dateTime>\",\n      \"output\": {\n        \"cupidatat_b_a\": \"do officia aliqua\",\n        \"in_05a\": 52644686,\n        \"adipisicing_509\": \"cillum te\"\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T01:58:36.000Z",
+                          "updatedAt": "2026-07-28T01:58:36.000Z",
+                          "uid": "35240-2c43d94c-2ded-4d51-8fc7-a0c14fdb98dc"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:58:36.000Z",
+                      "updatedAt": "2026-07-28T01:58:36.000Z",
+                      "uid": "35240-43712a0f-7ad8-4ab6-a581-d75cea17fbd9"
+                    }
+                  ],
+                  "id": "28e01d4b-3e3a-4cd2-a580-d93276cfdf48",
+                  "createdAt": "2026-07-28T01:58:36.000Z",
+                  "updatedAt": "2026-07-28T01:58:36.000Z",
+                  "uid": "35240-28e01d4b-3e3a-4cd2-a580-d93276cfdf48"
+                },
+                {
+                  "name": "cancel",
+                  "item": [
+                    {
+                      "name": "Cancel A Function Run",
+                      "id": "971c8103-f19a-48b5-b068-cbef4c98a548",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/runs/:runId/cancel",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "runs",
+                            ":runId",
+                            "cancel"
+                          ],
+                          "variable": [
+                            {
+                              "id": "1e900781-8fc5-427a-8105-65c44c374cd4",
+                              "key": "runId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Cancels a function run that is queued, running, or paused."
+                      },
+                      "response": [
+                        {
+                          "id": "c91fef54-9fd9-49f4-8fb8-f0ab5f6a42d3",
+                          "name": "Cancellation accepted.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/runs/:runId/cancel",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "runs",
+                                ":runId",
+                                "cancel"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "runId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:58:36.000Z",
+                          "updatedAt": "2026-07-28T01:58:36.000Z",
+                          "uid": "35240-c91fef54-9fd9-49f4-8fb8-f0ab5f6a42d3"
+                        },
+                        {
+                          "id": "c1d8ce6e-231d-4a33-979c-400078071c34",
+                          "name": "Run not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/runs/:runId/cancel",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "runs",
+                                ":runId",
+                                "cancel"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "runId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:58:36.000Z",
+                          "updatedAt": "2026-07-28T01:58:36.000Z",
+                          "uid": "35240-c1d8ce6e-231d-4a33-979c-400078071c34"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:58:36.000Z",
+                      "updatedAt": "2026-07-28T01:58:36.000Z",
+                      "uid": "35240-971c8103-f19a-48b5-b068-cbef4c98a548"
+                    }
+                  ],
+                  "id": "b53adc7d-e2a1-4f0a-8eff-b6555679c0d6",
+                  "createdAt": "2026-07-28T01:58:36.000Z",
+                  "updatedAt": "2026-07-28T01:58:36.000Z",
+                  "uid": "35240-b53adc7d-e2a1-4f0a-8eff-b6555679c0d6"
+                },
+                {
+                  "name": "Get Function Run Status",
+                  "id": "9b5e270d-20af-49fa-a7e8-d0b013e4ef53",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/runs/:runId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "runs",
+                        ":runId"
+                      ],
+                      "variable": [
+                        {
+                          "id": "cbd60ecd-290d-4bb0-b895-5125ae01cbf1",
+                          "key": "runId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Returns the canonical status, output, and step history for a function run."
+                  },
+                  "response": [
+                    {
+                      "id": "b3a15e0c-844b-4e83-85fa-2ff7e5fe41cf",
+                      "name": "Run details including status, output, and step history.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/runs/:runId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "runs",
+                            ":runId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "runId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"run_id\": \"<string>\",\n  \"function_id\": \"<string>\",\n  \"status\": \"Running\",\n  \"event_id\": \"<string>\",\n  \"output\": {\n    \"dolor_f01\": false,\n    \"ad_6e4\": -42495413.29081614,\n    \"veniam_0\": false\n  },\n  \"started_at\": \"<dateTime>\",\n  \"ended_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-07-28T01:58:36.000Z",
+                      "updatedAt": "2026-07-28T01:58:36.000Z",
+                      "uid": "35240-b3a15e0c-844b-4e83-85fa-2ff7e5fe41cf"
+                    },
+                    {
+                      "id": "3573d1cc-f643-4fc7-b710-d939943b798b",
+                      "name": "Run not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/runs/:runId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "runs",
+                            ":runId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "runId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:58:36.000Z",
+                      "updatedAt": "2026-07-28T01:58:36.000Z",
+                      "uid": "35240-3573d1cc-f643-4fc7-b710-d939943b798b"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:58:36.000Z",
+                  "updatedAt": "2026-07-28T01:58:36.000Z",
+                  "uid": "35240-9b5e270d-20af-49fa-a7e8-d0b013e4ef53"
+                }
+              ],
+              "id": "623be8e7-2f6a-4777-89df-1c1fa82dc2ea",
+              "createdAt": "2026-07-28T01:58:36.000Z",
+              "updatedAt": "2026-07-28T01:58:36.000Z",
+              "uid": "35240-623be8e7-2f6a-4777-89df-1c1fa82dc2ea"
+            }
+          ],
+          "id": "bc3faec0-b6d3-4406-ae31-b2db3d35a75c",
+          "createdAt": "2026-07-28T01:58:36.000Z",
+          "updatedAt": "2026-07-28T01:58:36.000Z",
+          "uid": "35240-bc3faec0-b6d3-4406-ae31-b2db3d35a75c"
+        }
+      ],
+      "id": "4128a2bf-9491-4fc0-aaf9-706a3e57bc6b",
+      "createdAt": "2026-07-28T01:58:36.000Z",
+      "updatedAt": "2026-07-28T01:58:36.000Z",
+      "uid": "35240-4128a2bf-9491-4fc0-aaf9-706a3e57bc6b"
+    },
+    {
+      "name": "v2",
+      "item": [
+        {
+          "name": "runs",
+          "item": [
+            {
+              "name": "{runId}",
+              "item": [
+                {
+                  "name": "trace",
+                  "item": [
+                    {
+                      "name": "Get Function Trace",
+                      "id": "a2f4cf07-1459-4502-bec5-22b4e40be555",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v2/runs/:runId/trace",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v2",
+                            "runs",
+                            ":runId",
+                            "trace"
+                          ],
+                          "variable": [
+                            {
+                              "id": "40732459-82f5-44c0-b1ae-5d2c9ed43d8c",
+                              "key": "runId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Fetches the trace tree for a single function run. Beta."
+                      },
+                      "response": [
+                        {
+                          "id": "b81d934d-3f8a-4886-91af-c5a68eebc41b",
+                          "name": "Trace tree for the run.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v2/runs/:runId/trace",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v2",
+                                "runs",
+                                ":runId",
+                                "trace"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "runId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"run_id\": \"<string>\",\n  \"root\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"op\": \"INVOKE\",\n    \"status\": \"FAILED\",\n    \"started_at\": \"<dateTime>\",\n    \"ended_at\": \"<dateTime>\",\n    \"attempt\": \"<integer>\",\n    \"attributes\": {\n      \"incididunt_8\": 9810326\n    },\n    \"children\": [\n      {\n        \"value\": \"<Circular reference to #/components/schemas/V2TraceSpan detected>\"\n      },\n      {\n        \"value\": \"<Circular reference to #/components/schemas/V2TraceSpan detected>\"\n      }\n    ]\n  }\n}",
+                          "createdAt": "2026-07-28T01:58:36.000Z",
+                          "updatedAt": "2026-07-28T01:58:36.000Z",
+                          "uid": "35240-b81d934d-3f8a-4886-91af-c5a68eebc41b"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:58:36.000Z",
+                      "updatedAt": "2026-07-28T01:58:36.000Z",
+                      "uid": "35240-a2f4cf07-1459-4502-bec5-22b4e40be555"
+                    }
+                  ],
+                  "id": "b55f6c99-5c5a-4942-aa7b-f1e9c606c995",
+                  "createdAt": "2026-07-28T01:58:36.000Z",
+                  "updatedAt": "2026-07-28T01:58:36.000Z",
+                  "uid": "35240-b55f6c99-5c5a-4942-aa7b-f1e9c606c995"
+                },
+                {
+                  "name": "Get Function Run (v2)",
+                  "id": "3f82cb2e-b44e-41bd-899d-5a7b7828cea0",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/runs/:runId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "runs",
+                        ":runId"
+                      ],
+                      "variable": [
+                        {
+                          "id": "c82cee37-a3e9-4e0e-91ec-885119a71360",
+                          "key": "runId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Fetches the canonical run summary. Beta."
+                  },
+                  "response": [
+                    {
+                      "id": "b068fd6b-3250-4c68-85e0-4cb255e22941",
+                      "name": "Function run details.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v2/runs/:runId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v2",
+                            "runs",
+                            ":runId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "runId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"run_id\": \"<string>\",\n  \"function_id\": \"<string>\",\n  \"app_id\": \"<string>\",\n  \"status\": \"RUNNING\",\n  \"event_id\": \"<string>\",\n  \"output\": {\n    \"et_49\": \"sit Ut\"\n  },\n  \"started_at\": \"<dateTime>\",\n  \"ended_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-07-28T01:58:36.000Z",
+                      "updatedAt": "2026-07-28T01:58:36.000Z",
+                      "uid": "35240-b068fd6b-3250-4c68-85e0-4cb255e22941"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:58:36.000Z",
+                  "updatedAt": "2026-07-28T01:58:36.000Z",
+                  "uid": "35240-3f82cb2e-b44e-41bd-899d-5a7b7828cea0"
+                }
+              ],
+              "id": "c92c5647-9400-464a-826d-44b64ee1a73e",
+              "createdAt": "2026-07-28T01:58:36.000Z",
+              "updatedAt": "2026-07-28T01:58:36.000Z",
+              "uid": "35240-c92c5647-9400-464a-826d-44b64ee1a73e"
+            }
+          ],
+          "id": "05fc737c-6c8c-4cbb-9100-7fca352b4ed0",
+          "createdAt": "2026-07-28T01:58:36.000Z",
+          "updatedAt": "2026-07-28T01:58:36.000Z",
+          "uid": "35240-05fc737c-6c8c-4cbb-9100-7fca352b4ed0"
+        }
+      ],
+      "id": "a7bf6d10-e753-44e6-ae53-b27e9f4cc1b2",
+      "createdAt": "2026-07-28T01:58:36.000Z",
+      "updatedAt": "2026-07-28T01:58:36.000Z",
+      "uid": "35240-a7bf6d10-e753-44e6-ae53-b27e9f4cc1b2"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.inngest.com"
+    }
+  ]
+}

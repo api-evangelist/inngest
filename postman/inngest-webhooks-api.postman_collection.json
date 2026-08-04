@@ -1,0 +1,249 @@
+{
+  "info": {
+    "_postman_id": "485e27c9-f295-4235-a117-5cbc4295f6db",
+    "name": "Inngest REST Account Webhooks API",
+    "description": "The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest's event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.\n\nContact Support:\n Name: Inngest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:58:37.000Z",
+    "updatedAt": "2026-07-28T01:58:37.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-485e27c9-f295-4235-a117-5cbc4295f6db"
+  },
+  "item": [
+    {
+      "name": "v2",
+      "item": [
+        {
+          "name": "env",
+          "item": [
+            {
+              "name": "webhooks",
+              "item": [
+                {
+                  "name": "List Webhooks",
+                  "id": "63b50da7-67a0-44f5-a831-5ec47adaed4f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/env/webhooks",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "env",
+                        "webhooks"
+                      ]
+                    },
+                    "description": "Lists all inbound webhooks configured in the current environment."
+                  },
+                  "response": [
+                    {
+                      "id": "a7f424fd-77e3-44e7-85ea-12f74b99b917",
+                      "name": "A list of webhooks in the environment.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v2/env/webhooks",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v2",
+                            "env",
+                            "webhooks"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"url\": \"<uri>\",\n      \"transform\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"url\": \"<uri>\",\n      \"transform\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:58:37.000Z",
+                      "updatedAt": "2026-07-28T01:58:37.000Z",
+                      "uid": "35240-a7f424fd-77e3-44e7-85ea-12f74b99b917"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:58:37.000Z",
+                  "updatedAt": "2026-07-28T01:58:37.000Z",
+                  "uid": "35240-63b50da7-67a0-44f5-a831-5ec47adaed4f"
+                },
+                {
+                  "name": "Create Webhook",
+                  "id": "b974d7f9-7d44-4bd5-8c11-32a9573637dd",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"transform\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/env/webhooks",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "env",
+                        "webhooks"
+                      ]
+                    },
+                    "description": "Creates a new webhook for receiving events."
+                  },
+                  "response": [
+                    {
+                      "id": "b6560b45-cbbc-4dbb-b713-004dedd68970",
+                      "name": "Webhook created.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"transform\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v2/env/webhooks",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v2",
+                            "env",
+                            "webhooks"
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"url\": \"<uri>\",\n  \"transform\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:58:37.000Z",
+                      "updatedAt": "2026-07-28T01:58:37.000Z",
+                      "uid": "35240-b6560b45-cbbc-4dbb-b713-004dedd68970"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:58:37.000Z",
+                  "updatedAt": "2026-07-28T01:58:37.000Z",
+                  "uid": "35240-b974d7f9-7d44-4bd5-8c11-32a9573637dd"
+                }
+              ],
+              "id": "db079823-0b02-42bf-bb14-6b37af8fdf77",
+              "createdAt": "2026-07-28T01:58:37.000Z",
+              "updatedAt": "2026-07-28T01:58:37.000Z",
+              "uid": "35240-db079823-0b02-42bf-bb14-6b37af8fdf77"
+            }
+          ],
+          "id": "0b5d6597-8a86-4407-9bb8-26a6e8691e87",
+          "createdAt": "2026-07-28T01:58:37.000Z",
+          "updatedAt": "2026-07-28T01:58:37.000Z",
+          "uid": "35240-0b5d6597-8a86-4407-9bb8-26a6e8691e87"
+        }
+      ],
+      "id": "8990cc3b-d2fd-4765-834f-eb876348fc21",
+      "createdAt": "2026-07-28T01:58:37.000Z",
+      "updatedAt": "2026-07-28T01:58:37.000Z",
+      "uid": "35240-8990cc3b-d2fd-4765-834f-eb876348fc21"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.inngest.com"
+    }
+  ]
+}

@@ -1,0 +1,650 @@
+{
+  "info": {
+    "_postman_id": "ad0cdb79-5132-4843-b078-86f55c449ba7",
+    "name": "Inngest REST Account Events API",
+    "description": "The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest's event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.\n\nContact Support:\n Name: Inngest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:58:33.000Z",
+    "updatedAt": "2026-07-28T01:58:33.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-ad0cdb79-5132-4843-b078-86f55c449ba7"
+  },
+  "item": [
+    {
+      "name": "e",
+      "item": [
+        {
+          "name": "{eventKey}",
+          "item": [
+            {
+              "name": "Send Events To Inngest",
+              "id": "d5ba6cce-c07a-495d-9df0-7d9f74107f07",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional branch environment to target.",
+                    "key": "x-inngest-env",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"data\": {\n    \"dolore3cc\": -86345631\n  },\n  \"id\": \"<string>\",\n  \"user\": {\n    \"velit8\": -32165021.134381533,\n    \"tempor7bc\": true,\n    \"cupidatat_b3d\": 64262274.0920769,\n    \"ut05\": false,\n    \"sed88\": 66131803\n  },\n  \"ts\": \"<long>\",\n  \"v\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/e/:eventKey",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "e",
+                    ":eventKey"
+                  ],
+                  "variable": [
+                    {
+                      "id": "5e8ec3eb-685c-4523-828e-54340bfa0432",
+                      "key": "eventKey",
+                      "value": "<string>",
+                      "description": "(Required) Your environment-specific Inngest event key."
+                    }
+                  ]
+                },
+                "description": "Sends one or more events to Inngest using an environment-scoped event key. The request body may be either a single event object or an array of event objects, up to a 512 KB total payload. Aliased at https://inn.gs/e/{eventKey}."
+              },
+              "response": [
+                {
+                  "id": "f9e2627f-c661-4c2f-9133-0e750a735006",
+                  "name": "Events accepted.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Optional branch environment to target.",
+                        "key": "x-inngest-env",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"data\": {\n    \"dolore3cc\": -86345631\n  },\n  \"id\": \"<string>\",\n  \"user\": {\n    \"velit8\": -32165021.134381533,\n    \"tempor7bc\": true,\n    \"cupidatat_b3d\": 64262274.0920769,\n    \"ut05\": false,\n    \"sed88\": 66131803\n  },\n  \"ts\": \"<long>\",\n  \"v\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/e/:eventKey",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "e",
+                        ":eventKey"
+                      ],
+                      "variable": [
+                        {
+                          "key": "eventKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"status\": \"<integer>\"\n}",
+                  "createdAt": "2026-07-28T01:58:34.000Z",
+                  "updatedAt": "2026-07-28T01:58:34.000Z",
+                  "uid": "35240-f9e2627f-c661-4c2f-9133-0e750a735006"
+                },
+                {
+                  "id": "39ea8b2a-5a2f-4209-8bc8-de39dd08672a",
+                  "name": "Invalid request payload.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Optional branch environment to target.",
+                        "key": "x-inngest-env",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"data\": {\n    \"dolore3cc\": -86345631\n  },\n  \"id\": \"<string>\",\n  \"user\": {\n    \"velit8\": -32165021.134381533,\n    \"tempor7bc\": true,\n    \"cupidatat_b3d\": 64262274.0920769,\n    \"ut05\": false,\n    \"sed88\": 66131803\n  },\n  \"ts\": \"<long>\",\n  \"v\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/e/:eventKey",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "e",
+                        ":eventKey"
+                      ],
+                      "variable": [
+                        {
+                          "key": "eventKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:58:34.000Z",
+                  "updatedAt": "2026-07-28T01:58:34.000Z",
+                  "uid": "35240-39ea8b2a-5a2f-4209-8bc8-de39dd08672a"
+                },
+                {
+                  "id": "ea649bbb-b2ba-4d64-91d3-033d5aeafc42",
+                  "name": "Invalid event key.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Optional branch environment to target.",
+                        "key": "x-inngest-env",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"data\": {\n    \"dolore3cc\": -86345631\n  },\n  \"id\": \"<string>\",\n  \"user\": {\n    \"velit8\": -32165021.134381533,\n    \"tempor7bc\": true,\n    \"cupidatat_b3d\": 64262274.0920769,\n    \"ut05\": false,\n    \"sed88\": 66131803\n  },\n  \"ts\": \"<long>\",\n  \"v\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/e/:eventKey",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "e",
+                        ":eventKey"
+                      ],
+                      "variable": [
+                        {
+                          "key": "eventKey"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:58:34.000Z",
+                  "updatedAt": "2026-07-28T01:58:34.000Z",
+                  "uid": "35240-ea649bbb-b2ba-4d64-91d3-033d5aeafc42"
+                }
+              ],
+              "createdAt": "2026-07-28T01:58:34.000Z",
+              "updatedAt": "2026-07-28T01:58:34.000Z",
+              "uid": "35240-d5ba6cce-c07a-495d-9df0-7d9f74107f07"
+            }
+          ],
+          "id": "ae364a14-c2ab-4a43-9d43-aa1535abd970",
+          "createdAt": "2026-07-28T01:58:34.000Z",
+          "updatedAt": "2026-07-28T01:58:34.000Z",
+          "uid": "35240-ae364a14-c2ab-4a43-9d43-aa1535abd970"
+        }
+      ],
+      "id": "1bc0f2cd-a9bd-4ac7-8c30-1a843845d891",
+      "createdAt": "2026-07-28T01:58:34.000Z",
+      "updatedAt": "2026-07-28T01:58:34.000Z",
+      "uid": "35240-1bc0f2cd-a9bd-4ac7-8c30-1a843845d891"
+    },
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "events",
+          "item": [
+            {
+              "name": "{eventId}",
+              "item": [
+                {
+                  "name": "runs",
+                  "item": [
+                    {
+                      "name": "List Runs Triggered By An Event",
+                      "id": "140620e9-04b0-4d78-a4a6-5d9b2691bf69",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/events/:eventId/runs",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "events",
+                            ":eventId",
+                            "runs"
+                          ],
+                          "variable": [
+                            {
+                              "id": "b11439d6-f5ca-4a11-a730-1d9d923511bc",
+                              "key": "eventId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Lists the function runs that were triggered by a single ingested event."
+                      },
+                      "response": [
+                        {
+                          "id": "f7f2918b-e9c3-488d-a5ab-fc3576e3d56a",
+                          "name": "Runs associated with the event.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/events/:eventId/runs",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "events",
+                                ":eventId",
+                                "runs"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "eventId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"data\": [\n    {\n      \"run_id\": \"<string>\",\n      \"function_id\": \"<string>\",\n      \"status\": \"Running\",\n      \"event_id\": \"<string>\",\n      \"output\": {\n        \"ullamco_40\": -5251126,\n        \"tempor5dc\": 13365991.631028607\n      },\n      \"started_at\": \"<dateTime>\",\n      \"ended_at\": \"<dateTime>\"\n    },\n    {\n      \"run_id\": \"<string>\",\n      \"function_id\": \"<string>\",\n      \"status\": \"Completed\",\n      \"event_id\": \"<string>\",\n      \"output\": {\n        \"mollit_ce\": 11613952\n      },\n      \"started_at\": \"<dateTime>\",\n      \"ended_at\": \"<dateTime>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T01:58:34.000Z",
+                          "updatedAt": "2026-07-28T01:58:34.000Z",
+                          "uid": "35240-f7f2918b-e9c3-488d-a5ab-fc3576e3d56a"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:58:34.000Z",
+                      "updatedAt": "2026-07-28T01:58:34.000Z",
+                      "uid": "35240-140620e9-04b0-4d78-a4a6-5d9b2691bf69"
+                    }
+                  ],
+                  "id": "85e9f7a2-1f96-4db3-96c3-9bebbb318132",
+                  "createdAt": "2026-07-28T01:58:34.000Z",
+                  "updatedAt": "2026-07-28T01:58:34.000Z",
+                  "uid": "35240-85e9f7a2-1f96-4db3-96c3-9bebbb318132"
+                },
+                {
+                  "name": "Get An Event By ID",
+                  "id": "e00f9ffa-0336-46d7-bc18-9178fc1b74dd",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/events/:eventId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "events",
+                        ":eventId"
+                      ],
+                      "variable": [
+                        {
+                          "id": "59060756-7408-4419-9f50-a0469a74ad73",
+                          "key": "eventId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Returns a single event by its ID, including the payload and ingestion metadata."
+                  },
+                  "response": [
+                    {
+                      "id": "8938e249-5a35-4ecb-b952-922ac494a543",
+                      "name": "Event details.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/events/:eventId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "events",
+                            ":eventId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "eventId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"name\": \"<string>\",\n  \"data\": {\n    \"dolore3cc\": -86345631\n  },\n  \"id\": \"<string>\",\n  \"user\": {\n    \"velit8\": -32165021.134381533,\n    \"tempor7bc\": true,\n    \"cupidatat_b3d\": 64262274.0920769,\n    \"ut05\": false,\n    \"sed88\": 66131803\n  },\n  \"ts\": \"<long>\",\n  \"v\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:58:34.000Z",
+                      "updatedAt": "2026-07-28T01:58:34.000Z",
+                      "uid": "35240-8938e249-5a35-4ecb-b952-922ac494a543"
+                    },
+                    {
+                      "id": "20b03e03-bd4e-48fa-a3b8-64910ab9d6cc",
+                      "name": "Event not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/events/:eventId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "events",
+                            ":eventId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "eventId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:58:34.000Z",
+                      "updatedAt": "2026-07-28T01:58:34.000Z",
+                      "uid": "35240-20b03e03-bd4e-48fa-a3b8-64910ab9d6cc"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:58:34.000Z",
+                  "updatedAt": "2026-07-28T01:58:34.000Z",
+                  "uid": "35240-e00f9ffa-0336-46d7-bc18-9178fc1b74dd"
+                }
+              ],
+              "id": "54977185-ba4f-49ae-8a86-6e7d27c115fe",
+              "createdAt": "2026-07-28T01:58:34.000Z",
+              "updatedAt": "2026-07-28T01:58:34.000Z",
+              "uid": "35240-54977185-ba4f-49ae-8a86-6e7d27c115fe"
+            },
+            {
+              "name": "List Recent Events",
+              "id": "043f0a1b-d39a-4b08-8e0f-8426ae4e4a4c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/events?name=<string>&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "Filter events by event name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                },
+                "description": "Returns recent events received by Inngest in the current environment, optionally filtered by event name."
+              },
+              "response": [
+                {
+                  "id": "c45afd28-a512-4d22-8b03-9362bccfd52b",
+                  "name": "A page of events.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/events?name=<string>&limit=50",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "events"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter events by event name.",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "limit",
+                          "value": "50"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": [\n    {\n      \"name\": \"<string>\",\n      \"data\": {\n        \"autea1\": \"reprehenderit labore laboris minim dolor\"\n      },\n      \"id\": \"<string>\",\n      \"user\": {\n        \"in5e9\": -15454287\n      },\n      \"ts\": \"<long>\",\n      \"v\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"data\": {\n        \"cillum91\": \"ea ni\",\n        \"aliquipc1\": true,\n        \"elit8\": \"labore nostrud nisi\"\n      },\n      \"id\": \"<string>\",\n      \"user\": {\n        \"sint59b\": 92863113,\n        \"est5_f\": \"ipsum Duis id\"\n      },\n      \"ts\": \"<long>\",\n      \"v\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:58:34.000Z",
+                  "updatedAt": "2026-07-28T01:58:34.000Z",
+                  "uid": "35240-c45afd28-a512-4d22-8b03-9362bccfd52b"
+                }
+              ],
+              "createdAt": "2026-07-28T01:58:34.000Z",
+              "updatedAt": "2026-07-28T01:58:34.000Z",
+              "uid": "35240-043f0a1b-d39a-4b08-8e0f-8426ae4e4a4c"
+            }
+          ],
+          "id": "db884da3-13c7-42a4-8efc-e70d0c036a31",
+          "createdAt": "2026-07-28T01:58:34.000Z",
+          "updatedAt": "2026-07-28T01:58:34.000Z",
+          "uid": "35240-db884da3-13c7-42a4-8efc-e70d0c036a31"
+        }
+      ],
+      "id": "5067fdcb-2bbb-4792-99bf-1d7cc13ff8cb",
+      "createdAt": "2026-07-28T01:58:34.000Z",
+      "updatedAt": "2026-07-28T01:58:34.000Z",
+      "uid": "35240-5067fdcb-2bbb-4792-99bf-1d7cc13ff8cb"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.inngest.com"
+    }
+  ]
+}

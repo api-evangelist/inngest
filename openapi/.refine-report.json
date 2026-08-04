@@ -1,0 +1,28 @@
+{
+  "provider": "inngest",
+  "sources": [
+    "inngest-account-api-openapi.yml",
+    "inngest-apps-api-openapi.yml",
+    "inngest-environments-api-openapi.yml",
+    "inngest-events-api-openapi.yml",
+    "inngest-functions-api-openapi.yml",
+    "inngest-keys-api-openapi.yml",
+    "inngest-runs-api-openapi.yml",
+    "inngest-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "inngest-account-api-openapi.yml",
+    "inngest-apps-api-openapi.yml",
+    "inngest-environments-api-openapi.yml",
+    "inngest-events-api-openapi.yml",
+    "inngest-functions-api-openapi.yml",
+    "inngest-keys-api-openapi.yml",
+    "inngest-runs-api-openapi.yml",
+    "inngest-webhooks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

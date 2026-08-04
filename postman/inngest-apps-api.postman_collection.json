@@ -1,0 +1,186 @@
+{
+  "info": {
+    "_postman_id": "356bc6b6-cf20-48b2-9b3d-95682d788dbf",
+    "name": "Inngest REST Account Apps API",
+    "description": "The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest's event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.\n\nContact Support:\n Name: Inngest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:58:31.000Z",
+    "updatedAt": "2026-07-28T01:58:31.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-356bc6b6-cf20-48b2-9b3d-95682d788dbf"
+  },
+  "item": [
+    {
+      "name": "v2",
+      "item": [
+        {
+          "name": "apps",
+          "item": [
+            {
+              "name": "{appId}",
+              "item": [
+                {
+                  "name": "syncs",
+                  "item": [
+                    {
+                      "name": "Sync App",
+                      "id": "5f832a48-8197-4357-9d38-e7b524cb907d",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"url\": \"<uri>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v2/apps/:appId/syncs",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v2",
+                            "apps",
+                            ":appId",
+                            "syncs"
+                          ],
+                          "variable": [
+                            {
+                              "id": "e5b11b54-d533-43f4-bd4b-0fb7a8b43b96",
+                              "key": "appId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Sync an app at the provided URL. Beta."
+                      },
+                      "response": [
+                        {
+                          "id": "d528c533-0be0-4848-990b-35399f352d1e",
+                          "name": "Sync result.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"url\": \"<uri>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v2/apps/:appId/syncs",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v2",
+                                "apps",
+                                ":appId",
+                                "syncs"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "appId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"nostrud_92\": 10765118.27472739,\n  \"ipsum_d1\": -62368875.1545663\n}",
+                          "createdAt": "2026-07-28T01:58:32.000Z",
+                          "updatedAt": "2026-07-28T01:58:32.000Z",
+                          "uid": "35240-d528c533-0be0-4848-990b-35399f352d1e"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:58:32.000Z",
+                      "updatedAt": "2026-07-28T01:58:32.000Z",
+                      "uid": "35240-5f832a48-8197-4357-9d38-e7b524cb907d"
+                    }
+                  ],
+                  "id": "bbede4b8-0f30-4bd1-a63e-aeb7d714505f",
+                  "createdAt": "2026-07-28T01:58:32.000Z",
+                  "updatedAt": "2026-07-28T01:58:32.000Z",
+                  "uid": "35240-bbede4b8-0f30-4bd1-a63e-aeb7d714505f"
+                }
+              ],
+              "id": "d55cf51b-3378-4df4-a25a-e0ff4bd66464",
+              "createdAt": "2026-07-28T01:58:32.000Z",
+              "updatedAt": "2026-07-28T01:58:32.000Z",
+              "uid": "35240-d55cf51b-3378-4df4-a25a-e0ff4bd66464"
+            }
+          ],
+          "id": "ef6f9549-cbff-4fe7-b8e7-4cc9dca41b3f",
+          "createdAt": "2026-07-28T01:58:32.000Z",
+          "updatedAt": "2026-07-28T01:58:32.000Z",
+          "uid": "35240-ef6f9549-cbff-4fe7-b8e7-4cc9dca41b3f"
+        }
+      ],
+      "id": "48dcdcac-8b4b-420c-915c-06227749a00c",
+      "createdAt": "2026-07-28T01:58:32.000Z",
+      "updatedAt": "2026-07-28T01:58:32.000Z",
+      "uid": "35240-48dcdcac-8b4b-420c-915c-06227749a00c"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.inngest.com"
+    }
+  ]
+}
