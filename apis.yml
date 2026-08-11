@@ -531,6 +531,14 @@ apis:
   - type: FinOps
     url: finops/inngest-finops.yml
 common:
+  - type: IssueTracker
+    url: https://github.com/inngest/inngest/issues
+  - type: Releases
+    url: https://github.com/inngest/inngest/releases
+  - type: SecurityPolicy
+    url: https://github.com/inngest/inngest/blob/main/SECURITY.md
+  - type: ContributionGuide
+    url: https://github.com/inngest/inngest/blob/main/docs/CONTRIBUTING.md
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/inngest/overview
   - type: AgenticAccess
