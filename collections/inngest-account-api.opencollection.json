@@ -1,0 +1,67 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Inngest REST Account API",
+    "version": "2026-05"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v2/account",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the account for the authenticated user."
+        },
+        {
+          "info": {
+            "name": "List Partner Accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v2/partner/accounts",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists sub-accounts. Requires partner access."
+        },
+        {
+          "info": {
+            "name": "Create Partner Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inngest.com/v2/partner/accounts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a sub-account. Requires partner access."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

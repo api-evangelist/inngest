@@ -1,0 +1,633 @@
+{
+  "item": [
+    {
+      "id": "6dbcb6ac-fc32-472d-a5b4-acf12903a90d",
+      "name": "Events",
+      "description": {
+        "content": "Send and inspect events that trigger Inngest functions.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "37881f3a-8c75-4ef0-9927-ae8094c0b227",
+          "name": "Send Events To Inngest",
+          "request": {
+            "name": "Send Events To Inngest",
+            "description": {
+              "content": "Sends one or more events to Inngest using an environment-scoped event key. The request body may be either a single event object or an array of event objects, up to a 512 KB total payload. Aliased at https://inn.gs/e/{eventKey}.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "e",
+                ":eventKey"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "eventKey",
+                  "description": "(Required) Your environment-specific Inngest event key."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Optional branch environment to target.",
+                "key": "x-inngest-env",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"data\": {\n    \"key_0\": 381.0998009788091,\n    \"key_1\": 9607.688308951923,\n    \"key_2\": \"string\"\n  },\n  \"id\": \"<string>\",\n  \"user\": {\n    \"key_0\": false,\n    \"key_1\": 3263.5587047458457,\n    \"key_2\": \"string\"\n  },\n  \"ts\": \"<long>\",\n  \"v\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "05779482-f187-44d1-8e90-6f306a2135d9",
+              "name": "Events accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "e",
+                    ":eventKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "eventKey",
+                      "description": "(Required) Your environment-specific Inngest event key."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Optional branch environment to target.",
+                    "key": "x-inngest-env",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"data\": {\n    \"key_0\": 7099,\n    \"key_1\": 3955.535050182083,\n    \"key_2\": \"string\"\n  },\n  \"id\": \"<string>\",\n  \"user\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  },\n  \"ts\": \"<long>\",\n  \"v\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ids\": [\n    \"string\",\n    \"string\"\n  ],\n  \"status\": 8568\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b8db677-8156-4008-b2cb-6e484c99baf3",
+              "name": "Invalid request payload.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "e",
+                    ":eventKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "eventKey",
+                      "description": "(Required) Your environment-specific Inngest event key."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Optional branch environment to target.",
+                    "key": "x-inngest-env",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"data\": {\n    \"key_0\": 7099,\n    \"key_1\": 3955.535050182083,\n    \"key_2\": \"string\"\n  },\n  \"id\": \"<string>\",\n  \"user\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  },\n  \"ts\": \"<long>\",\n  \"v\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0bbcf5cf-0a38-4e86-b90c-17d64c3ab6f6",
+              "name": "Invalid event key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "e",
+                    ":eventKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "eventKey",
+                      "description": "(Required) Your environment-specific Inngest event key."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Optional branch environment to target.",
+                    "key": "x-inngest-env",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"data\": {\n    \"key_0\": 7099,\n    \"key_1\": 3955.535050182083,\n    \"key_2\": \"string\"\n  },\n  \"id\": \"<string>\",\n  \"user\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  },\n  \"ts\": \"<long>\",\n  \"v\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ba156f60-335a-4c98-962c-d9f2fd9af2ab",
+          "name": "List Recent Events",
+          "request": {
+            "name": "List Recent Events",
+            "description": {
+              "content": "Returns recent events received by Inngest in the current environment, optionally filtered by event name.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter events by event name."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d66b014f-90af-4651-8ebe-a6d70f8242c3",
+              "name": "A page of events.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"name\": \"<string>\",\n      \"data\": {\n        \"key_0\": false,\n        \"key_1\": 3713\n      },\n      \"id\": \"<string>\",\n      \"user\": {\n        \"key_0\": \"string\",\n        \"key_1\": 329,\n        \"key_2\": \"string\"\n      },\n      \"ts\": \"<long>\",\n      \"v\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"data\": {\n        \"key_0\": 3854,\n        \"key_1\": 218.06317467831238,\n        \"key_2\": 7255,\n        \"key_3\": \"string\"\n      },\n      \"id\": \"<string>\",\n      \"user\": {\n        \"key_0\": \"string\",\n        \"key_1\": 8447.862745843662,\n        \"key_2\": 9141\n      },\n      \"ts\": \"<long>\",\n      \"v\": \"<string>\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "08bacd20-f236-4bfb-8216-90e72c971e1b",
+          "name": "Get An Event By ID",
+          "request": {
+            "name": "Get An Event By ID",
+            "description": {
+              "content": "Returns a single event by its ID, including the payload and ingestion metadata.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "events",
+                ":eventId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "eventId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0934f4f4-067c-4839-ba6d-73fc7e7aeaa2",
+              "name": "Event details.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "events",
+                    ":eventId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "eventId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"<string>\",\n  \"data\": {\n    \"key_0\": 7099,\n    \"key_1\": 3955.535050182083,\n    \"key_2\": \"string\"\n  },\n  \"id\": \"<string>\",\n  \"user\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  },\n  \"ts\": \"<long>\",\n  \"v\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8f679a97-d97c-48ed-b3af-b791ef1f7d18",
+              "name": "Event not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "events",
+                    ":eventId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "eventId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1b017a0e-3224-471b-87fb-d966ffe6d80a",
+          "name": "List Runs Triggered By An Event",
+          "request": {
+            "name": "List Runs Triggered By An Event",
+            "description": {
+              "content": "Lists the function runs that were triggered by a single ingested event.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "events",
+                ":eventId",
+                "runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "eventId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "40e67353-3051-4e9d-b11c-a7f82977c1dc",
+              "name": "Runs associated with the event.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "events",
+                    ":eventId",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "eventId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"run_id\": \"string\",\n      \"function_id\": \"string\",\n      \"status\": \"Failed\",\n      \"event_id\": \"string\",\n      \"output\": {\n        \"key_0\": 2926\n      },\n      \"started_at\": \"1967-12-06T03:13:28.198Z\",\n      \"ended_at\": \"1952-11-30T13:44:55.154Z\"\n    },\n    {\n      \"run_id\": \"string\",\n      \"function_id\": \"string\",\n      \"status\": \"Running\",\n      \"event_id\": \"string\",\n      \"output\": {\n        \"key_0\": true\n      },\n      \"started_at\": \"1963-08-21T08:18:20.109Z\",\n      \"ended_at\": \"2017-05-09T22:04:14.235Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.inngest.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "533d144d-c702-493a-85ef-7b8fe3c32988",
+    "name": "Inngest REST Account Events API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest's event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.\n\nContact Support:\n Name: Inngest",
+      "type": "text/plain"
+    }
+  }
+}

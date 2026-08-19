@@ -1,0 +1,119 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Inngest REST Account Events API",
+    "version": "2026-05"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send Events To Inngest",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inngest.com/e/:eventKey",
+            "headers": [
+              {
+                "name": "x-inngest-env",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "eventKey",
+                "value": "",
+                "type": "path",
+                "description": "Your environment-specific Inngest event key."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends one or more events to Inngest using an environment-scoped event key. The request body may be either a single event object or an array of event objects, up to a 512 KB total payload. Aliased at https://inn.gs/e/{eventKey}."
+        },
+        {
+          "info": {
+            "name": "List Recent Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v1/events",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter events by event name."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns recent events received by Inngest in the current environment, optionally filtered by event name."
+        },
+        {
+          "info": {
+            "name": "Get An Event By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v1/events/:eventId",
+            "params": [
+              {
+                "name": "eventId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a single event by its ID, including the payload and ingestion metadata."
+        },
+        {
+          "info": {
+            "name": "List Runs Triggered By An Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inngest.com/v1/events/:eventId/runs",
+            "params": [
+              {
+                "name": "eventId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists the function runs that were triggered by a single ingested event."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

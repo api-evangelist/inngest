@@ -1,0 +1,44 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Inngest REST Account Apps API",
+    "version": "2026-05"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Apps",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Sync App",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inngest.com/v2/apps/:appId/syncs",
+            "params": [
+              {
+                "name": "appId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sync an app at the provided URL. Beta."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

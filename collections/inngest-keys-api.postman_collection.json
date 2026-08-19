@@ -1,0 +1,212 @@
+{
+  "item": [
+    {
+      "id": "7ca83a98-a0cb-4ebf-80e0-7a9083ad87ba",
+      "name": "Keys",
+      "description": {
+        "content": "Manage event keys and signing keys per environment.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b16c5368-6cb4-476c-a26d-6c62e1f599fe",
+          "name": "List Event Keys",
+          "request": {
+            "name": "List Event Keys",
+            "description": {
+              "content": "Lists event keys (used for /e/{eventKey} ingestion) for the account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "keys",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ad282147-75f5-47a0-8449-48f36856f6cd",
+              "name": "Event keys for the account.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "keys",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"prefix\": \"string\",\n      \"createdAt\": \"1982-06-17T22:20:57.942Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"prefix\": \"string\",\n      \"createdAt\": \"1955-05-06T01:15:09.147Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "19ba0236-4f53-4f4d-8e20-505ebd20a895",
+          "name": "List Signing Keys",
+          "request": {
+            "name": "List Signing Keys",
+            "description": {
+              "content": "Lists signing keys (used to authenticate management API calls) for the account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "keys",
+                "signing"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3fa5b0a0-d337-4ca8-a5cc-c492c9ba6c37",
+              "name": "Signing keys for the account.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "keys",
+                    "signing"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"prefix\": \"string\",\n      \"createdAt\": \"1999-12-27T09:53:15.386Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"prefix\": \"string\",\n      \"createdAt\": \"2024-04-18T02:11:22.286Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.inngest.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "da46f61e-b1fa-48a7-b84f-aac4fbe795bc",
+    "name": "Inngest REST Account Keys API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest's event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.\n\nContact Support:\n Name: Inngest",
+      "type": "text/plain"
+    }
+  }
+}
