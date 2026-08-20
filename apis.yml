@@ -38,6 +38,26 @@ tags:
   - Insights
   - Orchestration
   - Queues
+  - Real-Time
+  - Self-Hosting
+  - Serverless
+  - Signals
+  - Step Functions
+  - Webhook
+  - Workflows
+tags_raw:
+  - AI Agents
+  - AgentKit
+  - Background Jobs
+  - Connect
+  - Cron Jobs
+  - Dev Server
+  - Durable Endpoints
+  - Durable Execution
+  - Event-Driven
+  - Insights
+  - Orchestration
+  - Queues
   - Realtime
   - Self-Hosting
   - Serverless
@@ -116,6 +136,8 @@ apis:
   humanURL: https://www.inngest.com/docs/reference/rest-api
   baseURL: https://api.inngest.com
   tags:
+  - Application
+  tags_raw:
   - Apps
   properties:
   - type: OpenAPI
@@ -236,6 +258,8 @@ apis:
   humanURL: https://www.inngest.com/docs/reference/rest-api
   baseURL: https://api.inngest.com
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
@@ -476,6 +500,8 @@ apis:
   humanURL: https://www.inngest.com/docs/reference/rest-api
   baseURL: https://api.inngest.com
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
