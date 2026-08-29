@@ -9,6 +9,19 @@ description: >-
   Kotlin, AgentKit for multi-agent systems, Connect for persistent worker connections, Realtime streaming, Signals,
   Durable Endpoints, Insights (SQL over events and runs), and a heavily-marketed local Dev Server CLI.
 type: Index
+deliveryModel:
+  model: unknown
+  open_source: unknown
+  commercial: true
+  callable_host: true
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  - pricing
+  - repository-unlicensed
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
