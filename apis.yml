@@ -571,6 +571,8 @@ apis:
   - type: FinOps
     url: finops/inngest-finops.yml
 common:
+  - type: Website
+    url: https://www.inngest.com/
   - type: IssueTracker
     url: https://github.com/inngest/inngest/issues
   - type: Releases
