@@ -212,6 +212,8 @@ apis:
   humanURL: https://www.inngest.com/docs/reference/rest-api
   baseURL: https://api.inngest.com
   tags:
+  - Environment
+  tags_raw:
   - Environments
   properties:
   - type: OpenAPI
