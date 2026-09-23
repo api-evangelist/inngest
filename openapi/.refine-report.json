@@ -1,14 +1,7 @@
 {
   "provider": "inngest",
   "sources": [
-    "inngest-account-api-openapi.yml",
-    "inngest-apps-api-openapi.yml",
-    "inngest-environments-api-openapi.yml",
-    "inngest-events-api-openapi.yml",
-    "inngest-functions-api-openapi.yml",
-    "inngest-keys-api-openapi.yml",
-    "inngest-runs-api-openapi.yml",
-    "inngest-webhooks-api-openapi.yml"
+    "_original/inngest-openapi.yml"
   ],
   "outputs": [
     "inngest-account-api-openapi.yml",
@@ -23,6 +16,19 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "inngest-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "inngest-account-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "inngest-apps-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "inngest-environments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "inngest-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "inngest-functions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "inngest-keys-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "inngest-runs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "inngest-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

@@ -1,11 +1,11 @@
-aid: inngest:rules
-name: Inngest Usage Rules
+x-aid: inngest:rules
+x-name: Inngest Usage Rules
 description: >-
   Operational rules and guardrails for working with the Inngest event-driven
   durable execution platform and its REST API. Covers authentication,
   event ingestion limits, function and step design, retries, flow control,
   AI agent orchestration, environments, and observability expectations.
-modified: '2026-05-22'
+x-modified: '2026-05-22'
 rules:
   - id: auth-signing-key
     category: Authentication
@@ -109,6 +109,6 @@ rules:
       For self-hosted deployments, prefer the official `inngest-helm` chart
       with PostgreSQL, Redis, and optional KEDA autoscaling over hand-rolled
       Compose files.
-maintainers:
+x-maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

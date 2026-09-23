@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Inngest REST Account Runs API
+  title: Inngest REST Runs API
   description: 'The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest''s event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.'
   version: 2026-05
   contact:
@@ -166,6 +166,24 @@ components:
         ended_at:
           type: string
           format: date-time
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+        output:
+          type: object
+          additionalProperties: true
     V2FunctionRun:
       type: object
       properties:
@@ -195,6 +213,13 @@ components:
         ended_at:
           type: string
           format: date-time
+    V2FunctionTrace:
+      type: object
+      properties:
+        run_id:
+          type: string
+        root:
+          $ref: '#/components/schemas/V2TraceSpan'
     V2TraceSpan:
       type: object
       properties:
@@ -235,31 +260,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/V2TraceSpan'
-    V2FunctionTrace:
-      type: object
-      properties:
-        run_id:
-          type: string
-        root:
-          $ref: '#/components/schemas/V2TraceSpan'
-    Job:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        status:
-          type: string
-        started_at:
-          type: string
-          format: date-time
-        ended_at:
-          type: string
-          format: date-time
-        output:
-          type: object
-          additionalProperties: true
   securitySchemes:
     bearerAuth:
       type: http

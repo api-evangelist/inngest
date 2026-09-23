@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Inngest REST Account Events API
+  title: Inngest REST Events API
   description: 'The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest''s event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.'
   version: 2026-05
   contact:
@@ -152,31 +152,6 @@ paths:
       - bearerAuth: []
 components:
   schemas:
-    Run:
-      type: object
-      properties:
-        run_id:
-          type: string
-        function_id:
-          type: string
-        status:
-          type: string
-          enum:
-          - Running
-          - Completed
-          - Failed
-          - Cancelled
-        event_id:
-          type: string
-        output:
-          type: object
-          additionalProperties: true
-        started_at:
-          type: string
-          format: date-time
-        ended_at:
-          type: string
-          format: date-time
     Event:
       type: object
       required:
@@ -203,6 +178,31 @@ components:
         v:
           type: string
           description: Optional event version.
+    Run:
+      type: object
+      properties:
+        run_id:
+          type: string
+        function_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - Running
+          - Completed
+          - Failed
+          - Cancelled
+        event_id:
+          type: string
+        output:
+          type: object
+          additionalProperties: true
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
     EventResponse:
       type: object
       properties:
