@@ -152,32 +152,6 @@ paths:
       - bearerAuth: []
 components:
   schemas:
-    Event:
-      type: object
-      required:
-      - name
-      - data
-      properties:
-        id:
-          type: string
-          description: Optional deduplication ID.
-        name:
-          type: string
-          description: Event name (e.g. app/user.created).
-        data:
-          type: object
-          additionalProperties: true
-          description: Arbitrary JSON payload.
-        user:
-          type: object
-          additionalProperties: true
-        ts:
-          type: integer
-          format: int64
-          description: Unix timestamp in milliseconds.
-        v:
-          type: string
-          description: Optional event version.
     Run:
       type: object
       properties:
@@ -212,6 +186,32 @@ components:
             type: string
         status:
           type: integer
+    Event:
+      type: object
+      required:
+      - name
+      - data
+      properties:
+        id:
+          type: string
+          description: Optional deduplication ID.
+        name:
+          type: string
+          description: Event name (e.g. app/user.created).
+        data:
+          type: object
+          additionalProperties: true
+          description: Arbitrary JSON payload.
+        user:
+          type: object
+          additionalProperties: true
+        ts:
+          type: integer
+          format: int64
+          description: Unix timestamp in milliseconds.
+        v:
+          type: string
+          description: Optional event version.
   securitySchemes:
     bearerAuth:
       type: http

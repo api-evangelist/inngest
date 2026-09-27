@@ -11,6 +11,10 @@ description: >-
 type: Index
 deliveryModel:
   model: unknown
+  license_evidence:
+    repo: inngest/inngest
+    spdx: NOASSERTION
+    stars: 5884
   open_source: unknown
   commercial: true
   callable_host: true
@@ -20,7 +24,7 @@ deliveryModel:
   - openapi
   - pricing
   - repository-unlicensed
-  generated: '2026-08-28'
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: freemium

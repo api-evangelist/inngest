@@ -141,49 +141,6 @@ paths:
       - bearerAuth: []
 components:
   schemas:
-    Run:
-      type: object
-      properties:
-        run_id:
-          type: string
-        function_id:
-          type: string
-        status:
-          type: string
-          enum:
-          - Running
-          - Completed
-          - Failed
-          - Cancelled
-        event_id:
-          type: string
-        output:
-          type: object
-          additionalProperties: true
-        started_at:
-          type: string
-          format: date-time
-        ended_at:
-          type: string
-          format: date-time
-    Job:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        status:
-          type: string
-        started_at:
-          type: string
-          format: date-time
-        ended_at:
-          type: string
-          format: date-time
-        output:
-          type: object
-          additionalProperties: true
     V2FunctionRun:
       type: object
       properties:
@@ -213,13 +170,6 @@ components:
         ended_at:
           type: string
           format: date-time
-    V2FunctionTrace:
-      type: object
-      properties:
-        run_id:
-          type: string
-        root:
-          $ref: '#/components/schemas/V2TraceSpan'
     V2TraceSpan:
       type: object
       properties:
@@ -260,6 +210,56 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/V2TraceSpan'
+    Run:
+      type: object
+      properties:
+        run_id:
+          type: string
+        function_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - Running
+          - Completed
+          - Failed
+          - Cancelled
+        event_id:
+          type: string
+        output:
+          type: object
+          additionalProperties: true
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+    V2FunctionTrace:
+      type: object
+      properties:
+        run_id:
+          type: string
+        root:
+          $ref: '#/components/schemas/V2TraceSpan'
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+        output:
+          type: object
+          additionalProperties: true
   securitySchemes:
     bearerAuth:
       type: http
