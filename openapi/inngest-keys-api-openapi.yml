@@ -68,22 +68,22 @@ paths:
       - bearerAuth: []
 components:
   schemas:
-    V2SigningKey:
-      type: object
-      properties:
-        id:
-          type: string
-        prefix:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
     V2EventKey:
       type: object
       properties:
         id:
           type: string
         name:
+          type: string
+        prefix:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    V2SigningKey:
+      type: object
+      properties:
+        id:
           type: string
         prefix:
           type: string
