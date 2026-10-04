@@ -152,15 +152,6 @@ paths:
       - bearerAuth: []
 components:
   schemas:
-    EventResponse:
-      type: object
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-        status:
-          type: integer
     Run:
       type: object
       properties:
@@ -186,6 +177,15 @@ components:
         ended_at:
           type: string
           format: date-time
+    EventResponse:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+        status:
+          type: integer
     Event:
       type: object
       required:

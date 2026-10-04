@@ -141,6 +141,13 @@ paths:
       - bearerAuth: []
 components:
   schemas:
+    V2FunctionTrace:
+      type: object
+      properties:
+        run_id:
+          type: string
+        root:
+          $ref: '#/components/schemas/V2TraceSpan'
     Run:
       type: object
       properties:
@@ -253,13 +260,6 @@ components:
         ended_at:
           type: string
           format: date-time
-    V2FunctionTrace:
-      type: object
-      properties:
-        run_id:
-          type: string
-        root:
-          $ref: '#/components/schemas/V2TraceSpan'
   securitySchemes:
     bearerAuth:
       type: http
