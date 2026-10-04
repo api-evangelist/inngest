@@ -43,6 +43,10 @@ accessModel:
 position: Consuming
 access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/inngest.png
+x-docs-platform: gitbook
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-10-03
+x-docs-hosting: vercel
 tags:
   - AI Agents
   - AgentKit
@@ -577,6 +581,9 @@ apis:
   - type: FinOps
     url: finops/inngest-finops.yml
 common:
+  - type: CapabilityMap
+    url: capabilities/inngest-capability-edges.yml
+    name: Inngest Business Capability Map
   - type: Website
     url: https://www.inngest.com/
   - type: IssueTracker
