@@ -581,6 +581,12 @@ apis:
   - type: FinOps
     url: finops/inngest-finops.yml
 common:
+  - type: Plans
+    url: plans/inngest-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/inngest-rate-limits.yml
+  - type: FinOps
+    url: finops/inngest-finops.yml
   - type: CapabilityMap
     url: capabilities/inngest-capability-edges.yml
     name: Inngest Business Capability Map
