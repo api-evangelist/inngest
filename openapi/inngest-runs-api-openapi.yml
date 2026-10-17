@@ -148,20 +148,42 @@ components:
           type: string
         root:
           $ref: '#/components/schemas/V2TraceSpan'
-    Run:
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+        output:
+          type: object
+          additionalProperties: true
+    V2FunctionRun:
       type: object
       properties:
         run_id:
           type: string
         function_id:
           type: string
+        app_id:
+          type: string
         status:
           type: string
           enum:
-          - Running
-          - Completed
-          - Failed
-          - Cancelled
+          - QUEUED
+          - RUNNING
+          - COMPLETED
+          - FAILED
+          - CANCELLED
+          - PAUSED
         event_id:
           type: string
         output:
@@ -213,42 +235,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/V2TraceSpan'
-    Job:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        status:
-          type: string
-        started_at:
-          type: string
-          format: date-time
-        ended_at:
-          type: string
-          format: date-time
-        output:
-          type: object
-          additionalProperties: true
-    V2FunctionRun:
+    Run:
       type: object
       properties:
         run_id:
           type: string
         function_id:
           type: string
-        app_id:
-          type: string
         status:
           type: string
           enum:
-          - QUEUED
-          - RUNNING
-          - COMPLETED
-          - FAILED
-          - CANCELLED
-          - PAUSED
+          - Running
+          - Completed
+          - Failed
+          - Cancelled
         event_id:
           type: string
         output:
