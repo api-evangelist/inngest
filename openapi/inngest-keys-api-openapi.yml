@@ -1,97 +1,311 @@
 openapi: 3.2.0
 info:
-  title: Inngest REST Keys API
-  description: 'The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest''s event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.'
-  version: 2026-05
-  contact:
-    name: Inngest
-    url: https://www.inngest.com
-  license:
-    name: Inngest Terms of Service
-    url: https://www.inngest.com/terms
+  description: The v2 API delivers a significantly improved developer experience with consistent design patterns and enhanced functionality.
+  title: Inngest REST API v2 Keys API
+  version: 2.0.0
 servers:
-- url: https://api.inngest.com
-  description: Production REST API (root, v1)
-- url: https://api.inngest.com/v2
-  description: Production REST API (v2 management surface)
-- url: https://inn.gs
-  description: Event ingestion endpoint (alias of /e/{eventKey})
-- url: http://localhost:8288
-  description: Local Inngest Dev Server (root, v1)
-- url: http://localhost:8288/api/v2
-  description: Local Inngest Dev Server (v2 management surface)
+- description: Production server
+  url: https://api.inngest.com/v2
+- description: Development server
+  url: http://localhost:8288/api/v2
 tags:
-- name: Keys
-  description: Manage event keys and signing keys per environment.
+- description: Manage event and signing keys
+  name: Keys
 paths:
-  /v2/keys/events:
+  /keys/events:
     get:
-      tags:
-      - Keys
-      summary: List Event Keys
-      description: Lists event keys (used for /e/{eventKey} ingestion) for the account.
-      operationId: v2FetchAccountEventKeys
+      description: Lists event keys for a specific account, optionally filtered by environment. If the environment header isn't specified, this returns the default production environment's keys.
+      operationId: V2_FetchAccountEventKeys
+      parameters:
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: 'Number of event keys to return per page (min: 1, max: 100)'
+        in: query
+        name: limit
+        schema:
+          default: '20'
+          format: int32
+          type: integer
+      - description: Filter event keys by environment (e.g., 'production', 'staging', 'development')
+        in: header
+        name: X-Inngest-Env
+        schema:
+          type: string
       responses:
         '200':
-          description: Event keys for the account.
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    data:
+                    - createdAt: '2024-01-15T10:30:00Z'
+                      environment: production
+                      id: d4e5f6a7-b8c9-4012-def4-567890cdab12
+                      key: inngest-event-key-prod-abc123
+                      name: Production Event Key
+                    - createdAt: '2024-01-18T14:22:33Z'
+                      environment: staging
+                      id: e5f6a7b8-c9d0-4123-efa5-67890dbc1234
+                      key: inngest-event-key-stage-def456
+                      name: Staging Event Key
+                    metadata:
+                      cachedUntil: null
+                      fetchedAt: '2024-01-20T14:22:33Z'
+                    page:
+                      cursor: 01K3SB60E36ZMPEV43BG0H20MW
+                      hasMore: true
+                      limit: 20
+              schema:
+                $ref: '#/components/schemas/v2FetchAccountEventKeysResponse'
+          description: List of account event keys
+        '400':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: invalid_field_format
+                      message: Limit must be at least 1
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Bad Request - invalid query parameters
+        '401':
+          content:
+            application/json:
+              examples:
+                default:
+                  value: Authentication failed
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unauthorized - authentication required
+        '403':
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/V2EventKey'
-      security:
-      - bearerAuth: []
-  /v2/keys/signing:
-    get:
-      tags:
-      - Keys
-      summary: List Signing Keys
-      description: Lists signing keys (used to authenticate management API calls) for the account.
-      operationId: v2FetchAccountSigningKeys
-      responses:
-        '200':
-          description: Signing keys for the account.
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Forbidden - insufficient permissions
+        '404':
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/V2SigningKey'
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Not Found - account not found
+        '500':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: internal_error
+                      message: Something went wrong
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Internal Server Error
       security:
-      - bearerAuth: []
+      - BearerAuth: []
+      summary: List account event keys
+      tags:
+      - Keys
+  /keys/signing:
+    get:
+      description: Lists signing keys for a specific account, optionally filtered by environment. If the environment header isn't specified, this returns the default production environment's keys.
+      operationId: V2_FetchAccountSigningKeys
+      parameters:
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: 'Number of signing keys to return per page (min: 1, max: 100)'
+        in: query
+        name: limit
+        schema:
+          default: '20'
+          format: int32
+          type: integer
+      - description: Filter signing keys by environment (e.g., 'production', 'staging', 'development')
+        in: header
+        name: X-Inngest-Env
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    data:
+                    - createdAt: '2024-01-15T10:30:00Z'
+                      environment: production
+                      id: f6a7b8c9-d0e1-4234-fab6-7890ecd23456
+                      key: signkey-prod-abc123def456
+                      name: ''
+                    metadata:
+                      cachedUntil: null
+                      fetchedAt: '2024-01-20T14:22:33Z'
+                    page:
+                      cursor: null
+                      hasMore: false
+                      limit: 20
+              schema:
+                $ref: '#/components/schemas/v2FetchAccountSigningKeysResponse'
+          description: List of account signing keys
+        '400':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: invalid_field_format
+                      message: Limit must be at least 1
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Bad Request - invalid query parameters
+        '401':
+          content:
+            application/json:
+              examples:
+                default:
+                  value: Authentication failed
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unauthorized - authentication required
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Forbidden - insufficient permissions
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Not Found - account not found
+        '500':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: internal_error
+                      message: Something went wrong
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: List account signing keys
+      tags:
+      - Keys
 components:
   schemas:
-    V2EventKey:
-      type: object
+    v2ErrorResponse:
       properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/v2Error'
+          type: array
+      type: object
+    v2FetchAccountEventKeysResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2EventKey'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2Page'
+      type: object
+    v2ResponseMetadata:
+      properties:
+        cachedUntil:
+          format: date-time
+          type: string
+        fetchedAt:
+          format: date-time
+          type: string
+        timeRange:
+          $ref: '#/components/schemas/v2TimeRange'
+      type: object
+    v2Error:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      type: object
+    v2Page:
+      properties:
+        cursor:
+          type: string
+        hasMore:
+          type: boolean
+        limit:
+          format: int32
+          type: integer
+      type: object
+    v2TimeRange:
+      properties:
+        from:
+          format: date-time
+          type: string
+        until:
+          format: date-time
+          type: string
+      type: object
+    v2FetchAccountSigningKeysResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2SigningKey'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2Page'
+      type: object
+    v2EventKey:
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        environment:
+          type: string
         id:
+          type: string
+        key:
           type: string
         name:
           type: string
-        prefix:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-    V2SigningKey:
       type: object
+    v2SigningKey:
       properties:
+        createdAt:
+          format: date-time
+          type: string
+        environment:
+          type: string
         id:
           type: string
-        prefix:
+        key:
           type: string
-        createdAt:
+        name:
           type: string
-          format: date-time
+      type: object
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: signing-key
+    BearerAuth:
+      description: 'Bearer token authentication. Format: `Bearer {key}`'
+      in: header
+      name: Authorization
+      type: apiKey

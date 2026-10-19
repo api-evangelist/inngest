@@ -1,219 +1,201 @@
 openapi: 3.2.0
 info:
-  title: Inngest REST Events API
-  description: 'The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest''s event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.'
-  version: 2026-05
-  contact:
-    name: Inngest
-    url: https://www.inngest.com
-  license:
-    name: Inngest Terms of Service
-    url: https://www.inngest.com/terms
+  description: The v2 API delivers a significantly improved developer experience with consistent design patterns and enhanced functionality.
+  title: Inngest REST API v2 Events API
+  version: 2.0.0
 servers:
-- url: https://api.inngest.com
-  description: Production REST API (root, v1)
-- url: https://api.inngest.com/v2
-  description: Production REST API (v2 management surface)
-- url: https://inn.gs
-  description: Event ingestion endpoint (alias of /e/{eventKey})
-- url: http://localhost:8288
-  description: Local Inngest Dev Server (root, v1)
-- url: http://localhost:8288/api/v2
-  description: Local Inngest Dev Server (v2 management surface)
+- description: Production server
+  url: https://api.inngest.com/v2
+- description: Development server
+  url: http://localhost:8288/api/v2
 tags:
-- name: Events
-  description: Send and inspect events that trigger Inngest functions.
+- description: Send events
+  name: Events
 paths:
-  /e/{eventKey}:
+  /events:
     post:
-      tags:
-      - Events
-      summary: Send Events To Inngest
-      description: Sends one or more events to Inngest using an environment-scoped event key. The request body may be either a single event object or an array of event objects, up to a 512 KB total payload. Aliased at https://inn.gs/e/{eventKey}.
-      operationId: sendEvents
-      parameters:
-      - name: eventKey
-        in: path
-        required: true
-        description: Your environment-specific Inngest event key.
-        schema:
-          type: string
-      - name: x-inngest-env
-        in: header
-        required: false
-        description: Optional branch environment to target.
-        schema:
-          type: string
+      description: Sends one event for testing and debugging. The request accepts the name, data, user, id, and ts fields; send batches and other Event API fields through an Inngest SDK or the Event API. This endpoint uses REST API rate limits and is not intended for high-volume ingestion. Use the returned event ID with the event runs endpoint to inspect any function runs triggered by the event.
+      operationId: V2_SendEvent
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              oneOf:
-              - $ref: '#/components/schemas/Event'
-              - type: array
-                items:
-                  $ref: '#/components/schemas/Event'
+              $ref: '#/components/schemas/v2SendEventRequest'
+        required: true
+        x-originalParamName: body
       responses:
         '200':
-          description: Events accepted.
           content:
             application/json:
+              examples:
+                default:
+                  value:
+                    data:
+                      eventId: 01K1QQ3VQ8R3M8QX4D51J8G7XH
+                    metadata:
+                      fetchedAt: '2026-08-06T16:00:00Z'
               schema:
-                $ref: '#/components/schemas/EventResponse'
+                $ref: '#/components/schemas/v2SendEventResponse'
+          description: Event accepted
         '400':
-          description: Invalid request payload.
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: validation_error
+                      message: timestamp is before Jan 1, 1980
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Bad Request - invalid event data
         '401':
-          description: Invalid event key.
-  /v1/events:
-    get:
-      tags:
-      - Events
-      summary: List Recent Events
-      description: Returns recent events received by Inngest in the current environment, optionally filtered by event name.
-      operationId: listEvents
-      parameters:
-      - name: name
-        in: query
-        required: false
-        description: Filter events by event name.
-        schema:
-          type: string
-      - name: limit
-        in: query
-        required: false
-        schema:
-          type: integer
-          default: 50
-      responses:
-        '200':
-          description: A page of events.
           content:
             application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: authorization_header_missing
+                      message: authorization header missing or invalid
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Event'
-      security:
-      - bearerAuth: []
-  /v1/events/{eventId}:
-    get:
-      tags:
-      - Events
-      summary: Get An Event By ID
-      description: Returns a single event by its ID, including the payload and ingestion metadata.
-      operationId: getEvent
-      parameters:
-      - name: eventId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Event details.
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unauthorized - authentication required
+        '403':
           content:
             application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: access_denied
+                      message: Cannot send events to an archived environment
               schema:
-                $ref: '#/components/schemas/Event'
-        '404':
-          description: Event not found.
-      security:
-      - bearerAuth: []
-  /v1/events/{eventId}/runs:
-    get:
-      tags:
-      - Events
-      summary: List Runs Triggered By An Event
-      description: Lists the function runs that were triggered by a single ingested event.
-      operationId: listEventRuns
-      parameters:
-      - name: eventId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Runs associated with the event.
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Forbidden - events cannot be sent to the selected environment
+        '413':
           content:
             application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: invalid_request
+                      message: Request body cannot exceed 3145728 bytes
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Run'
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Payload Too Large - request body exceeds the endpoint limit
+        '429':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: rate_limited
+                      message: API rate limit exceeded. The request was rejected and no event was sent.
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Too Many Requests - API rate limit exceeded. The request was rejected and no event was sent.
+        '500':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: internal_error
+                      message: Unable to send event
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Internal Server Error
       security:
-      - bearerAuth: []
+      - BearerAuth: []
+      summary: Send event
+      tags:
+      - Events
 components:
   schemas:
-    EventResponse:
-      type: object
+    v2ErrorResponse:
       properties:
-        ids:
-          type: array
+        errors:
           items:
-            type: string
-        status:
-          type: integer
-    Run:
+            $ref: '#/components/schemas/v2Error'
+          type: array
       type: object
+    v2SendEventRequest:
       properties:
-        run_id:
-          type: string
-        function_id:
-          type: string
-        status:
-          type: string
-          enum:
-          - Running
-          - Completed
-          - Failed
-          - Cancelled
-        event_id:
-          type: string
-        output:
+        data:
+          description: JSON object containing event data
+          example:
+            userId: 01H08WQHKQ9H8S7F7NQGQ0M1NZ
           type: object
-          additionalProperties: true
-        started_at:
+        id:
+          description: Optional event ID used for idempotency when scheduling function runs
+          example: user-created-01H08WQHKQ9H8S7F7NQGQ0M1NZ
           type: string
-          format: date-time
-        ended_at:
+        name:
+          description: Event name
+          example: app/user.created
           type: string
-          format: date-time
-    Event:
-      type: object
+        ts:
+          description: Optional event timestamp as Unix time in milliseconds. Defaults to the current time.
+          example: 1754496000000
+          format: int64
+          type: string
+        user:
+          description: Deprecated user data. Put user data in the data field instead.
+          example:
+            email: ada@example.com
+            id: 01H08WQHKQ9H8S7F7NQGQ0M1NZ
+          type: object
       required:
       - name
-      - data
+      type: object
+    v2SendEventData:
       properties:
-        id:
+        eventId:
+          description: Internal event ID assigned by Inngest
+          example: 01K1QQ3VQ8R3M8QX4D51J8G7XH
           type: string
-          description: Optional deduplication ID.
-        name:
+      type: object
+    v2ResponseMetadata:
+      properties:
+        cachedUntil:
+          format: date-time
           type: string
-          description: Event name (e.g. app/user.created).
+        fetchedAt:
+          format: date-time
+          type: string
+        timeRange:
+          $ref: '#/components/schemas/v2TimeRange'
+      type: object
+    v2SendEventResponse:
+      properties:
         data:
-          type: object
-          additionalProperties: true
-          description: Arbitrary JSON payload.
-        user:
-          type: object
-          additionalProperties: true
-        ts:
-          type: integer
-          format: int64
-          description: Unix timestamp in milliseconds.
-        v:
+          $ref: '#/components/schemas/v2SendEventData'
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+      type: object
+    v2Error:
+      properties:
+        code:
           type: string
-          description: Optional event version.
+        message:
+          type: string
+      type: object
+    v2TimeRange:
+      properties:
+        from:
+          format: date-time
+          type: string
+        until:
+          format: date-time
+          type: string
+      type: object
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: signing-key
+    BearerAuth:
+      description: 'Bearer token authentication. Format: `Bearer {key}`'
+      in: header
+      name: Authorization
+      type: apiKey

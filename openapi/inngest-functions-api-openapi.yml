@@ -1,111 +1,478 @@
 openapi: 3.2.0
 info:
-  title: Inngest REST Functions API
-  description: 'The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest''s event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.'
-  version: 2026-05
-  contact:
-    name: Inngest
-    url: https://www.inngest.com
-  license:
-    name: Inngest Terms of Service
-    url: https://www.inngest.com/terms
+  description: The v2 API delivers a significantly improved developer experience with consistent design patterns and enhanced functionality.
+  title: Inngest REST API v2 Functions API
+  version: 2.0.0
 servers:
-- url: https://api.inngest.com
-  description: Production REST API (root, v1)
-- url: https://api.inngest.com/v2
-  description: Production REST API (v2 management surface)
-- url: https://inn.gs
-  description: Event ingestion endpoint (alias of /e/{eventKey})
-- url: http://localhost:8288
-  description: Local Inngest Dev Server (root, v1)
-- url: http://localhost:8288/api/v2
-  description: Local Inngest Dev Server (v2 management surface)
+- description: Production server
+  url: https://api.inngest.com/v2
+- description: Development server
+  url: http://localhost:8288/api/v2
 tags:
-- name: Functions
-  description: List and invoke deployed Inngest functions.
+- description: Invoke and manage functions
+  name: Functions
 paths:
-  /v1/functions:
+  /apps/{appId}/functions:
     get:
-      tags:
-      - Functions
-      summary: List Functions
-      description: Lists all functions deployed to the current Inngest environment.
-      operationId: listFunctions
-      responses:
-        '200':
-          description: Deployed functions.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Function'
-      security:
-      - bearerAuth: []
-  /v2/apps/{appId}/functions/{functionId}/invoke:
-    post:
-      tags:
-      - Functions
-      summary: Invoke Function
-      description: Invokes a deployed Inngest function asynchronously or synchronously.
-      operationId: v2InvokeFunction
+      description: Lists function configuration and status details for an app
+      operationId: V2_GetFunctions
       parameters:
-      - name: appId
-        in: path
+      - in: path
+        name: appId
         required: true
         schema:
           type: string
-      - name: functionId
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: 'Number of functions to return per page (min: 1, max: 100)'
+        in: query
+        name: limit
+        schema:
+          default: '20'
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    data:
+                    - app:
+                        id: production-app
+                      configuration:
+                        retries:
+                          isDefault: true
+                          value: 3
+                      id: send-welcome-email
+                      isArchived: false
+                      isPaused: false
+                      name: Send welcome email
+                      slug: send-welcome-email
+                      triggers:
+                      - type: EVENT
+                        value: user.created
+                    metadata:
+                      fetchedAt: '2026-06-10T12:00:00Z'
+                    page:
+                      cursor: null
+                      hasMore: false
+                      limit: 20
+              schema:
+                $ref: '#/components/schemas/v2GetFunctionsResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Get functions
+      tags:
+      - Functions
+      x-beta: true
+  /apps/{appId}/functions/{functionId}:
+    get:
+      description: Fetches function configuration and status details for a function within an app
+      operationId: V2_GetFunction
+      parameters:
+      - in: path
+        name: appId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: functionId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2GetFunctionResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Get function
+      tags:
+      - Functions
+      x-beta: true
+  /apps/{appId}/functions/{functionId}/invoke:
+    post:
+      description: Invokes a function, executing the function either asynchronously or synchronously based on the mode parameter in the request body
+      operationId: V2_InvokeFunction
+      parameters:
+      - description: The ID of the app containing the function
         in: path
+        name: appId
+        required: true
+        schema:
+          type: string
+      - description: The ID of the function to invoke
+        in: path
+        name: functionId
         required: true
         schema:
           type: string
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                data:
-                  type: object
-                  additionalProperties: true
-                user:
-                  type: object
-                  additionalProperties: true
-                async:
-                  type: boolean
+              $ref: '#/components/schemas/V2InvokeFunctionBody'
+        required: true
+        x-originalParamName: body
       responses:
-        '200':
-          description: Invocation accepted.
+        '201':
           content:
             application/json:
               schema:
-                type: object
-                additionalProperties: true
+                $ref: '#/components/schemas/v2InvokeFunctionResponse'
+          description: Function invoked asynchronously
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2InvokeFunctionResponse'
+          description: Function invoked synchronously but has not yet finished executing
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Bad Request - invalid input data
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unauthorized - authentication required
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Forbidden - insufficient permissions
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Not Found - function not found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2InvokeFunctionResponse'
+          description: Conflict - this function has already been invoked using the given idempotency key.  Note that this returns the previously invoked run's data.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unprocessable Entity - function was rate limited, debounced, skipped, or otherwise could not be invoked
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Too Many Requests - API rate limit exceeded.  The request was entirely rejected, and no function was invoked.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Internal Server Error
       security:
-      - bearerAuth: []
+      - BearerAuth: []
+      summary: Invoke function
+      tags:
+      - Functions
 components:
   schemas:
-    Function:
-      type: object
+    v2FunctionConfiguration:
       properties:
-        id:
+        cancellations:
+          items:
+            $ref: '#/components/schemas/v2FunctionCancellationConfiguration'
+          type: array
+        concurrency:
+          items:
+            $ref: '#/components/schemas/v2FunctionConcurrencyConfiguration'
+          type: array
+        debounce:
+          $ref: '#/components/schemas/v2FunctionDebounceConfiguration'
+        eventsBatch:
+          $ref: '#/components/schemas/v2FunctionEventsBatchConfiguration'
+        priority:
+          type: string
+        rateLimit:
+          $ref: '#/components/schemas/v2FunctionRateLimitConfiguration'
+        retries:
+          $ref: '#/components/schemas/v2FunctionRetryConfiguration'
+        singleton:
+          $ref: '#/components/schemas/v2FunctionSingletonConfiguration'
+        throttle:
+          $ref: '#/components/schemas/v2FunctionThrottleConfiguration'
+      type: object
+    v2FunctionConcurrencyConfiguration:
+      properties:
+        key:
+          type: string
+        limit:
+          $ref: '#/components/schemas/v2FunctionConcurrencyLimitConfiguration'
+        scope:
+          $ref: '#/components/schemas/v2FunctionConcurrencyScope'
+      type: object
+    V2InvokeFunctionBody:
+      properties:
+        data:
+          description: JSON object containing the input data for the function
+          example:
+            message: Hello, World!
+          type: object
+        idempotencyKey:
+          description: Optional idempotency key to handle duplicate requests within a given idempotency period.
+          example: user-action-123
+          type: string
+      type: object
+    v2FunctionThrottleConfiguration:
+      properties:
+        burst:
+          format: int32
+          type: integer
+        key:
+          type: string
+        limit:
+          format: int32
+          type: integer
+        period:
+          type: string
+      type: object
+    v2FunctionConcurrencyLimitConfiguration:
+      properties:
+        isPlanLimit:
+          type: boolean
+        value:
+          format: int32
+          type: integer
+      type: object
+    v2ResponseMetadata:
+      properties:
+        cachedUntil:
+          format: date-time
+          type: string
+        fetchedAt:
+          format: date-time
+          type: string
+        timeRange:
+          $ref: '#/components/schemas/v2TimeRange'
+      type: object
+    v2Error:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      type: object
+    v2FunctionEventsBatchConfiguration:
+      properties:
+        key:
+          type: string
+        maxSize:
+          format: int32
+          type: integer
+        timeout:
+          type: string
+      type: object
+    v2TimeRange:
+      properties:
+        from:
+          format: date-time
+          type: string
+        until:
+          format: date-time
+          type: string
+      type: object
+    v2FunctionSingletonConfiguration:
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/v2FunctionSingletonMode'
+      type: object
+    v2FunctionFailureHandler:
+      properties:
+        name:
           type: string
         slug:
           type: string
+      type: object
+    v2FunctionRetryConfiguration:
+      properties:
+        isDefault:
+          type: boolean
+        value:
+          format: int32
+          type: integer
+      type: object
+    v2FunctionTrigger:
+      properties:
+        if:
+          type: string
+        type:
+          $ref: '#/components/schemas/v2FunctionTriggerType'
+        value:
+          type: string
+      type: object
+    v2FunctionTriggerType:
+      default: UNSPECIFIED
+      enum:
+      - UNSPECIFIED
+      - EVENT
+      - CRON
+      type: string
+    v2FunctionDebounceConfiguration:
+      properties:
+        key:
+          type: string
+        period:
+          type: string
+      type: object
+    v2FunctionSingletonMode:
+      default: UNSPECIFIED
+      enum:
+      - UNSPECIFIED
+      - SKIP
+      - CANCEL
+      type: string
+    v2FunctionConcurrencyScope:
+      default: UNSPECIFIED
+      enum:
+      - UNSPECIFIED
+      - ACCOUNT
+      - ENVIRONMENT
+      - FUNCTION
+      type: string
+    v2FunctionApp:
+      properties:
+        id:
+          type: string
+      type: object
+    v2GetFunctionsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2Function'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2Page'
+      type: object
+    v2GetFunctionResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2Function'
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+      type: object
+    v2ErrorResponse:
+      properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/v2Error'
+          type: array
+      type: object
+    v2Function:
+      properties:
+        app:
+          $ref: '#/components/schemas/v2FunctionApp'
+        configuration:
+          $ref: '#/components/schemas/v2FunctionConfiguration'
+        failureHandler:
+          $ref: '#/components/schemas/v2FunctionFailureHandler'
+        id:
+          type: string
+        isArchived:
+          type: boolean
+        isPaused:
+          type: boolean
         name:
           type: string
+        slug:
+          type: string
         triggers:
-          type: array
           items:
-            type: object
-            additionalProperties: true
+            $ref: '#/components/schemas/v2FunctionTrigger'
+          type: array
+      type: object
+    v2Page:
+      properties:
+        cursor:
+          type: string
+        hasMore:
+          type: boolean
+        limit:
+          format: int32
+          type: integer
+      type: object
+    v2FunctionCancellationConfiguration:
+      properties:
+        condition:
+          type: string
+        event:
+          type: string
+        timeout:
+          type: string
+      type: object
+    v2FunctionRateLimitConfiguration:
+      properties:
+        key:
+          type: string
+        limit:
+          format: int32
+          type: integer
+        period:
+          type: string
+      type: object
+    v2InvokeFunctionResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2InvokeFunctionData'
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+      type: object
+    v2InvokeFunctionData:
+      properties:
+        completedAt:
+          description: Timestamp when the function execution completed (if finished)
+          format: date-time
+          type: string
+        error:
+          description: Error message if the function execution failed
+          type: string
+        queuedAt:
+          description: Timestamp when the function execution was enqueued
+          format: date-time
+          type: string
+        result:
+          description: JSON string containing the function result (only available for completed synchronous invocations)
+          example: '{"success": true, "data": "Hello, World!"}'
+          type: string
+        runId:
+          description: Unique identifier for this function execution
+          example: 01hp1zx8m3ng9vp6qn0xk7j4cy
+          type: string
+        startedAt:
+          description: Timestamp when the function execution started (if started)
+          format: date-time
+          type: string
+      type: object
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: signing-key
+    BearerAuth:
+      description: 'Bearer token authentication. Format: `Bearer {key}`'
+      in: header
+      name: Authorization
+      type: apiKey

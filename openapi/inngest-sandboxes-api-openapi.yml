@@ -1,0 +1,1031 @@
+openapi: 3.2.0
+info:
+  description: The v2 API delivers a significantly improved developer experience with consistent design patterns and enhanced functionality.
+  title: Inngest REST API v2 Sandboxes API
+  version: 2.0.0
+servers:
+- description: Production server
+  url: https://api.inngest.com/v2
+- description: Development server
+  url: http://localhost:8288/api/v2
+tags:
+- description: Create and manage isolated compute sandboxes
+  name: Sandboxes
+paths:
+  /sandboxes:
+    get:
+      operationId: V2_ListSandboxes
+      parameters:
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ListSandboxesResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: List sandboxes
+      tags:
+      - Sandboxes
+      x-beta: true
+    post:
+      operationId: V2_CreateSandbox
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v2CreateSandboxRequest'
+        required: true
+        x-originalParamName: body
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2CreateSandboxResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Create a sandbox
+      tags:
+      - Sandboxes
+      x-beta: true
+  /sandboxes/{sandboxId}:
+    delete:
+      operationId: V2_DestroySandbox
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2DestroySandboxResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Destroy a sandbox
+      tags:
+      - Sandboxes
+      x-beta: true
+    get:
+      operationId: V2_GetSandbox
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2GetSandboxResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Get a sandbox
+      tags:
+      - Sandboxes
+      x-beta: true
+  /sandboxes/{sandboxId}/exec:
+    post:
+      operationId: V2_ExecSandbox
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/V2ExecSandboxBody'
+        required: true
+        x-originalParamName: body
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ExecSandboxResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Execute a command in a sandbox
+      tags:
+      - Sandboxes
+      x-beta: true
+  /sandboxes/{sandboxId}/files:
+    get:
+      operationId: V2_ReadSandboxFile
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: path
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                format: binary
+                title: Free form byte stream
+                type: string
+          description: A successful response.(streaming responses)
+      security:
+      - BearerAuth: []
+      summary: Read a sandbox file
+      tags:
+      - Sandboxes
+      x-beta: true
+    put:
+      operationId: V2_WriteSandboxFile
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: path
+        schema:
+          type: string
+      - in: query
+        name: mode
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/apiHttpBody'
+        required: true
+        x-originalParamName: body
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2WriteSandboxFileResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Write a sandbox file
+      tags:
+      - Sandboxes
+      x-beta: true
+  /sandboxes/{sandboxId}/logs:
+    get:
+      operationId: V2_StreamSandboxLogs
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: follow
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    $ref: '#/components/schemas/rpcStatus'
+                  result:
+                    $ref: '#/components/schemas/v2StreamSandboxLogsResponse'
+                title: Stream result of v2StreamSandboxLogsResponse
+                type: object
+          description: A successful response.(streaming responses)
+      security:
+      - BearerAuth: []
+      summary: Stream sandbox logs
+      tags:
+      - Sandboxes
+      x-beta: true
+  /sandboxes/{sandboxId}/pause:
+    post:
+      operationId: V2_PauseSandbox
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2PauseSandboxResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Pause a sandbox
+      tags:
+      - Sandboxes
+      x-beta: true
+  /sandboxes/{sandboxId}/processes:
+    get:
+      operationId: V2_ListSandboxProcesses
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ListSandboxProcessesResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: List sandbox processes
+      tags:
+      - Sandboxes
+      x-beta: true
+    post:
+      operationId: V2_StartSandboxProcess
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/V2StartSandboxProcessBody'
+        required: true
+        x-originalParamName: body
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2StartSandboxProcessResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Start a sandbox process
+      tags:
+      - Sandboxes
+      x-beta: true
+  /sandboxes/{sandboxId}/processes/{processId}:
+    get:
+      operationId: V2_GetSandboxProcess
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: processId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2GetSandboxProcessResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Get a sandbox process
+      tags:
+      - Sandboxes
+      x-beta: true
+  /sandboxes/{sandboxId}/processes/{processId}/output:
+    get:
+      operationId: V2_GetSandboxProcessOutput
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: processId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: tailBytes
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2GetSandboxProcessOutputResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Get sandbox process output
+      tags:
+      - Sandboxes
+      x-beta: true
+  /sandboxes/{sandboxId}/processes/{processId}/output/stream:
+    get:
+      operationId: V2_StreamSandboxProcessOutput
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: processId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: tailBytes
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    $ref: '#/components/schemas/rpcStatus'
+                  result:
+                    $ref: '#/components/schemas/v2StreamSandboxProcessOutputResponse'
+                title: Stream result of v2StreamSandboxProcessOutputResponse
+                type: object
+          description: A successful response.(streaming responses)
+      security:
+      - BearerAuth: []
+      summary: Stream sandbox process output
+      tags:
+      - Sandboxes
+      x-beta: true
+  /sandboxes/{sandboxId}/processes/{processId}/signals:
+    post:
+      operationId: V2_SignalSandboxProcess
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: processId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/V2SignalSandboxProcessBody'
+        required: true
+        x-originalParamName: body
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2SignalSandboxProcessResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Signal a sandbox process
+      tags:
+      - Sandboxes
+      x-beta: true
+  /sandboxes/{sandboxId}/processes/{processId}/wait:
+    post:
+      operationId: V2_WaitSandboxProcess
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: processId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: timeout
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2WaitSandboxProcessResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Wait for a sandbox process
+      tags:
+      - Sandboxes
+      x-beta: true
+  /sandboxes/{sandboxId}/resume:
+    post:
+      operationId: V2_ResumeSandbox
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ResumeSandboxResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Resume a sandbox
+      tags:
+      - Sandboxes
+      x-beta: true
+  /sandboxes/{sandboxId}/snapshots:
+    post:
+      operationId: V2_CreateSandboxSnapshot
+      parameters:
+      - in: path
+        name: sandboxId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2CreateSandboxSnapshotResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Create a sandbox snapshot
+      tags:
+      - Sandboxes
+      x-beta: true
+  /snapshots:
+    get:
+      operationId: V2_ListSandboxSnapshots
+      parameters:
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ListSandboxSnapshotsResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: List sandbox snapshots
+      tags:
+      - Sandboxes
+      x-beta: true
+  /snapshots/{snapshotId}:
+    delete:
+      operationId: V2_DeleteSandboxSnapshot
+      parameters:
+      - in: path
+        name: snapshotId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2DeleteSandboxSnapshotResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Delete a sandbox snapshot
+      tags:
+      - Sandboxes
+      x-beta: true
+    get:
+      operationId: V2_GetSandboxSnapshot
+      parameters:
+      - in: path
+        name: snapshotId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2GetSandboxSnapshotResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Get a sandbox snapshot
+      tags:
+      - Sandboxes
+      x-beta: true
+components:
+  schemas:
+    V2StartSandboxProcessBody:
+      properties:
+        command:
+          items:
+            type: string
+          type: array
+        cwd:
+          type: string
+        environment:
+          additionalProperties:
+            type: string
+          type: object
+      type: object
+    v2ListSandboxesResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2Sandbox'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2SandboxPage'
+      type: object
+    v2StreamSandboxLogsResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2SandboxLogChunk'
+      type: object
+    V2ExecSandboxBody:
+      properties:
+        command:
+          items:
+            type: string
+          type: array
+        cwd:
+          type: string
+        environment:
+          additionalProperties:
+            type: string
+          type: object
+        timeout:
+          type: string
+      type: object
+    v2SandboxSnapshot:
+      properties:
+        compatibilityId:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        diskPackCount:
+          format: int64
+          type: integer
+        error:
+          type: string
+        expiresAt:
+          format: date-time
+          type: string
+        id:
+          type: string
+        memoryPackCount:
+          format: int64
+          type: integer
+        resources:
+          $ref: '#/components/schemas/v2SandboxResourceSpec'
+        sourceImageId:
+          type: string
+        status:
+          $ref: '#/components/schemas/v2SandboxSnapshotStatus'
+        storedBytes:
+          format: uint64
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      type: object
+    v2SandboxResourceSpec:
+      properties:
+        memoryMb:
+          format: int64
+          type: integer
+        vcpu:
+          format: int64
+          type: integer
+      type: object
+    v2SandboxProcess:
+      properties:
+        command:
+          items:
+            type: string
+          type: array
+        endedAt:
+          format: date-time
+          type: string
+        exitCode:
+          format: int32
+          type: integer
+        id:
+          type: string
+        pid:
+          format: int32
+          type: integer
+        startedAt:
+          format: date-time
+          type: string
+        state:
+          $ref: '#/components/schemas/v2SandboxProcessState'
+        terminationSignal:
+          format: int32
+          type: integer
+      type: object
+    v2GetSandboxProcessOutputData:
+      properties:
+        chunks:
+          items:
+            $ref: '#/components/schemas/v2SandboxLogChunk'
+          type: array
+      type: object
+    v2CreateSandboxRequest:
+      properties:
+        environment:
+          additionalProperties:
+            type: string
+          type: object
+        memoryMb:
+          format: int64
+          type: integer
+        name:
+          type: string
+        secrets:
+          description: 'Exact workspace secret names, each injected under that same environment
+
+            variable name. Names must be unique, valid environment keys, and must not
+
+            overlap with environment. Names resolve to UUID bindings when creating the
+
+            workload; create recovery retains those bindings even if a secret is archived
+
+            and its name reused. Values are fetched at launch and may remain in the guest
+
+            and its snapshots. Cannot be supplied with snapshot_id.'
+          items:
+            type: string
+          type: array
+        snapshotId:
+          type: string
+        vcpu:
+          format: int64
+          type: integer
+      type: object
+    v2PauseSandboxResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2Sandbox'
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+      type: object
+    v2WriteSandboxFileResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2WriteSandboxFileData'
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+      type: object
+    V2SignalSandboxProcessBody:
+      properties:
+        includeChildren:
+          type: boolean
+        signal:
+          format: int32
+          type: integer
+      type: object
+    v2GetSandboxProcessOutputResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2GetSandboxProcessOutputData'
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+      type: object
+    v2ExecSandboxData:
+      properties:
+        encoding:
+          type: string
+        exitCode:
+          format: int32
+          type: integer
+        stderr:
+          format: byte
+          type: string
+        stdout:
+          format: byte
+          type: string
+      type: object
+    v2CreateSandboxResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2Sandbox'
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+      type: object
+    protobufAny:
+      additionalProperties: {}
+      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+      properties:
+        '@type':
+          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+          type: string
+      type: object
+    v2ListSandboxSnapshotsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2SandboxSnapshot'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2SandboxPage'
+      type: object
+    apiHttpBody:
+      description: A message that represents an arbitrary HTTP body.
+      properties:
+        contentType:
+          description: The HTTP Content-Type header value specifying the content type of the body.
+          type: string
+        data:
+          description: The HTTP request/response body as raw binary.
+          format: byte
+          type: string
+        extensions:
+          description: 'Application specific response metadata. Must be set in the first response
+
+            for streaming APIs.'
+          items:
+            $ref: '#/components/schemas/protobufAny'
+          type: array
+      type: object
+    v2WriteSandboxFileData:
+      properties:
+        bytesWritten:
+          format: int64
+          type: integer
+        path:
+          type: string
+      type: object
+    v2ListSandboxProcessesResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2SandboxProcess'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2SandboxPage'
+      type: object
+    v2StartSandboxProcessResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2SandboxProcess'
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+      type: object
+    v2SandboxResponseMetadata:
+      properties:
+        fetchedAt:
+          format: date-time
+          type: string
+      type: object
+    v2DestroySandboxResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2Sandbox'
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+      type: object
+    v2ExecSandboxResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2ExecSandboxData'
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+      type: object
+    v2CreateSandboxSnapshotResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2SandboxSnapshot'
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+      type: object
+    v2SignalSandboxProcessResponse:
+      type: object
+    v2GetSandboxResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2Sandbox'
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+      type: object
+    v2DeleteSandboxSnapshotResponse:
+      type: object
+    v2Sandbox:
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        endedAt:
+          format: date-time
+          type: string
+        error:
+          type: string
+        id:
+          type: string
+        imageRef:
+          type: string
+        name:
+          type: string
+        resources:
+          $ref: '#/components/schemas/v2SandboxResourceSpec'
+        startedAt:
+          format: date-time
+          type: string
+        status:
+          $ref: '#/components/schemas/v2SandboxStatus'
+        vpcId:
+          type: string
+      type: object
+    v2SandboxPage:
+      properties:
+        cursor:
+          type: string
+        hasMore:
+          type: boolean
+        limit:
+          format: int32
+          type: integer
+      type: object
+    v2SandboxLogChunk:
+      properties:
+        at:
+          format: date-time
+          type: string
+        data:
+          format: byte
+          type: string
+        encoding:
+          type: string
+        stream:
+          $ref: '#/components/schemas/v2SandboxLogStream'
+      type: object
+    v2ResumeSandboxResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2Sandbox'
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+      type: object
+    rpcStatus:
+      properties:
+        code:
+          format: int32
+          type: integer
+        details:
+          items:
+            $ref: '#/components/schemas/protobufAny'
+          type: array
+        message:
+          type: string
+      type: object
+    v2GetSandboxSnapshotResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2SandboxSnapshot'
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+      type: object
+    v2SandboxSnapshotStatus:
+      default: UNSPECIFIED
+      enum:
+      - UNSPECIFIED
+      - CREATING
+      - READY
+      - DELETING
+      - DELETED
+      - FAILED
+      - LOST
+      type: string
+    v2SandboxProcessState:
+      default: UNSPECIFIED
+      enum:
+      - UNSPECIFIED
+      - STARTING
+      - RUNNING
+      - EXITED
+      - KILLED
+      - FAILED
+      - LOST
+      type: string
+    v2StreamSandboxProcessOutputResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2SandboxLogChunk'
+      type: object
+    v2WaitSandboxProcessResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2SandboxProcess'
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+      type: object
+    v2SandboxLogStream:
+      default: UNSPECIFIED
+      enum:
+      - UNSPECIFIED
+      - STDOUT
+      - STDERR
+      type: string
+    v2SandboxStatus:
+      default: UNSPECIFIED
+      enum:
+      - UNSPECIFIED
+      - PENDING
+      - STARTING
+      - RUNNING
+      - PAUSED
+      - TERMINATING
+      - TERMINATED
+      - FAILED
+      type: string
+    v2GetSandboxProcessResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2SandboxProcess'
+        metadata:
+          $ref: '#/components/schemas/v2SandboxResponseMetadata'
+      type: object
+  securitySchemes:
+    BearerAuth:
+      description: 'Bearer token authentication. Format: `Bearer {key}`'
+      in: header
+      name: Authorization
+      type: apiKey

@@ -1,0 +1,298 @@
+openapi: 3.2.0
+info:
+  description: The v2 API delivers a significantly improved developer experience with consistent design patterns and enhanced functionality.
+  title: Inngest REST API v2 Sessions API
+  version: 2.0.0
+servers:
+- description: Production server
+  url: https://api.inngest.com/v2
+- description: Development server
+  url: http://localhost:8288/api/v2
+tags:
+- description: Inspect session-grouped runs
+  name: Sessions
+paths:
+  /sessions:
+    get:
+      description: Lists session keys observed in the authenticated environment.
+      operationId: V2_ListSessionKeys
+      parameters:
+      - in: query
+        name: search
+        schema:
+          type: string
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: 'Number of sessions to return per page (min: 1, max: 100)'
+        in: query
+        name: limit
+        schema:
+          default: '20'
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ListSessionKeysResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: List session keys
+      tags:
+      - Sessions
+      x-beta: true
+  /sessions/{sessionKey}:
+    get:
+      description: Lists session IDs for one session key in the authenticated environment.
+      operationId: V2_ListSessions
+      parameters:
+      - in: path
+        name: sessionKey
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: search
+        schema:
+          type: string
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: 'Number of sessions to return per page (min: 1, max: 100)'
+        in: query
+        name: limit
+        schema:
+          default: '20'
+          format: int32
+          type: integer
+      - in: query
+        name: from
+        schema:
+          format: date-time
+          type: string
+      - in: query
+        name: until
+        schema:
+          format: date-time
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ListSessionsResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: List sessions
+      tags:
+      - Sessions
+      x-beta: true
+  /sessions/{sessionKey}/{sessionId}/runs:
+    get:
+      description: Lists runs associated with one session ID in the authenticated environment.
+      operationId: V2_ListSessionRuns
+      parameters:
+      - in: path
+        name: sessionKey
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: sessionId
+        required: true
+        schema:
+          pattern: .+
+          type: string
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: 'Number of session runs to return per page (min: 1, max: 100)'
+        in: query
+        name: limit
+        schema:
+          default: '20'
+          format: int32
+          type: integer
+      - in: query
+        name: from
+        schema:
+          format: date-time
+          type: string
+      - in: query
+        name: until
+        schema:
+          format: date-time
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ListSessionRunsResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: List session runs
+      tags:
+      - Sessions
+      x-beta: true
+components:
+  schemas:
+    v2ListSessionRunsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2SessionRun'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2Page'
+      type: object
+    v2SessionRun:
+      properties:
+        endedAt:
+          format: date-time
+          type: string
+        eventName:
+          type: string
+        function:
+          $ref: '#/components/schemas/v2FunctionRef'
+        id:
+          type: string
+        queuedAt:
+          format: date-time
+          type: string
+        startedAt:
+          format: date-time
+          type: string
+        status:
+          $ref: '#/components/schemas/v2FunctionRunStatus'
+      type: object
+    v2FunctionRef:
+      properties:
+        app:
+          $ref: '#/components/schemas/v2AppRef'
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+      type: object
+    v2AppRef:
+      properties:
+        id:
+          type: string
+      type: object
+    v2ResponseMetadata:
+      properties:
+        cachedUntil:
+          format: date-time
+          type: string
+        fetchedAt:
+          format: date-time
+          type: string
+        timeRange:
+          $ref: '#/components/schemas/v2TimeRange'
+      type: object
+    v2SessionKey:
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        id:
+          type: string
+      type: object
+    v2SessionGroup:
+      properties:
+        failedRunCount:
+          format: int32
+          type: integer
+        failureRate:
+          format: double
+          type: number
+        functions:
+          items:
+            $ref: '#/components/schemas/v2FunctionRef'
+          type: array
+        id:
+          type: string
+        lastActiveAt:
+          format: date-time
+          type: string
+        runCount:
+          format: int32
+          type: integer
+      type: object
+    v2Page:
+      properties:
+        cursor:
+          type: string
+        hasMore:
+          type: boolean
+        limit:
+          format: int32
+          type: integer
+      type: object
+    v2FunctionRunStatus:
+      default: UNSPECIFIED
+      description: " - FUNCTION_RUN_STATUS_PAUSED: PAUSED is synthetic: the run is RUNNING, but its function is paused.\n - FUNCTION_RUN_STATUS_UNKNOWN: UNKNOWN is returned when the persisted run status cannot be recognized."
+      enum:
+      - UNSPECIFIED
+      - QUEUED
+      - RUNNING
+      - COMPLETED
+      - FAILED
+      - CANCELLED
+      - SKIPPED
+      - PAUSED
+      - UNKNOWN
+      type: string
+    v2TimeRange:
+      properties:
+        from:
+          format: date-time
+          type: string
+        until:
+          format: date-time
+          type: string
+      type: object
+    v2ListSessionKeysResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2SessionKey'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2Page'
+      type: object
+    v2ListSessionsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2SessionGroup'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2Page'
+      type: object
+  securitySchemes:
+    BearerAuth:
+      description: 'Bearer token authentication. Format: `Bearer {key}`'
+      in: header
+      name: Authorization
+      type: apiKey

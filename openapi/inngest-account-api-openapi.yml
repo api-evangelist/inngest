@@ -1,109 +1,133 @@
 openapi: 3.2.0
 info:
-  title: Inngest REST Account API
-  description: 'The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest''s event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.'
-  version: 2026-05
-  contact:
-    name: Inngest
-    url: https://www.inngest.com
-  license:
-    name: Inngest Terms of Service
-    url: https://www.inngest.com/terms
+  description: The v2 API delivers a significantly improved developer experience with consistent design patterns and enhanced functionality.
+  title: Inngest REST API v2 Account API
+  version: 2.0.0
 servers:
-- url: https://api.inngest.com
-  description: Production REST API (root, v1)
-- url: https://api.inngest.com/v2
-  description: Production REST API (v2 management surface)
-- url: https://inn.gs
-  description: Event ingestion endpoint (alias of /e/{eventKey})
-- url: http://localhost:8288
-  description: Local Inngest Dev Server (root, v1)
-- url: http://localhost:8288/api/v2
-  description: Local Inngest Dev Server (v2 management surface)
+- description: Production server
+  url: https://api.inngest.com/v2
+- description: Development server
+  url: http://localhost:8288/api/v2
 tags:
-- name: Account
-  description: Account-level details for the authenticated user.
+- description: Manage your account
+  name: Account
 paths:
-  /v2/account:
+  /account:
     get:
-      tags:
-      - Account
-      summary: Get Account
-      description: Returns the account for the authenticated user.
-      operationId: v2FetchAccount
+      description: Returns the account for the authenticated user
+      operationId: V2_FetchAccount
       responses:
         '200':
-          description: Account details.
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    data:
+                      createdAt: '2024-01-10T09:15:00Z'
+                      email: user@company.com
+                      id: f47ac10b-58cc-4372-a567-0e02b2c3d479
+                      name: Current User
+                      updatedAt: '2024-01-20T12:00:00Z'
+                    metadata:
+                      cachedUntil: null
+                      fetchedAt: '2024-01-20T14:22:33Z'
+              schema:
+                $ref: '#/components/schemas/v2FetchAccountResponse'
+          description: Account
+        '401':
+          content:
+            application/json:
+              examples:
+                default:
+                  value: Authentication failed
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unauthorized - authentication required
+        '403':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/V2Account'
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Forbidden - Insufficient permissions
+        '500':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: internal_error
+                      message: Something went wrong
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Internal Server Error
       security:
-      - bearerAuth: []
-  /v2/partner/accounts:
-    get:
+      - BearerAuth: []
+      summary: Get account
       tags:
       - Account
-      summary: List Partner Accounts
-      description: Lists sub-accounts. Requires partner access.
-      operationId: v2FetchPartnerAccounts
-      responses:
-        '200':
-          description: Partner sub-accounts.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/V2Account'
-      security:
-      - bearerAuth: []
-    post:
-      tags:
-      - Account
-      summary: Create Partner Account
-      description: Creates a sub-account. Requires partner access.
-      operationId: v2CreatePartnerAccount
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                email:
-                  type: string
-                  format: email
-      responses:
-        '201':
-          description: Partner account created.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/V2Account'
-      security:
-      - bearerAuth: []
 components:
   schemas:
-    V2Account:
-      type: object
+    v2ErrorResponse:
       properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/v2Error'
+          type: array
+      type: object
+    v2FetchAccountResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2Account'
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+      type: object
+    v2ResponseMetadata:
+      properties:
+        cachedUntil:
+          format: date-time
+          type: string
+        fetchedAt:
+          format: date-time
+          type: string
+        timeRange:
+          $ref: '#/components/schemas/v2TimeRange'
+      type: object
+    v2Error:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      type: object
+    v2Account:
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        email:
+          type: string
         id:
           type: string
         name:
           type: string
-        email:
-          type: string
-        createdAt:
-          type: string
+        updatedAt:
           format: date-time
+          type: string
+      type: object
+    v2TimeRange:
+      properties:
+        from:
+          format: date-time
+          type: string
+        until:
+          format: date-time
+          type: string
+      type: object
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: signing-key
+    BearerAuth:
+      description: 'Bearer token authentication. Format: `Bearer {key}`'
+      in: header
+      name: Authorization
+      type: apiKey

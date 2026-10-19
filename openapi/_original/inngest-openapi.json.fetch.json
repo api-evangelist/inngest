@@ -1,0 +1,12 @@
+{
+ "url": "https://api-docs.inngest.com/api-specs/v2.json",
+ "final": "https://api-docs.inngest.com/api-specs/v2.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 198057,
+ "sha256": "deac882d457c96904b33b07f9c1154af87d92026c34af1e12a8011e51eacc42b",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

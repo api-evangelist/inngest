@@ -1,0 +1,313 @@
+openapi: 3.2.0
+info:
+  description: The v2 API delivers a significantly improved developer experience with consistent design patterns and enhanced functionality.
+  title: Inngest REST API v2 Experiments API
+  version: 2.0.0
+servers:
+- description: Production server
+  url: https://api.inngest.com/v2
+- description: Development server
+  url: http://localhost:8288/api/v2
+tags:
+- description: Inspect experiment variants and aggregates
+  name: Experiments
+paths:
+  /apps/{appId}/functions/{functionId}/experiments:
+    get:
+      description: Lists observed experiments for one function in the authenticated environment.
+      operationId: V2_ListExperiments2
+      parameters:
+      - in: path
+        name: appId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: functionId
+        required: true
+        schema:
+          type: string
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: 'Number of experiments to return per page (min: 1, max: 100)'
+        in: query
+        name: limit
+        schema:
+          default: '20'
+          format: int32
+          type: integer
+      - in: query
+        name: from
+        schema:
+          format: date-time
+          type: string
+      - in: query
+        name: until
+        schema:
+          format: date-time
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ListExperimentsResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: List experiments for a function
+      tags:
+      - Experiments
+      x-beta: true
+  /apps/{appId}/functions/{functionId}/experiments/{experimentId}:
+    get:
+      description: Fetches variant run counts and score aggregates for one experiment on one function.
+      operationId: V2_GetExperiment
+      parameters:
+      - in: path
+        name: appId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: functionId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: experimentId
+        required: true
+        schema:
+          pattern: .+
+          type: string
+      - description: Optional variant name to restrict the aggregate response.
+        in: query
+        name: variant
+        schema:
+          type: string
+      - in: query
+        name: from
+        schema:
+          format: date-time
+          type: string
+      - in: query
+        name: until
+        schema:
+          format: date-time
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2GetExperimentResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Get experiment aggregates
+      tags:
+      - Experiments
+      x-beta: true
+  /experiments:
+    get:
+      description: Lists observed experiments in the authenticated environment. Use the nested app and function route to scope results to one function.
+      operationId: V2_ListExperiments
+      parameters:
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: 'Number of experiments to return per page (min: 1, max: 100)'
+        in: query
+        name: limit
+        schema:
+          default: '20'
+          format: int32
+          type: integer
+      - in: query
+        name: appId
+        schema:
+          type: string
+      - in: query
+        name: functionId
+        schema:
+          type: string
+      - in: query
+        name: from
+        schema:
+          format: date-time
+          type: string
+      - in: query
+        name: until
+        schema:
+          format: date-time
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ListExperimentsResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: List experiments
+      tags:
+      - Experiments
+      x-beta: true
+components:
+  schemas:
+    v2ExperimentVariantMetric:
+      properties:
+        avg:
+          format: double
+          type: number
+        key:
+          type: string
+        max:
+          format: double
+          type: number
+        min:
+          format: double
+          type: number
+      type: object
+    v2ExperimentDetail:
+      properties:
+        firstSeen:
+          format: date-time
+          type: string
+        id:
+          type: string
+        lastSeen:
+          format: date-time
+          type: string
+        selectionStrategy:
+          type: string
+        variantWeights:
+          items:
+            $ref: '#/components/schemas/v2ExperimentVariantWeight'
+          type: array
+        variants:
+          items:
+            $ref: '#/components/schemas/v2ExperimentVariantMetrics'
+          type: array
+      type: object
+    v2ExperimentVariantWeight:
+      properties:
+        variantName:
+          type: string
+        weight:
+          format: double
+          type: number
+      type: object
+    v2FunctionRef:
+      properties:
+        app:
+          $ref: '#/components/schemas/v2AppRef'
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+      type: object
+    v2ResponseMetadata:
+      properties:
+        cachedUntil:
+          format: date-time
+          type: string
+        fetchedAt:
+          format: date-time
+          type: string
+        timeRange:
+          $ref: '#/components/schemas/v2TimeRange'
+      type: object
+    v2AppRef:
+      properties:
+        id:
+          type: string
+      type: object
+    v2Page:
+      properties:
+        cursor:
+          type: string
+        hasMore:
+          type: boolean
+        limit:
+          format: int32
+          type: integer
+      type: object
+    v2TimeRange:
+      properties:
+        from:
+          format: date-time
+          type: string
+        until:
+          format: date-time
+          type: string
+      type: object
+    v2ListExperimentsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2Experiment'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2Page'
+      type: object
+    v2ExperimentVariantMetrics:
+      properties:
+        metrics:
+          items:
+            $ref: '#/components/schemas/v2ExperimentVariantMetric'
+          type: array
+        runCount:
+          format: int32
+          type: integer
+        variantName:
+          type: string
+      type: object
+    v2GetExperimentResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2ExperimentDetail'
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+      type: object
+    v2Experiment:
+      properties:
+        firstSeen:
+          format: date-time
+          type: string
+        function:
+          $ref: '#/components/schemas/v2FunctionRef'
+        id:
+          type: string
+        lastSeen:
+          format: date-time
+          type: string
+        selectionStrategy:
+          type: string
+        totalRuns:
+          format: int32
+          type: integer
+        variantCount:
+          format: int32
+          type: integer
+        variants:
+          items:
+            type: string
+          type: array
+      type: object
+  securitySchemes:
+    BearerAuth:
+      description: 'Bearer token authentication. Format: `Bearer {key}`'
+      in: header
+      name: Authorization
+      type: apiKey

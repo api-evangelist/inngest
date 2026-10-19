@@ -1,0 +1,307 @@
+openapi: 3.2.0
+info:
+  description: The v2 API delivers a significantly improved developer experience with consistent design patterns and enhanced functionality.
+  title: Inngest REST API v2 Partner API
+  version: 2.0.0
+servers:
+- description: Production server
+  url: https://api.inngest.com/v2
+- description: Development server
+  url: http://localhost:8288/api/v2
+tags:
+- description: Partner account management
+  name: Partner API
+  x-displayName: Partner API
+paths:
+  /partner/accounts:
+    get:
+      description: Lists sub-accounts (if you have partner access)
+      operationId: V2_FetchPartnerAccounts
+      parameters:
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: 'Number of accounts to return per page (min: 1, max: 1000)'
+        in: query
+        name: limit
+        schema:
+          default: '20'
+          format: int32
+          maximum: 1000
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    data:
+                    - createdAt: '2024-01-15T10:30:00Z'
+                      email: partner1@company.com
+                      id: a7b8c9d0-e1f2-4345-abc7-890fed345678
+                      name: Partner Account 1
+                      updatedAt: '2024-01-15T10:30:00Z'
+                    - createdAt: '2024-01-18T14:22:33Z'
+                      email: partner2@company.com
+                      id: b8c9d0e1-f2a3-4456-bcd8-90aef4567890
+                      name: Partner Account 2
+                      updatedAt: '2024-01-18T14:22:33Z'
+                    metadata:
+                      cachedUntil: null
+                      fetchedAt: '2024-01-20T14:22:33Z'
+                    page:
+                      cursor: 01K3SB60E36ZMPEV43BG0H20MW
+                      hasMore: true
+                      limit: 2
+              schema:
+                $ref: '#/components/schemas/v2FetchAccountsResponse'
+          description: List of accounts
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Bad Request - invalid query parameters
+        '401':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: access_denied
+                      message: You do not have access to the partner API.  Please reach out to sales@inngest.com to gain access.
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unauthorized - authentication required
+        '403':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: access_denied
+                      message: You do not have access to the partner API.  Please reach out to sales@inngest.com to gain access.
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Forbidden - insufficient permissions
+        '500':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: internal_error
+                      message: Something went wrong
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: List partner accounts
+      tags:
+      - Partner API
+    post:
+      description: Creates a sub-account (if you have partner access)
+      operationId: V2_CreatePartnerAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v2CreateAccountRequest'
+        required: true
+        x-originalParamName: body
+      responses:
+        '201':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    data:
+                      apiKey: api-abcdef1234567890
+                      createdAt: '2024-01-20T14:22:33Z'
+                      email: user@example.com
+                      id: c9d0e1f2-a3b4-4567-cde9-01bfa5678901
+                      name: Jane Smith
+                      updatedAt: '2024-01-20T14:22:33Z'
+                    metadata:
+                      cachedUntil: null
+                      fetchedAt: '2024-01-20T14:22:33Z'
+              schema:
+                $ref: '#/components/schemas/v2CreateAccountResponse'
+          description: Account successfully created
+        '400':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: validation_error
+                      message: Email is required
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Bad Request - invalid input data
+        '401':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: access_denied
+                      message: You do not have access to the partner API.  Please reach out to sales@inngest.com to gain access.
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unauthorized - authentication required
+        '403':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: access_denied
+                      message: You do not have access to the partner API.  Please reach out to sales@inngest.com to gain access.
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Forbidden - Insufficient permissions
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Conflict - account already exists
+        '500':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: internal_error
+                      message: Something went wrong
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: Create partner account
+      tags:
+      - Partner API
+components:
+  schemas:
+    v2ErrorResponse:
+      properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/v2Error'
+          type: array
+      type: object
+    v2CreateAccountRequest:
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+      type: object
+    v2CreateAccountData:
+      properties:
+        apiKey:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      type: object
+    v2ResponseMetadata:
+      properties:
+        cachedUntil:
+          format: date-time
+          type: string
+        fetchedAt:
+          format: date-time
+          type: string
+        timeRange:
+          $ref: '#/components/schemas/v2TimeRange'
+      type: object
+    v2Error:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      type: object
+    v2Page:
+      properties:
+        cursor:
+          type: string
+        hasMore:
+          type: boolean
+        limit:
+          format: int32
+          type: integer
+      type: object
+    v2Account:
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      type: object
+    v2TimeRange:
+      properties:
+        from:
+          format: date-time
+          type: string
+        until:
+          format: date-time
+          type: string
+      type: object
+    v2FetchAccountsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2Account'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2Page'
+      type: object
+    v2CreateAccountResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2CreateAccountData'
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+      type: object
+  securitySchemes:
+    BearerAuth:
+      description: 'Bearer token authentication. Format: `Bearer {key}`'
+      in: header
+      name: Authorization
+      type: apiKey

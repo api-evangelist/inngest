@@ -1,267 +1,738 @@
 openapi: 3.2.0
 info:
-  title: Inngest REST Runs API
-  description: 'The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest''s event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.'
-  version: 2026-05
-  contact:
-    name: Inngest
-    url: https://www.inngest.com
-  license:
-    name: Inngest Terms of Service
-    url: https://www.inngest.com/terms
+  description: The v2 API delivers a significantly improved developer experience with consistent design patterns and enhanced functionality.
+  title: Inngest REST API v2 Runs API
+  version: 2.0.0
 servers:
-- url: https://api.inngest.com
-  description: Production REST API (root, v1)
-- url: https://api.inngest.com/v2
-  description: Production REST API (v2 management surface)
-- url: https://inn.gs
-  description: Event ingestion endpoint (alias of /e/{eventKey})
-- url: http://localhost:8288
-  description: Local Inngest Dev Server (root, v1)
-- url: http://localhost:8288/api/v2
-  description: Local Inngest Dev Server (v2 management surface)
+- description: Production server
+  url: https://api.inngest.com/v2
+- description: Development server
+  url: http://localhost:8288/api/v2
 tags:
-- name: Runs
-  description: Fetch the status, jobs, and trace trees of function runs.
+- description: Inspect function runs
+  name: Runs
 paths:
-  /v1/runs/{runId}:
+  /apps/{appId}/functions/{functionId}/runs:
     get:
-      tags:
-      - Runs
-      summary: Get Function Run Status
-      description: Returns the canonical status, output, and step history for a function run.
-      operationId: getRun
+      description: Lists runs for one function in the authenticated environment
+      operationId: V2_ListFunctionRuns
       parameters:
-      - name: runId
-        in: path
+      - in: path
+        name: appId
         required: true
         schema:
           type: string
-      responses:
-        '200':
-          description: Run details including status, output, and step history.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Run'
-        '404':
-          description: Run not found.
-      security:
-      - bearerAuth: []
-  /v1/runs/{runId}/jobs:
-    get:
-      tags:
-      - Runs
-      summary: List The Jobs (Steps) For A Run
-      description: Returns the step-level job records for a function run, including timing, attempts, and outputs.
-      operationId: listRunJobs
-      parameters:
-      - name: runId
-        in: path
+      - in: path
+        name: functionId
         required: true
         schema:
           type: string
+      - in: query
+        name: includeOutput
+        schema:
+          type: boolean
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: 'Number of runs to return per page (min: 1, max: 100)'
+        in: query
+        name: limit
+        schema:
+          default: '20'
+          format: int32
+          type: integer
+      - description: Inclusive start of the run time range
+        in: query
+        name: from
+        schema:
+          format: date-time
+          type: string
+      - description: Inclusive end of the run time range
+        in: query
+        name: until
+        schema:
+          format: date-time
+          type: string
+      - description: Run timestamp field used for filtering and ordering. Accepts queuedAt, startedAt, or endedAt. Snake case aliases such as QUEUED_AT, STARTED_AT, and ENDED_AT are also accepted.
+        in: query
+        name: timeField
+        schema:
+          default: queuedAt
+          type: string
+      - description: Statuses to include, using response status values such as COMPLETED, FAILED, RUNNING, QUEUED, CANCELLED, SKIPPED, or PAUSED
+        in: query
+        name: status
+        schema:
+          items:
+            type: string
+          type: array
+      - description: Whether to include only deferred or non-deferred runs
+        in: query
+        name: isDeferred
+        schema:
+          type: boolean
+      - description: Sort direction. Accepts ASC or DESC.
+        in: query
+        name: order
+        schema:
+          default: DESC
+          type: string
+      - description: CEL expression used to filter runs by event, output, or error data
+        in: query
+        name: query
+        schema:
+          type: string
+      - description: 'Optional run expansions. Supported values: deferred_from.'
+        in: query
+        name: include
+        schema:
+          items:
+            type: string
+          type: array
       responses:
         '200':
-          description: Step-level job records for the run.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Job'
+                $ref: '#/components/schemas/v2ListFunctionRunsResponse'
+          description: A successful response.
       security:
-      - bearerAuth: []
-  /v1/runs/{runId}/cancel:
+      - BearerAuth: []
+      summary: List runs for a function
+      tags:
+      - Runs
+      x-beta: true
+  /events/{eventId}/runs:
+    get:
+      description: Lists function runs triggered by a specific event
+      operationId: V2_GetEventRuns
+      parameters:
+      - in: path
+        name: eventId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: includeOutput
+        schema:
+          type: boolean
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: 'Number of runs to return per page (min: 1, max: 40)'
+        in: query
+        name: limit
+        schema:
+          default: '20'
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2GetEventRunsResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Get event runs
+      tags:
+      - Runs
+      x-beta: true
+  /runs:
+    get:
+      description: Lists runs in the authenticated environment, optionally filtered by app and function IDs
+      operationId: V2_ListRuns
+      parameters:
+      - in: query
+        name: includeOutput
+        schema:
+          type: boolean
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: 'Number of runs to return per page (min: 1, max: 100)'
+        in: query
+        name: limit
+        schema:
+          default: '20'
+          format: int32
+          type: integer
+      - description: Inclusive start of the run time range
+        in: query
+        name: from
+        schema:
+          format: date-time
+          type: string
+      - description: Inclusive end of the run time range
+        in: query
+        name: until
+        schema:
+          format: date-time
+          type: string
+      - description: Run timestamp field used for filtering and ordering. Accepts queuedAt, startedAt, or endedAt. Snake case aliases such as QUEUED_AT, STARTED_AT, and ENDED_AT are also accepted.
+        in: query
+        name: timeField
+        schema:
+          default: queuedAt
+          type: string
+      - description: Statuses to include, using response status values such as COMPLETED, FAILED, RUNNING, QUEUED, CANCELLED, SKIPPED, or PAUSED
+        in: query
+        name: status
+        schema:
+          items:
+            type: string
+          type: array
+      - description: App IDs to include
+        in: query
+        name: appId
+        schema:
+          items:
+            type: string
+          type: array
+      - description: Function IDs to include
+        in: query
+        name: functionId
+        schema:
+          items:
+            type: string
+          type: array
+      - description: Whether to include only deferred or non-deferred runs
+        in: query
+        name: isDeferred
+        schema:
+          type: boolean
+      - description: Sort direction. Accepts ASC or DESC.
+        in: query
+        name: order
+        schema:
+          default: DESC
+          type: string
+      - description: CEL expression used to filter runs by event, output, or error data
+        in: query
+        name: query
+        schema:
+          type: string
+      - description: 'Optional run expansions. Supported values: deferred_from.'
+        in: query
+        name: include
+        schema:
+          items:
+            type: string
+          type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ListRunsResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: List runs
+      tags:
+      - Runs
+      x-beta: true
+  /runs/{runId}:
+    get:
+      description: Fetches the canonical run summary for a single function run
+      operationId: V2_GetFunctionRun
+      parameters:
+      - in: path
+        name: runId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: includeOutput
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2GetFunctionRunResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Get function run
+      tags:
+      - Runs
+      x-beta: true
+  /runs/{runId}/cancel:
     post:
-      tags:
-      - Runs
-      summary: Cancel A Function Run
-      description: Cancels a function run that is queued, running, or paused.
-      operationId: cancelRun
+      description: Cancels an in-progress function run
+      operationId: V2_CancelRun
       parameters:
-      - name: runId
-        in: path
+      - in: path
+        name: runId
         required: true
         schema:
           type: string
-      responses:
-        '200':
-          description: Cancellation accepted.
-        '404':
-          description: Run not found.
-      security:
-      - bearerAuth: []
-  /v2/runs/{runId}:
-    get:
-      tags:
-      - Runs
-      summary: Get Function Run (v2)
-      description: Fetches the canonical run summary. Beta.
-      operationId: v2GetFunctionRun
-      parameters:
-      - name: runId
-        in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/V2CancelRunBody'
         required: true
-        schema:
-          type: string
+        x-originalParamName: body
       responses:
         '200':
-          description: Function run details.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/V2FunctionRun'
+                $ref: '#/components/schemas/v2CancelRunResponse'
+          description: A successful response.
       security:
-      - bearerAuth: []
-  /v2/runs/{runId}/trace:
-    get:
+      - BearerAuth: []
+      summary: Cancel function run
       tags:
       - Runs
-      summary: Get Function Trace
-      description: Fetches the trace tree for a single function run. Beta.
-      operationId: v2GetFunctionTrace
+      x-beta: true
+  /runs/{runId}/rerun:
+    post:
+      description: Creates a new run using the original run's triggering event data
+      operationId: V2_Rerun
       parameters:
-      - name: runId
-        in: path
+      - in: path
+        name: runId
         required: true
         schema:
           type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/V2RerunBody'
+        required: true
+        x-originalParamName: body
       responses:
         '200':
-          description: Trace tree for the run.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/V2FunctionTrace'
+                $ref: '#/components/schemas/v2RerunResponse'
+          description: A successful response.
       security:
-      - bearerAuth: []
+      - BearerAuth: []
+      summary: Rerun function run
+      tags:
+      - Runs
+      x-beta: true
+  /runs/{runId}/scores:
+    post:
+      description: Submits one or more named scores for a function run, or for specific steps when step IDs are provided. Scores are recorded as run metadata and aggregated for experiments.
+      operationId: V2_CreateScore
+      parameters:
+      - description: Run ID (ULID) of the function run to score
+        in: path
+        name: runId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/v2CreateScoreInput'
+              type: array
+        required: true
+        x-originalParamName: scores
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2CreateScoreResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Create score
+      tags:
+      - Runs
+      x-beta: true
+  /runs/{runId}/trace:
+    get:
+      description: Fetches the trace tree for a single function run
+      operationId: V2_GetFunctionTrace
+      parameters:
+      - in: path
+        name: runId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: includeOutput
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2GetFunctionTraceResponse'
+          description: A successful response.
+      security:
+      - BearerAuth: []
+      summary: Get function trace
+      tags:
+      - Runs
+      x-beta: true
 components:
   schemas:
-    V2FunctionTrace:
-      type: object
+    v2ListRunsResponse:
       properties:
-        run_id:
-          type: string
-        root:
-          $ref: '#/components/schemas/V2TraceSpan'
-    Job:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        status:
-          type: string
-        started_at:
-          type: string
-          format: date-time
-        ended_at:
-          type: string
-          format: date-time
-        output:
-          type: object
-          additionalProperties: true
-    V2FunctionRun:
-      type: object
-      properties:
-        run_id:
-          type: string
-        function_id:
-          type: string
-        app_id:
-          type: string
-        status:
-          type: string
-          enum:
-          - QUEUED
-          - RUNNING
-          - COMPLETED
-          - FAILED
-          - CANCELLED
-          - PAUSED
-        event_id:
-          type: string
-        output:
-          type: object
-          additionalProperties: true
-        started_at:
-          type: string
-          format: date-time
-        ended_at:
-          type: string
-          format: date-time
-    V2TraceSpan:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        op:
-          type: string
-          enum:
-          - RUN
-          - SLEEP
-          - WAITFOREVENT
-          - INVOKE
-          - AI
-          - AICALL
-          - FETCH
-          - RUN_STEP
-        status:
-          type: string
-          enum:
-          - RUNNING
-          - COMPLETED
-          - FAILED
-          - CANCELLED
-        started_at:
-          type: string
-          format: date-time
-        ended_at:
-          type: string
-          format: date-time
-        attempt:
-          type: integer
-        attributes:
-          type: object
-          additionalProperties: true
-        children:
-          type: array
+        data:
           items:
-            $ref: '#/components/schemas/V2TraceSpan'
-    Run:
+            $ref: '#/components/schemas/v2FunctionRun'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2Page'
       type: object
+    v2FunctionRef:
       properties:
-        run_id:
+        app:
+          $ref: '#/components/schemas/v2AppRef'
+        id:
           type: string
-        function_id:
+        name:
           type: string
-        status:
+        slug:
           type: string
-          enum:
-          - Running
-          - Completed
-          - Failed
-          - Cancelled
-        event_id:
+      type: object
+    V2CancelRunBody:
+      type: object
+    v2FunctionRunStatus:
+      default: UNSPECIFIED
+      description: " - FUNCTION_RUN_STATUS_PAUSED: PAUSED is synthetic: the run is RUNNING, but its function is paused.\n - FUNCTION_RUN_STATUS_UNKNOWN: UNKNOWN is returned when the persisted run status cannot be recognized."
+      enum:
+      - UNSPECIFIED
+      - QUEUED
+      - RUNNING
+      - COMPLETED
+      - FAILED
+      - CANCELLED
+      - SKIPPED
+      - PAUSED
+      - UNKNOWN
+      type: string
+    v2TraceSpanMetadata:
+      properties:
+        kind:
+          type: string
+        scope:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        values:
+          additionalProperties:
+            type: string
+          type: object
+      type: object
+    v2ListFunctionRunsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2FunctionRun'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2Page'
+      type: object
+    v2GetFunctionRunResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2FunctionRun'
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+      type: object
+    v2TraceSpanStatus:
+      default: UNKNOWN
+      enum:
+      - UNKNOWN
+      - RUNNING
+      - COMPLETED
+      - FAILED
+      - WAITING
+      - CANCELLED
+      - SKIPPED
+      type: string
+    v2AppRef:
+      properties:
+        id:
+          type: string
+      type: object
+    v2ResponseMetadata:
+      properties:
+        cachedUntil:
+          format: date-time
+          type: string
+        fetchedAt:
+          format: date-time
+          type: string
+        timeRange:
+          $ref: '#/components/schemas/v2TimeRange'
+      type: object
+    v2RerunData:
+      properties:
+        runId:
+          description: New run ID created by the rerun
+          example: 01hp1zx8m3ng9vp6qn0xk7j4cy
+          type: string
+      type: object
+    v2TimeRange:
+      properties:
+        from:
+          format: date-time
+          type: string
+        until:
+          format: date-time
+          type: string
+      type: object
+    v2TraceSpan:
+      properties:
+        children:
+          items:
+            $ref: '#/components/schemas/v2TraceSpan'
+          type: array
+        durationMs:
+          format: uint64
+          type: string
+        endedAt:
+          format: date-time
+          type: string
+        id:
+          type: string
+        input:
+          type: object
+        metadata:
+          items:
+            $ref: '#/components/schemas/v2TraceSpanMetadata'
+          type: array
+        name:
           type: string
         output:
           type: object
-          additionalProperties: true
-        started_at:
-          type: string
+        queuedAt:
           format: date-time
-        ended_at:
           type: string
+        startedAt:
           format: date-time
+          type: string
+        status:
+          $ref: '#/components/schemas/v2TraceSpanStatus'
+        stepId:
+          type: string
+        stepOp:
+          $ref: '#/components/schemas/v2TraceStepOp'
+      type: object
+    v2CreateScoreResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2Score'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+      type: object
+    v2GetEventRunsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2FunctionRun'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2Page'
+      type: object
+    v2Score:
+      properties:
+        experiment:
+          $ref: '#/components/schemas/v2ScoreExperiment'
+        name:
+          description: Score name
+          type: string
+        runId:
+          description: Run ID the score was recorded against
+          type: string
+        stepId:
+          description: Step ID the score was recorded against, if step-scoped
+          type: string
+        value:
+          description: Score value
+      type: object
+    v2TraceStepOp:
+      default: UNSPECIFIED
+      enum:
+      - UNSPECIFIED
+      - RUN
+      - SLEEP
+      - WAIT_FOR_EVENT
+      - INVOKE
+      - SEND_EVENT
+      - AI_GATEWAY
+      - WAIT_FOR_SIGNAL
+      type: string
+    v2CancelRunData:
+      properties:
+        runId:
+          description: Cancelled run ID
+          example: 01hp1zx8m3ng9vp6qn0xk7j4cy
+          type: string
+      type: object
+    v2FunctionTrace:
+      properties:
+        rootSpan:
+          $ref: '#/components/schemas/v2TraceSpan'
+        runId:
+          type: string
+      type: object
+    v2RunDeferredFrom:
+      properties:
+        functionName:
+          type: string
+        functionSlug:
+          type: string
+      type: object
+    V2RerunBody:
+      properties:
+        fromStep:
+          $ref: '#/components/schemas/v2RerunFromStep'
+      type: object
+    v2RunTrigger:
+      properties:
+        batchId:
+          type: string
+        cronSchedule:
+          type: string
+        eventIds:
+          items:
+            type: string
+          type: array
+        eventName:
+          type: string
+        isBatch:
+          type: boolean
+      type: object
+    v2GetFunctionTraceResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2FunctionTrace'
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+      type: object
+    v2CancelRunResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2CancelRunData'
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+      type: object
+    v2RerunResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2RerunData'
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+      type: object
+    v2Page:
+      properties:
+        cursor:
+          type: string
+        hasMore:
+          type: boolean
+        limit:
+          format: int32
+          type: integer
+      type: object
+    v2FunctionRun:
+      properties:
+        app:
+          $ref: '#/components/schemas/v2AppRef'
+        deferredFrom:
+          $ref: '#/components/schemas/v2RunDeferredFrom'
+        durationMs:
+          format: uint64
+          type: string
+        endedAt:
+          format: date-time
+          type: string
+        function:
+          $ref: '#/components/schemas/v2FunctionRef'
+        id:
+          type: string
+        isDeferred:
+          type: boolean
+        output:
+          type: object
+        queuedAt:
+          format: date-time
+          type: string
+        startedAt:
+          format: date-time
+          type: string
+        status:
+          $ref: '#/components/schemas/v2FunctionRunStatus'
+        trigger:
+          $ref: '#/components/schemas/v2RunTrigger'
+      type: object
+    v2ScoreExperiment:
+      properties:
+        id:
+          description: Experiment ID
+          example: model-routing
+          type: string
+        variant:
+          description: Experiment variant
+          example: baseline
+          type: string
+      type: object
+    v2RerunFromStep:
+      properties:
+        input:
+          description: Optional replacement step input as a JSON array
+          example:
+          - foo: bar
+          items:
+            type: object
+          type: array
+        stepId:
+          description: User-defined step name to rerun from
+          example: step-1
+          type: string
+      type: object
+    v2CreateScoreInput:
+      properties:
+        experiment:
+          $ref: '#/components/schemas/v2ScoreExperiment'
+        name:
+          description: Score name; must be at most 128 UTF-8 bytes
+          example: accuracy
+          type: string
+        stepId:
+          description: Optional SDK step ID; attaches the score to a specific step instead of the run. Step targets are recorded best-effort and are not validated before writing.
+          example: generate-summary
+          type: string
+        value:
+          description: Score value; must be a finite number or a boolean
+          example: 0.95
+      type: object
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: signing-key
+    BearerAuth:
+      description: 'Bearer token authentication. Format: `Bearer {key}`'
+      in: header
+      name: Authorization
+      type: apiKey

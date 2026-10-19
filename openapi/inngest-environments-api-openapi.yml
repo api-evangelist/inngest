@@ -1,128 +1,355 @@
 openapi: 3.2.0
 info:
-  title: Inngest REST Environments API
-  description: 'The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest''s event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.'
-  version: 2026-05
-  contact:
-    name: Inngest
-    url: https://www.inngest.com
-  license:
-    name: Inngest Terms of Service
-    url: https://www.inngest.com/terms
+  description: The v2 API delivers a significantly improved developer experience with consistent design patterns and enhanced functionality.
+  title: Inngest REST API v2 Environments API
+  version: 2.0.0
 servers:
-- url: https://api.inngest.com
-  description: Production REST API (root, v1)
-- url: https://api.inngest.com/v2
-  description: Production REST API (v2 management surface)
-- url: https://inn.gs
-  description: Event ingestion endpoint (alias of /e/{eventKey})
-- url: http://localhost:8288
-  description: Local Inngest Dev Server (root, v1)
-- url: http://localhost:8288/api/v2
-  description: Local Inngest Dev Server (v2 management surface)
+- description: Production server
+  url: https://api.inngest.com/v2
+- description: Development server
+  url: http://localhost:8288/api/v2
 tags:
-- name: Environments
-  description: Manage production and branch environments for an account.
+- description: Create and manage environments
+  name: Environments
 paths:
-  /v2/envs:
+  /envs:
     get:
-      tags:
-      - Environments
-      summary: List Environments
-      description: List custom and branch environments for the authenticated account.
-      operationId: v2FetchAccountEnvs
+      description: List of all custom environments.
+      operationId: V2_FetchAccountEnvs
+      parameters:
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: 'Number of environments to return per page (min: 1, max: 250)'
+        in: query
+        name: limit
+        schema:
+          default: '50'
+          format: int32
+          type: integer
       responses:
         '200':
-          description: A list of environments.
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    data:
+                    - createdAt: '2024-01-10T09:15:00Z'
+                      id: a1b2c3d4-e5f6-4789-abc1-234567890def
+                      name: production
+                      type: PRODUCTION
+                    - createdAt: '2024-01-12T11:30:00Z'
+                      id: b2c3d4e5-f6a7-4890-bcd2-34567890abef
+                      name: staging
+                      type: TEST
+                    metadata:
+                      cachedUntil: null
+                      fetchedAt: '2024-01-20T14:22:33Z'
+                    page:
+                      hasMore: false
+                      limit: 50
+              schema:
+                $ref: '#/components/schemas/v2FetchAccountEnvsResponse'
+          description: List of account environments
+        '400':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: missing_field
+                      message: Environment name is required
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Bad Request - invalid query parameters
+        '401':
+          content:
+            application/json:
+              examples:
+                default:
+                  value: Authentication failed
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unauthorized - authentication required
+        '403':
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/V2Env'
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Forbidden - insufficient permissions
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Not Found - account not found
+        '500':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: internal_error
+                      message: Something went wrong
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Internal Server Error
       security:
-      - bearerAuth: []
-    post:
+      - BearerAuth: []
+      summary: List environments
       tags:
       - Environments
-      summary: Create Environment
-      description: Creates a new custom or branch environment under the account.
-      operationId: v2CreateEnv
+    post:
+      description: Create custom environment
+      operationId: V2_CreateEnv
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                type:
-                  type: string
-                  enum:
-                  - BRANCH
-                  - CUSTOM
+              $ref: '#/components/schemas/v2CreateEnvRequest'
+        required: true
+        x-originalParamName: body
       responses:
         '201':
-          description: Environment created.
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    data:
+                      createdAt: '2024-01-20T14:22:33Z'
+                      id: c3d4e5f6-a7b8-4901-cde3-4567890bcfa0
+                      name: development
+                      type: BRANCH
+                    metadata:
+                      cachedUntil: null
+                      fetchedAt: '2024-01-20T14:22:33Z'
+              schema:
+                $ref: '#/components/schemas/v2CreateEnvResponse'
+          description: Env successfully created
+        '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/V2Env'
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Bad Request - invalid input data
+        '401':
+          content:
+            application/json:
+              examples:
+                default:
+                  value: Authentication failed
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unauthorized - authentication required
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Forbidden - Insufficient permissions
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Conflict - account already exists
+        '500':
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    errors:
+                    - code: internal_error
+                      message: Something went wrong
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Internal Server Error
       security:
-      - bearerAuth: []
-  /v2/envs/{id}:
-    patch:
+      - BearerAuth: []
+      summary: Create environment
       tags:
       - Environments
-      summary: Update Environment
-      description: Partially updates an environment's mutable fields.
-      operationId: v2PatchEnv
+  /envs/{id}:
+    patch:
+      description: Partially updates an environment. Only the provided fields will be modified.
+      operationId: V2_PatchEnv
       parameters:
-      - name: id
+      - description: The ID of the environment to update
         in: path
+        name: id
         required: true
         schema:
           type: string
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              type: object
-              additionalProperties: true
+              $ref: '#/components/schemas/V2PatchEnvBody'
+        required: true
+        x-originalParamName: body
       responses:
         '200':
-          description: Environment updated.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/V2Env'
+                $ref: '#/components/schemas/v2PatchEnvsResponse'
+          description: Environment successfully updated
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Bad Request - invalid input data
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unauthorized - authentication required
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Forbidden - insufficient permissions
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Not Found - environment not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unprocessable Entity - business logic validation failed
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Internal Server Error
       security:
-      - bearerAuth: []
+      - BearerAuth: []
+      summary: Update environment
+      tags:
+      - Environments
 components:
   schemas:
-    V2Env:
+    v2PatchEnvsResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2Env'
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
       type: object
+    v2ErrorResponse:
+      properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/v2Error'
+          type: array
+      type: object
+    v2ResponseMetadata:
+      properties:
+        cachedUntil:
+          format: date-time
+          type: string
+        fetchedAt:
+          format: date-time
+          type: string
+        timeRange:
+          $ref: '#/components/schemas/v2TimeRange'
+      type: object
+    v2Error:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      type: object
+    v2Page:
+      properties:
+        cursor:
+          type: string
+        hasMore:
+          type: boolean
+        limit:
+          format: int32
+          type: integer
+      type: object
+    v2TimeRange:
+      properties:
+        from:
+          format: date-time
+          type: string
+        until:
+          format: date-time
+          type: string
+      type: object
+    v2FetchAccountEnvsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2Env'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2Page'
+      type: object
+    v2Env:
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        id:
+          type: string
+        isArchived:
+          type: boolean
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/v2EnvType'
+      type: object
+    v2EnvType:
+      default: PRODUCTION
+      enum:
+      - PRODUCTION
+      - TEST
+      - BRANCH
+      type: string
+    v2CreateEnvRequest:
       properties:
         id:
           type: string
         name:
           type: string
-        type:
-          type: string
-          enum:
-          - PRODUCTION
-          - BRANCH
-          - CUSTOM
-        createdAt:
-          type: string
-          format: date-time
+      type: object
+    v2CreateEnvResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/v2Env'
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+      type: object
+    V2PatchEnvBody:
+      properties:
+        isArchived:
+          description: Updates the archived status of the environment. Set to true to archive the environment or false to unarchive it.
+          type: boolean
+      type: object
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: signing-key
+    BearerAuth:
+      description: 'Bearer token authentication. Format: `Bearer {key}`'
+      in: header
+      name: Authorization
+      type: apiKey

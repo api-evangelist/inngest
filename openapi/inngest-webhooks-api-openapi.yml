@@ -1,95 +1,267 @@
 openapi: 3.2.0
 info:
-  title: Inngest REST Webhooks API
-  description: 'The Inngest REST API spans two surfaces: the v1 event ingestion and run inspection API used by SDKs and ad-hoc clients, and the v2 management API that covers accounts, environments, apps, webhooks, keys, function invocation, run summaries, and trace trees. Together these endpoints expose Inngest''s event-driven, durable execution platform for background jobs, workflows, and AI agent orchestration.'
-  version: 2026-05
-  contact:
-    name: Inngest
-    url: https://www.inngest.com
-  license:
-    name: Inngest Terms of Service
-    url: https://www.inngest.com/terms
+  description: The v2 API delivers a significantly improved developer experience with consistent design patterns and enhanced functionality.
+  title: Inngest REST API v2 Webhooks API
+  version: 2.0.0
 servers:
-- url: https://api.inngest.com
-  description: Production REST API (root, v1)
-- url: https://api.inngest.com/v2
-  description: Production REST API (v2 management surface)
-- url: https://inn.gs
-  description: Event ingestion endpoint (alias of /e/{eventKey})
-- url: http://localhost:8288
-  description: Local Inngest Dev Server (root, v1)
-- url: http://localhost:8288/api/v2
-  description: Local Inngest Dev Server (v2 management surface)
+- description: Production server
+  url: https://api.inngest.com/v2
+- description: Development server
+  url: http://localhost:8288/api/v2
 tags:
-- name: Webhooks
-  description: Manage inbound webhooks that translate third-party payloads into Inngest events.
+- description: Create and manage inbound webhooks
+  name: Webhooks
 paths:
-  /v2/env/webhooks:
+  /env/webhooks:
     get:
-      tags:
-      - Webhooks
-      summary: List Webhooks
-      description: Lists all inbound webhooks configured in the current environment.
-      operationId: v2ListWebhooks
+      description: Lists all webhooks in the specified environment
+      operationId: V2_ListWebhooks
+      parameters:
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: 'Number of webhooks to return per page (min: 1, max: 100)'
+        in: query
+        name: limit
+        schema:
+          default: '20'
+          format: int32
+          type: integer
+      - description: Target environment for the webhooks (e.g., 'production', 'staging', 'development')
+        in: header
+        name: X-Inngest-Env
+        required: true
+        schema:
+          type: string
       responses:
         '200':
-          description: A list of webhooks in the environment.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/V2Webhook'
+                $ref: '#/components/schemas/v2ListWebhooksResponse'
+          description: List of webhooks
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Bad Request - invalid query parameters
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unauthorized - authentication required
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Forbidden - insufficient permissions
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Internal Server Error
       security:
-      - bearerAuth: []
-    post:
+      - BearerAuth: []
+      summary: List webhooks
       tags:
       - Webhooks
-      summary: Create Webhook
-      description: Creates a new webhook for receiving events.
-      operationId: v2CreateWebhook
-      requestBody:
+    post:
+      description: Creates a new webhook for receiving events
+      operationId: V2_CreateWebhook
+      parameters:
+      - description: Target environment for the webhook (e.g., 'production', 'staging', 'development')
+        in: header
+        name: X-Inngest-Env
         required: true
+        schema:
+          type: string
+      requestBody:
         content:
           application/json:
             schema:
-              type: object
-              required:
-              - name
-              properties:
-                name:
-                  type: string
-                transform:
-                  type: string
-                  description: JavaScript transform mapping the payload to an Inngest event.
+              $ref: '#/components/schemas/v2CreateWebhookRequest'
+        required: true
+        x-originalParamName: body
       responses:
         '201':
-          description: Webhook created.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/V2Webhook'
+                $ref: '#/components/schemas/v2CreateWebhookResponse'
+          description: Webhook successfully created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Bad Request - invalid input data
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unauthorized - authentication required
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Forbidden - insufficient permissions
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Conflict - webhook with same URL already exists
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Unprocessable Entity - business logic validation failed
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2ErrorResponse'
+          description: Internal Server Error
       security:
-      - bearerAuth: []
+      - BearerAuth: []
+      summary: Create webhook
+      tags:
+      - Webhooks
 components:
   schemas:
-    V2Webhook:
-      type: object
+    v2CreateWebhookResponse:
       properties:
+        data:
+          $ref: '#/components/schemas/v2Webhook'
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+      type: object
+    v2ListWebhooksResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/v2Webhook'
+          type: array
+        metadata:
+          $ref: '#/components/schemas/v2ResponseMetadata'
+        page:
+          $ref: '#/components/schemas/v2Page'
+      type: object
+    v2Webhook:
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        environment:
+          type: string
+        eventFilter:
+          $ref: '#/components/schemas/v2EventFilter'
         id:
           type: string
         name:
           type: string
-        url:
+        response:
           type: string
-          format: uri
         transform:
           type: string
+        updatedAt:
+          format: date-time
+          type: string
+        url:
+          type: string
+      type: object
+    v2ErrorResponse:
+      properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/v2Error'
+          type: array
+      type: object
+    v2FilterType:
+      default: ALLOW
+      enum:
+      - ALLOW
+      - DENY
+      type: string
+    v2ResponseMetadata:
+      properties:
+        cachedUntil:
+          format: date-time
+          type: string
+        fetchedAt:
+          format: date-time
+          type: string
+        timeRange:
+          $ref: '#/components/schemas/v2TimeRange'
+      type: object
+    v2Error:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      type: object
+    v2Page:
+      properties:
+        cursor:
+          type: string
+        hasMore:
+          type: boolean
+        limit:
+          format: int32
+          type: integer
+      type: object
+    v2EventFilter:
+      properties:
+        events:
+          description: Allow or deny specific events, e.g. 'orders/payment.created', or 'orders/*' for all orders. Only events in this list will be either allowed or denied.
+          example:
+          - orders/payment.created
+          - orders/*
+          items:
+            type: string
+          type: array
+        filter:
+          $ref: '#/components/schemas/v2FilterType'
+      type: object
+    v2TimeRange:
+      properties:
+        from:
+          format: date-time
+          type: string
+        until:
+          format: date-time
+          type: string
+      type: object
+    v2CreateWebhookRequest:
+      properties:
+        eventFilter:
+          $ref: '#/components/schemas/v2EventFilter'
+        name:
+          description: Descriptive name for the webhook
+          example: Payment Processing Webhook
+          type: string
+        response:
+          description: Optional inline JS function which is called to respond to GET requests
+          example: 'function respond(body, headers) { return { status: 200, headers: {}, body: JSON.parse(body)?.challenge } };'
+          type: string
+        transform:
+          description: The inline JS transform function for incoming events
+          example: 'function transform(evt, headers = {}, queryParams = {}, raw = '''') { return { name: ''webhook/request.received'', data: evt }; }'
+          type: string
+      type: object
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: signing-key
+    BearerAuth:
+      description: 'Bearer token authentication. Format: `Bearer {key}`'
+      in: header
+      name: Authorization
+      type: apiKey

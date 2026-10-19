@@ -580,6 +580,56 @@ apis:
     url: rate-limits/inngest-rate-limits.yml
   - type: FinOps
     url: finops/inngest-finops.yml
+- aid: inngest:inngest-experiments-api
+  name: Inngest Experiments API
+  description: Inspect experiment variants and aggregates
+  humanURL: https://www.inngest.com/docs/reference/rest-api
+  baseURL: https://api.inngest.com
+  tags:
+  - Experiments
+  properties:
+  - type: OpenAPI
+    url: openapi/inngest-experiments-api-openapi.yml
+- aid: inngest:inngest-insights-api
+  name: Inngest Insights API
+  description: Query event and function data
+  humanURL: https://www.inngest.com/docs/reference/rest-api
+  baseURL: https://api.inngest.com
+  tags:
+  - Insights
+  properties:
+  - type: OpenAPI
+    url: openapi/inngest-insights-api-openapi.yml
+- aid: inngest:inngest-partner-api-api
+  name: Inngest Partner API
+  description: Partner account management
+  humanURL: https://www.inngest.com/docs/reference/rest-api
+  baseURL: https://api.inngest.com
+  tags:
+  - Partner API
+  properties:
+  - type: OpenAPI
+    url: openapi/inngest-partner-api-api-openapi.yml
+- aid: inngest:inngest-sandboxes-api
+  name: Inngest Sandboxes API
+  description: Create and manage isolated compute sandboxes
+  humanURL: https://www.inngest.com/docs/reference/rest-api
+  baseURL: https://api.inngest.com
+  tags:
+  - Sandboxes
+  properties:
+  - type: OpenAPI
+    url: openapi/inngest-sandboxes-api-openapi.yml
+- aid: inngest:inngest-sessions-api
+  name: Inngest Sessions API
+  description: Inspect session-grouped runs
+  humanURL: https://www.inngest.com/docs/reference/rest-api
+  baseURL: https://api.inngest.com
+  tags:
+  - Sessions
+  properties:
+  - type: OpenAPI
+    url: openapi/inngest-sessions-api-openapi.yml
 common:
   - type: Plans
     url: plans/inngest-plans-pricing.yml
