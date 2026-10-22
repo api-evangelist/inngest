@@ -13,6 +13,8 @@ checked:
 - https://www.sequoiacap.com/our-companies/
 - https://www.sequoiacap.com/sitemap.xml
 - digital-ocean/integrations/digital-ocean-integration-edges.yml
+- netlify/integrations/netlify-integration-edges.yml
+- vercel/integrations/vercel-integration-edges.yml
 source:
 - datadog/integrations/datadog-integration-edges.yml
 edges:
@@ -129,3 +131,39 @@ edges:
   detected: '2026-10-21'
   detected_by: mirror-platform-listings.py
   category: Functions
+- partner_name: Netlify (own)
+  partner: netlify
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://www.netlify.com/integrations/inngest/
+  mirror_of: netlify/integrations/netlify-integration-edges.yml
+  apps:
+  - Inngest
+  listing_count: 1
+  detected: '2026-10-22'
+  detected_by: mirror-platform-listings.py
+  category: Search
+  partner_tier: build-plugin
+- partner_name: Vercel (own)
+  partner: vercel
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://vercel.com/marketplace/inngest
+  mirror_of: vercel/integrations/vercel-integration-edges.yml
+  apps:
+  - Inngest
+  listing_count: 1
+  detected: '2026-10-22'
+  detected_by: mirror-platform-listings.py
+  category: DevTools Workflow
+  partner_tier: native
