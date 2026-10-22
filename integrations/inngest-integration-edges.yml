@@ -12,43 +12,10 @@ checked:
 - https://www.indexventures.com/companies/
 - https://www.sequoiacap.com/our-companies/
 - https://www.sequoiacap.com/sitemap.xml
+- digital-ocean/integrations/digital-ocean-integration-edges.yml
 source:
 - datadog/integrations/datadog-integration-edges.yml
 edges:
-- partner_name: Datadog (own)
-  partner: datadog
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://github.com/DataDog/integrations-extras/tree/master/inngest
-  mirror_of: datadog/integrations/datadog-integration-edges.yml
-  apps:
-  - Inngest
-  listing_count: 1
-  detected: '2026-10-14'
-  detected_by: mirror-platform-listings.py
-  category: AI/ML
-- partner_name: Stripe (own)
-  partner: stripe
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://marketplace.stripe.com/apps/inngest
-  mirror_of: stripe/integrations/stripe-integration-edges.yml
-  apps:
-  - Inngest
-  listing_count: 1
-  detected: '2026-10-15'
-  detected_by: mirror-platform-listings.py
-  category: developer_tools
 - partner_name: CNCF (Cloud Native Landscape)
   partner: cncf
   partner_match: register
@@ -111,3 +78,54 @@ edges:
     sector: Enterprise;Infra;Seed
   detected_by: sweep-vc-portfolios.py
   first_seen: '2026-10-21'
+- partner_name: Datadog (own)
+  partner: datadog
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://github.com/DataDog/integrations-extras/tree/master/inngest
+  mirror_of: datadog/integrations/datadog-integration-edges.yml
+  apps:
+  - Inngest
+  listing_count: 1
+  detected: '2026-10-14'
+  detected_by: mirror-platform-listings.py
+  category: AI/ML
+- partner_name: Stripe (own)
+  partner: stripe
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.stripe.com/apps/inngest
+  mirror_of: stripe/integrations/stripe-integration-edges.yml
+  apps:
+  - Inngest
+  listing_count: 1
+  detected: '2026-10-15'
+  detected_by: mirror-platform-listings.py
+  category: developer_tools
+- partner_name: Digital Ocean (own)
+  partner: digital-ocean
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.digitalocean.com/add-ons/inngest
+  mirror_of: digital-ocean/integrations/digital-ocean-integration-edges.yml
+  apps:
+  - Inngest
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: Functions
