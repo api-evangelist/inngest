@@ -305,3 +305,9 @@ components:
       in: header
       name: Authorization
       type: apiKey
+x-provenance:
+  method: harvested
+  publisher: Inngest
+  source: https://api-docs.inngest.com/api-specs/v2.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
